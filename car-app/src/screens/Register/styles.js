@@ -4,6 +4,7 @@ import Constants from 'expo-constants'
 export const IMAGE_HEIGHT = window.width / 2;
 export const IMAGE_HEIGHT_SMALL = window.width /7;
 import colors from '../../assets/colors';
+import theme from '../../assets/theme';
 
 export default styles = StyleSheet.create({
   container: {
@@ -156,7 +157,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
   },
   btnStyle : {
-    backgroundColor : colors.orange,
+    backgroundColor : theme.primaryColor,
     width : '50%',
     justifyContent: 'center',
     alignItems : 'center',
@@ -373,7 +374,7 @@ export default styles = StyleSheet.create({
     color : colors.white
   },
   buttonClose : {
-    backgroundColor : colors.orange,
+    backgroundColor : theme.primaryColor,
     width : 60,
     justifyContent: 'center',
     alignItems: 'center',

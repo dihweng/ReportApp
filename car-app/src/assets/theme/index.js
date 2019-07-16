@@ -19,7 +19,7 @@ export default defaultTheme = {
   tintColor : colors.buttonBlue,
   formBorderColor : colors.gray,
   inputFieldBg : colors.field_color,
-  textGray : colors.textGray,
+  textGray : colors.darkGray,
   // Font Type
   primaryFont: 'Roboto-Regular',
   secondaryFont: 'Roboto-Medium',

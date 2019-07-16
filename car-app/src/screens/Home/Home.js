@@ -191,6 +191,7 @@ export default class Home extends Component {
         <KeyboardAvoidingView
           style = {styles.wrapper }
           behavior = { 'padding' }>
+            
             <View style={styles.logoView}>
               <Image
                 source={require('../../assets/images/logo.png')}
@@ -208,10 +209,10 @@ export default class Home extends Component {
               <View style = {[styles.textInputView,{ borderColor: this.state.isEmailFocused
                  ? colors.green
                  : colors.whiteShade}]}> 
-                <View style = {styles.inputImageView}>
-                  <Image
-                    source={require('../../assets/images/phone.png')}
-                    style={StyleSheet.flatten(styles.iconForm)}/> 
+                  <View style = {styles.inputImageView}>
+                    <Image
+                      source={require('../../assets/images/phone.png')}
+                      style={StyleSheet.flatten(styles.iconForm)}/> 
                   </View>
                   <InputField
                     placeholder={'Phone Number'}

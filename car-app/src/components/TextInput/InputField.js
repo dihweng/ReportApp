@@ -110,7 +110,7 @@ export default class InputField extends Component {
    
         <TextInput
           style={[{ color: inputColor }, style,inputStyle, styles.inputField]}         
-          //borderWidth={borderWidth}
+          borderWidth={borderWidth}
           borderColor={borderColor}
           borderRadius={borderRadius}
           borderTopRightRadius={borderTopRightRadius}
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   inputField : {
     // borderBottomWidth : 1,
     paddingTop : 1,
-    fontFamily : theme.subHeaderFont,
+    fontFamily : theme.primaryFont,
     fontSize : theme.SmallFont,
     // backgroundColor: colors.white
     // height :40,
