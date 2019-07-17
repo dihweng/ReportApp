@@ -1,20 +1,21 @@
 export default {
   black : '#000000',
   white : '#ffffff',
-  whiteShade: '#dcdde1',
+  whiteShade: '#fffbff',
+  whiteGray : '#E5E2DD',
   gray : '#dddddd',
   gold: '#deaf1b',
   green: '#27ae60',
   darkSilver: '#bdc3c7',
   red: '#d63031',
   text_color: '#002E0D',
-  background_color : '#5E2121',
+  background_color : '#F6F0F6',
   button_border: '#0E802E',
   mediumseagreen: '#3CB371',
   green_background : '#0F959A',
   orange : '#F7933A',
   textInput_border: '#BCBCBC',
-  text: '#ABABAB',
+  text: '#BBBBBB',
   field_color: '#F1E7F0',
   textInuputColor : '#495057',
   iconColor: '#0F959A',
@@ -24,6 +25,6 @@ export default {
   blue : '#137ff2',
   card : '#FAFCFB',
   sliderCard : '#F4F5F4',
-  purple  :'#2D002B'
+  purple  : '#2D002B',
   
 }

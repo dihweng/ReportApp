@@ -157,7 +157,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
   },
   btnStyle : {
-    backgroundColor : theme.primaryColor,
+    backgroundColor : theme.buttonPrimary,
     width : '50%',
     justifyContent: 'center',
     alignItems : 'center',
@@ -374,7 +374,7 @@ export default styles = StyleSheet.create({
     color : colors.white
   },
   buttonClose : {
-    backgroundColor : theme.primaryColor,
+    backgroundColor : theme.buttonPrimary,
     width : 60,
     justifyContent: 'center',
     alignItems: 'center',

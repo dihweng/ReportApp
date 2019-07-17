@@ -13,7 +13,7 @@ import Logout from './Logout'
 // import TermsConditions from './TermsConditions';
 // import SurpportDesk from './SurpportDesk';
 // import Message from './Message/index.js';
-// import ChangePhone from './ChangePhone/ChangePhone';
+import ChangePhone from './ChangePhone/ChangePhone';
 
 export default {
   Register, 
@@ -25,6 +25,6 @@ export default {
   CreateNewPassword,
   DashBoard, 
   Navigations,
-  Logout
-  // ChangePhone,
+  Logout,
+  ChangePhone,
 };

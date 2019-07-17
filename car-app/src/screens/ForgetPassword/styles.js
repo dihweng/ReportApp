@@ -2,6 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 const window = Dimensions.get('window');
 import { Constants } from 'expo';
 import colors from '../../assets/colors';
+import theme from '../../assets/theme';
 
 export default styles = StyleSheet.create({
   container: {
@@ -29,10 +30,10 @@ export default styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     marginLeft: 16
   },
-  greenTopView : {
-    backgroundColor : colors.green_background,
+  purpleTopView : {
+    backgroundColor : theme.primaryColor,
     width : '100%',
-    height : '40%',
+    height : '35%',
     justifyContent: 'center',
     alignItems : 'center',
     
@@ -74,17 +75,18 @@ export default styles = StyleSheet.create({
     alignSelf: 'center',
   },
   msgText: {
-    fontSize: 16,
-    color: colors.darkGray,
+    fontSize: theme.SmallFont,
+    color: theme.primaryTextColor,
     marginTop: 8,
-    fontFamily: 'Roboto-Light',
+    fontFamily: theme.primaryFont,
     alignSelf: 'center',
   },
   msgText2: {
-    fontSize: 16,
-    color: colors.darkGray,
-    fontFamily: 'Roboto-Light',
+    fontSize: theme.SmallFont,
+    color: theme.primaryTextColor,
+    fontFamily: theme.primaryFont,
     alignSelf: 'center',
+    marginBottom : 4,
   },
   wrapper : {
     flex: 1,
@@ -93,7 +95,6 @@ export default styles = StyleSheet.create({
     // marginTop: 10,
     width : '100%',
     alignItems: 'center',
-    // backgroundColor : colors.red
   },
   inputView :{
     width : '98%',
@@ -105,7 +106,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     width: '75%',
     height: 40,
-    backgroundColor: colors.orange,
+    backgroundColor: theme.primaryColor,
     borderRadius : 25,
     marginTop : 16,
   },
@@ -126,14 +127,14 @@ export default styles = StyleSheet.create({
     marginTop : 16
   },
   carat: {
-    fontSize: 16,
-    color: colors.green_background,
-    fontFamily: 'Roboto-Black',
+    fontSize: 18,
+    color: theme.primaryColor,
+    fontFamily: theme.headerFont,
     alignSelf: 'center',
     marginTop : 6
   },
   btnStyle : {
-    backgroundColor : colors.orange,
+    backgroundColor : theme.buttonPrimary,
     width : '50%',
     justifyContent: 'center',
     alignItems : 'center',
@@ -149,10 +150,10 @@ export default styles = StyleSheet.create({
     alignSelf: 'center',    
   },
   backTxt : {
-    fontSize: 16,
-    color: colors.darkGray,
+    fontSize: theme.SmallFont,
+    color: theme.primaryTextColor,
     marginTop: 8,
-    fontFamily: 'Roboto-Light',
+    fontFamily: theme.primaryFont,
     alignSelf: 'center',
   }
 });

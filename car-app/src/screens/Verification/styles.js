@@ -2,6 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 const window = Dimensions.get('window');
 import { Constants } from 'expo';
 import colors from '../../assets/colors';
+import theme from '../../assets/theme';
 
 export default styles = StyleSheet.create({
 
@@ -13,7 +14,7 @@ export default styles = StyleSheet.create({
     width : 40,
     height : 40,
     marginLeft : 10,
-    marginTop : 10,
+    // marginTop : 10,
     backgroundColor : 'transparent',
     justifyContent: 'center',
     alignItems : 'center',
@@ -21,7 +22,7 @@ export default styles = StyleSheet.create({
   closeIcon : {
     width : 18,
     height : 18,
-    tintColor : colors.green_background
+    tintColor : theme.primaryColor
   },
   wrapper : {
     
@@ -32,10 +33,10 @@ export default styles = StyleSheet.create({
     padding : 20,
   },
   Verification : {
-    fontSize: 16,
-    color: colors.darkSilver,
+    fontSize: theme.SmallFont,
+    color: theme.primaryTextColor,
     marginTop: 15,
-    fontFamily: 'Roboto-Black',
+    fontFamily: theme.headerFont,
     alignSelf: 'center',
   },
   msgText: {
@@ -46,25 +47,26 @@ export default styles = StyleSheet.create({
     alignSelf: 'center',
   },
   msgText2: {
-    fontSize: 16,
-    color: colors.darkSilver,
-    fontFamily: 'Roboto-Light',
+    fontSize: theme.SmallFont,
+    color: theme.primaryTextColor,
+    fontFamily: theme.primaryFont,
     alignSelf: 'center',
   },
   resend : {
     fontSize: 16,
     marginTop : 8,
-    color: colors.green_background,
+    color: theme.primaryColor,
     fontFamily: 'Roboto-Black',
     alignSelf: 'center',
   },
   buttonBorder: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: '20%',
+    width: '40%',
     height: 40,
-    backgroundColor: colors.white,
+    backgroundColor: theme.primaryColor,
     borderRadius : 25,
+    marginTop : 8
   },
   btnText : {
     fontSize: 18,

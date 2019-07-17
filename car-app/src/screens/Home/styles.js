@@ -12,13 +12,13 @@ export default styles = StyleSheet.create({
     paddingTop : Constants.statusBarHeight,
     paddingBottom : 10, 
     alignItems : 'center',
-    backgroundColor : theme.primaryColor
+    backgroundColor : theme.bgColorPrimary
   },
 
   
   buttonWrapper: {
-    paddingLeft: 20,
-    paddingRight: 20,
+    // paddingLeft: 20,
+    // paddingRight: 20,
     marginTop: 10,
     justifyContent: 'flex-end',
     //backgroundColor:'green',
@@ -43,13 +43,13 @@ export default styles = StyleSheet.create({
   },
   signupText: {
     fontSize: theme.MediumFont,
-    color: theme.colorAccent,
+    color: colors.whiteGray,
     fontFamily: theme.LightRoboto,
     alignSelf: 'center',
   },
   forgetPwd: {
     fontSize: theme.MediumFont,
-    color: theme.colorAccent,
+    color: colors.whiteGray,
     marginTop: 30,
     fontFamily: theme.LightRoboto,
     alignSelf: 'center',
@@ -57,57 +57,40 @@ export default styles = StyleSheet.create({
 
   createAccount : {
     fontSize: theme.MediumFont,
-    color: theme.colorAccent,
+    color: theme.whiteShadeTxt,
     fontFamily: theme.headerFont,
     alignSelf: 'center',
   },
-
   logo: {
     height: IMAGE_HEIGHT,
     resizeMode: 'contain',
     alignSelf: 'center',
-
+  },
+  btnStyle : {
+    backgroundColor : theme.buttonPrimary,
+    width : '100%',
+    justifyContent: 'center',
+    alignItems : 'center',
+    height : 40,
+    borderRadius : 4,
+    marginTop: 16,
   },
   btnView : {
     width : '100%',
     justifyContent : 'center',
     alignItems : 'center',
-  },
-  loginBtn : {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '60%',
-    height: 40,
-    backgroundColor: colors.dardgold,
-    borderRadius : 25,    
-  },
-  buttonBorder: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '20%',
-    height: 40,
-    backgroundColor: colors.white,
-    borderRadius : 25,
-  },
-  btnStyle : {
-    backgroundColor : colors.orange,
-    width : '50%',
-    justifyContent: 'center',
-    alignItems : 'center',
-    height : 40,
-    borderRadius : 30,
-    marginTop: 16,
-
+    paddingLeft: 30,
+    paddingRight: 30,
   },
   btnText : {
-    fontSize: 18,
-    color: colors.white,
-    fontFamily: 'Roboto-Regular',
+    fontSize: 20,
+    color: colors.whiteShade,
+    fontFamily: theme.headerFont,
     alignSelf: 'center',    
   },
   wrapper: {
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 30,
+    paddingRight: 30,
     marginTop: 44,
     paddingTop: 8,
     paddingBottom : 8,
@@ -133,7 +116,7 @@ export default styles = StyleSheet.create({
     color : theme.colorAccent,
   },
   logoView : {
-    marginTop: 40, 
+    // marginTop: 20, 
     justifyContent: 'center', 
     alignItems: 'center', 
   },
@@ -169,7 +152,7 @@ export default styles = StyleSheet.create({
     borderRadius : 4,
     flexDirection : 'row',
     alignItems : 'center',
-    marginTop : 8,
+    marginTop : 16,
     // paddingLeft : 8,
     borderWidth : 1,
     borderColor : theme.secondaryTextColor,
@@ -186,4 +169,5 @@ export default styles = StyleSheet.create({
     resizeMode : 'contain',
     tintColor : theme.colorAccent,
   },
+
 });

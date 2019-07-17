@@ -51,59 +51,59 @@ export default class Home extends Component {
   }
 
   handleSignIn = () => {
-    const { email, password } = this.state,
-      grant_type = 'password',
-      client_id = '2',
-      client_secret = 'pHixEbVKUcIuI3vKKcA2sz2tEOEdnfMJ3dwusOiX';
+    // const { email, password } = this.state,
+    //   grant_type = 'password',
+    //   client_id = '2',
+    //   client_secret = 'pHixEbVKUcIuI3vKKcA2sz2tEOEdnfMJ3dwusOiX';
       
-    this.setState({
-      showLoading: true,
-    });
-    let data = JSON.stringify({
-      'username' : email, 
-      'password' : password,
-      'grant_type' : grant_type,
-      'client_id' : client_id,
-      'client_secret' : client_secret,
-      'scope' : '*',
-    });
-    postRoute (LoginEndpoint, data)
-      .then((res) => {
-        console.log({helloError: res})
+    // this.setState({
+    //   showLoading: true,
+    // });
+    // let data = JSON.stringify({
+    //   'username' : email, 
+    //   'password' : password,
+    //   'grant_type' : grant_type,
+    //   'client_id' : client_id,
+    //   'client_secret' : client_secret,
+    //   'scope' : '*',
+    // });
+    // postRoute (LoginEndpoint, data)
+    //   .then((res) => {
+    //     console.log({helloError: res})
 
-        if (typeof res.message !== 'undefined' ) {  
-          return  this.setState({ 
-            showLoading : false,
-            title : 'Alert',
-            message : res.message,
-            showAlert : true,
-          }); 
-        }
-        else {
-          console.log('getResponse: ', res);
-          let access_token = res.access_token,
-            expires = res.expires_in,
-            refresh_token = res.refresh_token;
-          this.setState({ 
-            showLoading : false, 
-          }); 
-          if (this._handleToggleSwitch() === true ) {
-            saveProfile(
-              access_token, 
-              refresh_token, 
-              expires, 
-            );
-            this.props.navigation.navigate('Navigations');
-          }
-          else {
-            saveProfile(
-              access_token, 
-              refresh_token,    
-            );
+    //     if (typeof res.message !== 'undefined' ) {  
+    //       return  this.setState({ 
+    //         showLoading : false,
+    //         title : 'Alert',
+    //         message : res.message,
+    //         showAlert : true,
+    //       }); 
+    //     }
+    //     else {
+    //       console.log('getResponse: ', res);
+    //       let access_token = res.access_token,
+    //         expires = res.expires_in,
+    //         refresh_token = res.refresh_token;
+    //       this.setState({ 
+    //         showLoading : false, 
+    //       }); 
+    //       if (this._handleToggleSwitch() === true ) {
+    //         saveProfile(
+    //           access_token, 
+    //           refresh_token, 
+    //           expires, 
+    //         );
+    //         this.props.navigation.navigate('Navigations');
+    //       }
+    //       else {
+    //         saveProfile(
+    //           access_token, 
+    //           refresh_token,    
+    //         );
           this.props.navigation.navigate('Navigations');            
-          }
-        }
-      });
+    //       }
+    //     }
+    //   });
   }
 
   _handleToggleSwitch = () =>{
@@ -205,7 +205,7 @@ export default class Home extends Component {
                   styles = {StyleSheet.flatten(styles.logoText)}/> 
               </View>
             </View>
-            <View>
+            <View style ={{paddingTop : 40}}>
               <View style = {[styles.textInputView,{ borderColor: this.state.isEmailFocused
                  ? colors.green
                  : colors.whiteShade}]}> 
@@ -216,8 +216,8 @@ export default class Home extends Component {
                   </View>
                   <InputField
                     placeholder={'Phone Number'}
-                    placeholderTextColor = {colors.blackShade}
-                    textColor={colors.blackShade}
+                    placeholderTextColor = {theme.inputTxtColor}
+                    textColor={theme.inputTxtColor}
                     inputType={'phone'}
                     onChangeText = {this.handlePhoneChange}
                     autoCapitalize = "none"
@@ -238,7 +238,7 @@ export default class Home extends Component {
               </View>
               <View style = {[styles.textInputView,{ borderColor: this.state.isPasswordFocused
                  ? colors.green
-                 : colors.whiteShade}]}> 
+                 : colors.whiteShade,}]}> 
                 <View style = {styles.inputImageView}>
                   <Image
                     source={require('../../assets/images/padlock.png')}
@@ -246,8 +246,8 @@ export default class Home extends Component {
                   </View>
                     <InputField
                     placeholder={'Password'}
-                    placeholderTextColor = {colors.blackShade}
-                    textColor={colors.blackShade}
+                    placeholderTextColor = {theme.inputTxtColor}
+                    textColor={theme.inputTxtColor}
                     inputType={'password'}
                     onChangeText = {this.handlePasswordChange}
                     autoCapitalize = "none"
@@ -267,14 +267,16 @@ export default class Home extends Component {
                   /> 
               </View> 
             </View>
-            <View style = {styles.btnView}> 
+           
+          </KeyboardAvoidingView>
+          <View style = {styles.btnView}> 
             <ProgressDialog
               visible={showLoading}
               title="Processing"
               message="Please wait..."
             />
             <SubmitButton
-              title={'Login'}
+              title={'Sign in'}
               disabled={!this.toggleButtonState()}
               onPress={this.handleSignIn}
               titleStyle={styles.btnText}
@@ -304,8 +306,6 @@ export default class Home extends Component {
               onPress = {this.handleRegistration}
             />
           </TouchableOpacity> 
-        </KeyboardAvoidingView>
-          
          
         </SafeAreaView>
       )

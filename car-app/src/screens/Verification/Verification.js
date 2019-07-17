@@ -31,7 +31,7 @@ export default class Verification extends Component {
     this.setState({
       token : profile.access_token,
     });
-    await this.handleGetProfile();
+    // await this.handleGetProfile();
 
   }
 
@@ -84,55 +84,55 @@ export default class Verification extends Component {
   }
 
   handleSend = () => {
-    const {id, token, otp} = this.state
-    this.setState({
-      showLoading: true,
-    });
-    // const {navigation} = this.props,
-    // id = navigation.getParam('id', 'no_id'),
-    // token = navigation.getParam('token', 'no_id'),
-    let endPoint = `${VerificationEndpoint}${id}/${'phone'}`;
+    // const {id, token, otp} = this.state
+    // this.setState({
+    //   showLoading: true,
+    // });
+    // // const {navigation} = this.props,
+    // // id = navigation.getParam('id', 'no_id'),
+    // // token = navigation.getParam('token', 'no_id'),
+    // let endPoint = `${VerificationEndpoint}${id}/${'phone'}`;
 
     
-    let data = JSON.stringify({
-      'otp' : otp,
-    });
-    console.log({endPoint: endPoint});
-    postWithToken(endPoint, data, token)
-      .then((res) => {
-        if (typeof res.message !== 'undefined' ) {  
-          console.log({resppp : res})
-          this.setState({ 
-            showLoading : false,
-            title : 'Alert',
-            message : res.message,
-            showAlert : true,
-          }); 
-          this.props.navigation.navigate('DashBoard');
+    // let data = JSON.stringify({
+    //   'otp' : otp,
+    // });
+    // console.log({endPoint: endPoint});
+    // postWithToken(endPoint, data, token)
+    //   .then((res) => {
+    //     if (typeof res.message !== 'undefined' ) {  
+    //       console.log({resppp : res})
+    //       this.setState({ 
+    //         showLoading : false,
+    //         title : 'Alert',
+    //         message : res.message,
+    //         showAlert : true,
+    //       }); 
+    //       this.props.navigation.navigate('DashBoard');
 
-        }
-        else{
-          console.log({success : res})
-          this.setState({ 
-            showLoading : false, 
-            title : 'Alert',
-            message : res.message,
-            showAlert : true,
-          }); 
-          this.props.navigation.navigate('DashBoard');
-        }  
-      })
-      .catch((res) => {
-        this.setState({
-          showLoading : false,
-          messageKey : 'Message',
-          errorMessage : res.message,
-          visible : true,
-        });
+    //     }
+    //     else{
+    //       console.log({success : res})
+    //       this.setState({ 
+    //         showLoading : false, 
+    //         title : 'Alert',
+    //         message : res.message,
+    //         showAlert : true,
+    //       }); 
+    //       this.props.navigation.navigate('DashBoard');
+    //     }  
+    //   })
+    //   .catch((res) => {
+    //     this.setState({
+    //       showLoading : false,
+    //       messageKey : 'Message',
+    //       errorMessage : res.message,
+    //       visible : true,
+    //     });
 
-      })
+    //   })
+    return this.props.navigation.navigate('ChangePhone')
 
-    // return this.props.navigation.navigate('ResetCode')
   }
   handleResend = () => {
 
@@ -176,7 +176,7 @@ render() {
         </KeyboardAvoidingView>
         <View style = {styles.textView}>
           <DisplayText
-            text={'Didn\'t get text?'}
+            text={'Didn\'t a get text?'}
             styles = {styles.msgText}
           />
           <DisplayText
@@ -187,7 +187,7 @@ render() {
           <SubmitButton
             title={'Send'}
             onPress = {this.handleSend}
-            buttonBorder = {styles.buttonBorder}
+            btnStyle = {styles.buttonBorder}
             titleStyle={styles.btnText}
           />
           <ProgressDialog

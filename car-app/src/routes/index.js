@@ -11,6 +11,7 @@ import CreateNewPassword from '../screens/CreateNewPassword/CreateNewPassword';
 import DashBoard  from '../screens/DashBoard/DashBoard';
 import Navigations from '../screens/Navigations/Navigations';
 import Logout from '../screens/Logout/Logout';
+import ChangePhone from '../screens/ChangePhone/ChangePhone';
 // import Faq from '../screens/Faq/Faq';
 // import TermsConditions from '../screens/TermsConditions/TermsConditions';
 
@@ -78,6 +79,12 @@ const MenuStack = createStackNavigator({
   },
   Profile : {
     screen : Profile,
+    navigationOptions : {
+      header : null,
+    }
+  },
+  ChangePhone : {
+    screen : ChangePhone,
     navigationOptions : {
       header : null,
     }

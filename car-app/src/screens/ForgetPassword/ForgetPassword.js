@@ -23,39 +23,40 @@ export default class ForgetPassword extends Component {
 
   handleForgetPassword = () => {
     const { email } = this.state;
+    this.props.navigation.navigate('Verification');
 
-    if(!isEmailValid(email)){
-      return this.setState({
-        showAlert: true,
-        message: 'Invalid Email Address',
-        title: 'Alert',
-      });
-    }
-    this.setState({
-      showLoading : true,
-    });
-    const body = JSON.stringify({
-      'email' : email,
-    });
-    postRoute(ForgotPassword, body)
-      .then((res) => {
-        console.log({responses: res})
-        if (typeof res.message !== 'undefined' || typeof res.message === 'The given data was invalid') {  
-          return  this.setState({ 
-            showLoading : false,
-            title : 'Alert',
-            message : res.message,
-            showAlert : true,
-          }); 
-        }
-        else {
-          console.log({residdddd : res})
-          this.setState({ 
-            showLoading : false, 
-          }); 
-          this.props.navigation.navigate('Home');
-        }
-      });
+    // if(!isEmailValid(email)){
+    //   return this.setState({
+    //     showAlert: true,
+    //     message: 'Invalid Email Address',
+    //     title: 'Alert',
+    //   });
+    // }
+    // this.setState({
+    //   showLoading : true,
+    // });
+    // const body = JSON.stringify({
+    //   'email' : email,
+    // });
+    // postRoute(ForgotPassword, body)
+    //   .then((res) => {
+    //     console.log({responses: res})
+    //     if (typeof res.message !== 'undefined' || typeof res.message === 'The given data was invalid') {  
+    //       return  this.setState({ 
+    //         showLoading : false,
+    //         title : 'Alert',
+    //         message : res.message,
+    //         showAlert : true,
+    //       }); 
+    //     }
+    //     else {
+    //       console.log({residdddd : res})
+    //       this.setState({ 
+    //         showLoading : false, 
+    //       }); 
+    //       this.props.navigation.navigate('Home');
+    //     }
+    //   });
   }
 
   handleCloseNotification = () => {
@@ -91,14 +92,14 @@ export default class ForgetPassword extends Component {
     return(
       <SafeAreaView style={styles.container}> 
         <StatusBar barStyle="default" /> 
-          <View style = {styles.greenTopView}>
+          <View style = {styles.purpleTopView}>
             <Image
               source={require('../../assets/images/lock_Icon.png')}
               style={StyleSheet.flatten(styles.lockIcon)}/> 
           </View>
-          <View style = {styles.traingleView}>
+          {/* <View style = {styles.traingleView}>
             <View style = {styles.triangleShape}></View>
-          </View>
+          </View> */}
          
           <KeyboardAvoidingView
             style={styles.wrapper}
@@ -112,7 +113,7 @@ export default class ForgetPassword extends Component {
                   styles = {styles.ForgetTxt}
                 />
                 <DisplayText
-                  text={'We Just JNeed Your Emaill Address'}
+                  text={'We Just Need Your Emaill Address'}
                   styles = {styles.msgText}
                 />
                 <DisplayText
@@ -166,12 +167,7 @@ export default class ForgetPassword extends Component {
                 </View>
               </View>
             </ScrollView>
-          </KeyboardAvoidingView>
-          <View style = {styles.footerView} >
-            <Image
-              source={require('../../assets/images/footer.png')}
-              style={StyleSheet.flatten(styles.footerIcon)}/>   
-        </View>          
+          </KeyboardAvoidingView>         
       </SafeAreaView>
     )
   }
