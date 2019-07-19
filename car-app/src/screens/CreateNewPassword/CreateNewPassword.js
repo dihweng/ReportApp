@@ -120,11 +120,7 @@ export default class CreateNewPassword extends Component {
               </View>
             </ScrollView>
           </KeyboardAvoidingView>
-          <View style = {styles.footerView} >
-            <Image
-              source={require('../../assets/images/footer.png')}
-              style={StyleSheet.flatten(styles.footerIcon)}/>   
-        </View>          
+                   
       </SafeAreaView>
     )
   }

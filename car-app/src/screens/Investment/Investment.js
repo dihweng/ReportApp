@@ -164,7 +164,7 @@ export default class Investment extends Component {
             resizeMode= 'contain'
             style = {styles.messageLogo}
             source={require('../../assets/images/logo_login.png')}
-            />
+          />
       </View>
     </View>
   

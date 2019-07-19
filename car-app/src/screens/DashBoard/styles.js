@@ -16,13 +16,13 @@ export default styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     paddingBottom: 4,
-    elevation : 2
+    elevation : 1
 
   },
   headerIcon: {
     height: 20,
     width: 20,
-    tintColor : colors.white,
+    tintColor : theme.colorAccent,
   },
 
   headerImage: {
@@ -78,12 +78,33 @@ export default styles = StyleSheet.create({
     tintColor : colors.white
   },
   wrapper : {
-    backgroundColor : colors.green_background,
+    backgroundColor : theme.primaryColor,
     width : '100%',
-    height : '25%',
-    elevation : 2,
+    // height : '20%',
+    elevation : 1,
+    alignItems : 'center',
+    paddingBottom : 8
   }, 
-  
+  searchView : {
+    width : '90%',
+    marginTop : 8,
+    backgroundColor : theme.colorAccent,
+    height : 50,
+    borderRadius : 4,
+    elevation : 1,
+    shadowColor : theme.primaryTextColor,
+    shadowOpacity : 0.25,
+    shadowRadius : 2.56,
+    shadowOffset : {height : 1, width : 0},
+    flexDirection : 'row',
+    paddingLeft : 16,
+    alignItems : 'center'
+  },
+  searchIcon : {
+    width : 20,
+    height : 20,
+    tintColor : theme.textGray
+  },
   btnView : {
     width : '100%',
     alignItems : 'center',

@@ -12,6 +12,9 @@ import DashBoard  from '../screens/DashBoard/DashBoard';
 import Navigations from '../screens/Navigations/Navigations';
 import Logout from '../screens/Logout/Logout';
 import ChangePhone from '../screens/ChangePhone/ChangePhone';
+import Citation from '../screens/Citation/Citation';
+import Category from '../screens/Category/Category';
+import Division from '../screens/Division/Division';
 // import Faq from '../screens/Faq/Faq';
 // import TermsConditions from '../screens/TermsConditions/TermsConditions';
 
@@ -85,6 +88,24 @@ const MenuStack = createStackNavigator({
   },
   ChangePhone : {
     screen : ChangePhone,
+    navigationOptions : {
+      header : null,
+    }
+  },
+  Citation : {
+    screen : Citation, 
+    navigationOptions : {
+      header : null,
+    }
+  },
+  Category : {
+    screen : Category,
+    navigationOptions : {
+      header : null,
+    }
+  },
+  Division : {
+    screen : Division,
     navigationOptions : {
       header : null,
     }

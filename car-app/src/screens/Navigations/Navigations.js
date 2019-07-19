@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {View, StatusBar, Image, ScrollView, SafeAreaView,TouchableOpacity} from 'react-native';
 import styles from './styles';
 import colors from '../../assets/colors';
+import theme from '../../assets/theme';
 import {DisplayText} from '../../components';
 
 import { createDrawerNavigator, createAppContainer, createStackNavigator,} from 'react-navigation';

@@ -158,11 +158,6 @@ export default class Referral extends Component {
           </TouchableOpacity>
         </View>
       </View>
-      <View style = {styles.footerView}>
-        <Image
-        source={require('../../assets/images/footer.png')}
-        style={StyleSheet.flatten(styles.footerIcon)}/>   
-      </View>
     </SafeAreaView>
     )
   }

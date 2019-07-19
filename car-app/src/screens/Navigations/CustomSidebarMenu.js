@@ -4,7 +4,8 @@ import { View, StyleSheet, TouchableOpacity, SafeAreaView, Image, Text } from 'r
 import {ProfileEndpoint, getRoute, getUserDatials} from '../Utils/Utils'
 import colors from '../../assets/colors';
 import styles from './styles';
-import {DisplayText} from '../../components'
+import theme from '../../assets/theme';
+import {DisplayText} from '../../components';
 
 const dashboard = require('../../assets/images/dashboard.png'),
  investment = require('../../assets/images/investment.png'),

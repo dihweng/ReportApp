@@ -14,6 +14,10 @@ import Logout from './Logout'
 // import SurpportDesk from './SurpportDesk';
 // import Message from './Message/index.js';
 import ChangePhone from './ChangePhone/ChangePhone';
+import AllReports from './AllReports/AllReports';
+import Citation from './AllReports/AllReports';
+import Category from './Category/Category';
+import Division from './Division/Division'
 
 export default {
   Register, 
@@ -27,4 +31,8 @@ export default {
   Navigations,
   Logout,
   ChangePhone,
+  AllReports,
+  Citation,
+  Category,
+  Division
 };

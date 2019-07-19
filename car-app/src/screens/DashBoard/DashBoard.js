@@ -12,11 +12,16 @@ import {
   AsyncStorage,
   TouchableOpacity,
   } from 'react-native';
-import {DisplayText, SingleButtonAlert, SubmitButton} from '../../components';
+import { createMaterialTopTabNavigator, createAppContainer, StackActions, NavigationActions } from 'react-navigation';
+import {DisplayText, InputField,SingleButtonAlert, SubmitButton} from '../../components';
 import styles from './styles';
-import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import {getRoute, getProfile, saveUserDetail} from '../Utils/Utils'
+// import {getRoute, getProfile, saveUserDetail} from '../Utils/Utils'
+import theme from '../../assets/theme';
+import AllReports from '../../screens/AllReports/AllReports';
+import Citation from '../../screens/Citation/Citation';
+import Category from '../../screens/Category/Category';
+import Division from '../Division/Division';
 
 export default class DashBoard extends Component {
   constructor(props) {
@@ -28,17 +33,19 @@ export default class DashBoard extends Component {
      
     }
   }
+  searchFilterFunction = (text) => {
 
- 
-  async componentDidMount(){
-    let profile = await getProfile();
-
-    this.setState({
-      token : profile.access_token,
-    });
-
-    // await this.handleGetProfile();
   }
+ 
+  // async componentDidMount(){
+  //   let profile = await getProfile();
+
+  //   this.setState({
+  //     token : profile.access_token,
+  //   });
+
+  //   // await this.handleGetProfile();
+  // }
 
   handleCloseNotification = () => {
     return this.setState({
@@ -50,65 +57,114 @@ export default class DashBoard extends Component {
     this.props.navigation.toggleDrawer();
   };
 
-
   render () {
-    const { 
-      showLoading, 
-      title, 
-      message, 
-      showAlert, 
-    } = this.state;
+    const { showLoading, title, message, showAlert, } = this.state;
 
     return (
       <SafeAreaView style={styles.container}> 
         <StatusBar barStyle="default" /> 
-        {/* <StatusBar
-        barStyle="light-content"
-        backgroundColor={colors.green_background}/> */}
-        <View style = {styles.navBar}>
-          <TouchableOpacity
-            onPress={this.toggleDrawer} 
-            style = {styles.headerImage}>
-            <Image
+          <View style = {styles.navBar}>
+            <TouchableOpacity
               onPress={this.toggleDrawer} 
-              source = {require('../../assets/images/menu.png')}
-              style = {StyleSheet.flatten(styles.headerIcon)}
-            />
-            </TouchableOpacity>
+              style = {styles.headerImage}>
+              <Image
+                onPress={this.toggleDrawer} 
+                source = {require('../../assets/images/menu.png')}
+                style = {StyleSheet.flatten(styles.headerIcon)}
+              />
+              </TouchableOpacity>
             <View style = {styles.nameView}>
             
             <DisplayText
-              text={'Dashboard'}
+              text={'All Report'}
               styles = {StyleSheet.flatten(styles.txtHeader)}
             />
           </View>
         </View> 
         <View style = {styles.wrapper}>
-         
+          <View style={styles.searchView}>
+            <Image
+              source = {require('../../assets/images/search.png')}
+              style = {StyleSheet.flatten(styles.searchIcon)}
+            />
+            <InputField
+              placeholder = {'Search Following'}
+              placeholderTextColor = {theme.secondaryTextColor}
+              textColor={theme.primaryTextColor}
+              inputType={'name'}
+              keyboardType={'default'}
+              onChangeText={text => this.searchFilterFunction(text)}
+              autoCorrect={false}
+              value={this.state.value}
+              height = {30}
+              width = {'80%'}
+              borderBottomWidth = {0}
+              paddingLeft  = {8}
+            /> 
+         </View>
         </View>
-        <View style = {{flex : 1, paddingLeft : 30, paddingRight: 30}}>
-          <View style = {styles.btnView}>
-            <ProgressDialog
-              visible={showLoading}
-              title="Processing"
-              message="Please wait..."
-            />
-            <SubmitButton
-              title={'Continue'}
-              // disabled={!this.toggleButtonState()}
-              onPress={this.handleFundWallet}
-              titleStyle={styles.btnText}
-              btnStyle = {styles.btnStyle}
-            />
-            <SingleButtonAlert
-              title = {title} 
-              message = {message}
-              handleCloseNotification = {this.handleCloseNotification}
-              visible = {showAlert}
-            />
-          </View>
-        </View>
+        <AppTabNavigation/>
       </SafeAreaView>
     )
   }
 } 
+const AppTabNavigation = createAppContainer( createMaterialTopTabNavigator({
+  AllReports: {
+    screen: AllReports,
+    navigationOptions: {
+      tabBarLabel: 'Reports',
+    }
+  },
+  Citation: {
+    screen: Citation,
+    navigationOptions: {
+      tabBarLabel: 'Citation',
+    }
+  },
+  Category: {
+    screen: Category,
+    navigationOptions: {
+      tabBarLabel: 'Category',
+      
+    }
+  },
+  Division: {
+    screen: Division,
+    navigationOptions: {
+      tabBarLabel: 'Division',
+    }
+  },
+}
+  ,{
+    initialRouteName: 'AllReports',
+    tabBarPosition: 'top',
+    swipeEnabled: true,
+    tabBarOptions: {
+      activeTintColor: theme.colorAccent,
+      inactiveTintColor: theme.textGray,
+      labelStyle: {
+        fontSize: 11,
+      },
+      // tabStyle: {
+      //   width: 100,
+      // },
+      style: {
+        backgroundColor: theme.primaryColor,
+        borderBottomWidth: 0.5,
+        borderBottomColor: theme.primaryColor,
+        shadowOffset: {width: 0, height: 1},
+        shadowColor: 'gray',
+        shadowOpacity: 0.25,
+        elevation: 1,
+        fontFamily: theme.secondaryFont,
+        height: 50,
+        width : '100%',
+      },
+      indicatorStyle: {
+        height: 1,
+        backgroundColor: theme.colorAccent
+      },
+      showIcon: false
+    }
+  }
+))

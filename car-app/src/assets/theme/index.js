@@ -12,6 +12,8 @@ export default defaultTheme = {
   secondaryTextColor: colors.gray,
   buttonPrimary : colors.purple,
   buttonSecondry : colors.purple2,
+  buttonRed : colors.red,
+  buttonBlue : colors.blue,
   bgColorPrimary : colors.background_color,
   colorAccent : colors.white,
   primaryColor : colors.purple,
