@@ -5,6 +5,7 @@ import {InputField, InputFieldBorder}  from './TextInput';
 import {DisplayText}  from './Text';
 import  {Symbol} from './Symbol/Symbol';
 import {OtpInputs} from './OTPComponent';
+import {AuthBackground} from './AuthBackground';
 
 export {
   Alert , 
@@ -15,4 +16,5 @@ export {
   Symbol, 
   InputFieldBorder,
   OtpInputs,
+  AuthBackground,
 } 

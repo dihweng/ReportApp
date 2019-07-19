@@ -44,9 +44,8 @@ export default styles = StyleSheet.create({
   // },
   lockIcon : {
     resizeMode : 'contain',
-    height : 100,
-    width : 80,
-    tintColor : colors.white,
+    height : 130,
+    width : 120,
   },
   triangleShape : {
     width : 0,

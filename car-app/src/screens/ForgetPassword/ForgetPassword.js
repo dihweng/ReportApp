@@ -94,7 +94,7 @@ export default class ForgetPassword extends Component {
         <StatusBar barStyle="default" /> 
           <View style = {styles.purpleTopView}>
             <Image
-              source={require('../../assets/images/lock_Icon.png')}
+              source={require('../../assets/images/key.png')}
               style={StyleSheet.flatten(styles.lockIcon)}/> 
           </View>
           {/* <View style = {styles.traingleView}>

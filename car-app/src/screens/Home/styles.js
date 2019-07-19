@@ -12,7 +12,7 @@ export default styles = StyleSheet.create({
     paddingTop : Constants.statusBarHeight,
     paddingBottom : 10, 
     alignItems : 'center',
-    backgroundColor : theme.bgColorPrimary
+    // backgroundColor : theme.bgColorPrimary
   },
 
   

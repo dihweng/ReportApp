@@ -1,7 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, StyleSheet, StatusBar,TouchableOpacity, SafeAreaView, Image, KeyboardAvoidingView,Switch } from 'react-native';
-import {DisplayText, InputField, SingleButtonAlert,SubmitButton} from '../../components';
+import {DisplayText, InputField, SingleButtonAlert,SubmitButton, AuthBackground} from '../../components';
 import styles, { IMAGE_HEIGHT, }  from './styles';
 import { getProfile, LoginEndpoint, postRoute, isPhoneValid, saveProfile} from '../Utils/Utils';
 import colors from '../../assets/colors';
@@ -186,7 +186,8 @@ export default class Home extends Component {
       const { title, message, showAlert } = this.state
 
       return(
-        <SafeAreaView style={styles.container}>  
+        <AuthBackground>
+          <SafeAreaView style={styles.container}>  
           <StatusBar barStyle="default" /> 
         <KeyboardAvoidingView
           style = {styles.wrapper }
@@ -308,6 +309,7 @@ export default class Home extends Component {
           </TouchableOpacity> 
          
         </SafeAreaView>
+        </AuthBackground>
       )
     }
   }
