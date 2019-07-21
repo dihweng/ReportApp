@@ -5,7 +5,7 @@ import {DisplayText, } from '../../components';
 import styles from './styles';
 
 
-export default class Category extends Component {
+export default class CategoryDetails extends Component {
   constructor(props) {
     super(props);
     this.state ={
@@ -64,20 +64,14 @@ componentWillMount(){
     data:this.reports
   })
 }
-hadnleCategoryMain=(item)=>{
-  return this.props.navigation.navigate('CategoryDetails');
-  // alert('hhhhhh');
-}
-
 renderRow = ({item}) => {
   return (
      <View style = {styles.listViewItem}>    
       <TouchableOpacity 
-        onPress = {()=>this.hadnleCategoryMain(item)}
+        onPress = {()=>this.handlePeopleMain(item)}
         style = {styles.cardView}>
         <View style ={styles.reportHeader}>
           <DisplayText
-            onPress = {()=>this.hadnleCategoryMain(item)}
             text = {item.name}
             styles = {StyleSheet.flatten(styles.categoryName)}
           />
@@ -92,12 +86,6 @@ renderRow = ({item}) => {
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
-        <View style = {styles.wrapper}>
-          <DisplayText
-            text = {'Select Report Category'}
-            styles = {StyleSheet.flatten(styles.categoryName)}
-          />
-        </View>
        <View style = {styles.viewBody}>
         
         <FlatList          

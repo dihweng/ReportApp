@@ -17,7 +17,8 @@ import ChangePhone from './ChangePhone/ChangePhone';
 import AllReports from './AllReports/AllReports';
 import Citation from './AllReports/AllReports';
 import Category from './Category/Category';
-import Division from './Division/Division'
+import Division from './Division/Division';
+import CategoryDetails from './CategoryDetails/CategoryDetails';
 
 export default {
   Register, 
@@ -34,5 +35,6 @@ export default {
   AllReports,
   Citation,
   Category,
-  Division
+  Division,
+  CategoryDetails,
 };

@@ -1,7 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, SafeAreaView, Image, Text } from 'react-native';
-import {ProfileEndpoint, getRoute, getUserDatials} from '../Utils/Utils'
+import { getUserDatials} from '../Utils/Utils'
 import colors from '../../assets/colors';
 import styles from './styles';
 import theme from '../../assets/theme';
@@ -68,29 +68,29 @@ export default class CustomSidebarMenu extends Component {
     ];
   }
 
-    async componentDidMount(){
-      const profile = await getUserDatials();
-      try {
-        if (profile !== 'undefined' || profile !== ''){
+  //   async componentDidMount(){
+  //     const profile = await getUserDatials();
+  //     try {
+  //       if (profile !== 'undefined' || profile !== ''){
 
-          const lastname = profile.data.name.split(" ")[1],
-            firstname = profile.data.name.split(" ")[0], 
-            email = profile.data.email,
-            phone = profile.data.phone;
-            this.setState({
-              firstname,
-              lastname,
-              email,
-              phone,
-            });
-        }
-      } catch (error) {
-        console.log(error);
-      }
+  //         const lastname = profile.data.name.split(" ")[1],
+  //           firstname = profile.data.name.split(" ")[0], 
+  //           email = profile.data.email,
+  //           phone = profile.data.phone;
+  //           this.setState({
+  //             firstname,
+  //             lastname,
+  //             email,
+  //             phone,
+  //           });
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
       
       
-      // await this.handleGetProfile();
-  }
+  //     // await this.handleGetProfile();
+  // }
   // handleGetProfile = () => {
   //   const{token} = this.state;
   //   console.log({tokien_check : token});

@@ -3,6 +3,7 @@ const window = Dimensions.get('window');
 import { Constants } from 'expo';
 import colors from '../../assets/colors';
 import theme from '../../assets/theme';
+
 export default styles = StyleSheet.create({
   container: {
     flex: 1,

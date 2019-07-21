@@ -15,6 +15,7 @@ import ChangePhone from '../screens/ChangePhone/ChangePhone';
 import Citation from '../screens/Citation/Citation';
 import Category from '../screens/Category/Category';
 import Division from '../screens/Division/Division';
+import CategoryDetails from '../screens/CategoryDetails/CategoryDetails';
 // import Faq from '../screens/Faq/Faq';
 // import TermsConditions from '../screens/TermsConditions/TermsConditions';
 
@@ -106,6 +107,12 @@ const MenuStack = createStackNavigator({
   },
   Division : {
     screen : Division,
+    navigationOptions : {
+      header : null,
+    }
+  },
+  CategoryDetails : {
+    screen : CategoryDetails,
     navigationOptions : {
       header : null,
     }

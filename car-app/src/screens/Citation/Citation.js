@@ -42,10 +42,11 @@ export default class Citation extends Component {
 
   render () {
 
-    var citationsAlph = ['a','b','c','d','e','f','g','h','i','j','k','l']
+    var citationsAlph = ['A','B','C','D','E','F','G','H','I','J','K','L', 'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     var citations = ['1', '2', '3', '4', '6','7', '8', '9'];
     var citationList = citations.map((citation, index) => {
       return <TouchableOpacity 
+                key = {index}
                 style = {styles.citisionTp}
                 onPress={()=>this.handleDivisionPress(citation)}>
               <Text 
@@ -57,6 +58,7 @@ export default class Citation extends Component {
     });
     var citationListAlhp = citationsAlph.map((citationAlph, index) => {
       return <TouchableOpacity 
+                key = {index}
                 style = {styles.citisionTp}
                 onPress={()=>this.handleDivisionPress(citationAlph)}>
               <Text 

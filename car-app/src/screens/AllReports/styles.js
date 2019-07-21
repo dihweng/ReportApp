@@ -34,15 +34,15 @@ export default styles = StyleSheet.create({
     height: 35,
     width: 80,
   },
-  headerImage: {
-    borderRadius: 30,
-    height: 40,
-    width: 40,
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft : 8,
-  },
+  // headerImage: {
+  //   borderRadius: 30,
+  //   height: 40,
+  //   width: 40,
+  //   backgroundColor: 'transparent',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   marginLeft : 8,
+  // },
   balanceTxtView: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -67,7 +67,7 @@ export default styles = StyleSheet.create({
     marginTop : 8,
     backgroundColor : theme.colorAccent,
     height : 50,
-    borderRadius : 4,
+    // borderRadius : 4,
     elevation : 1,
     shadowColor : theme.primaryTextColor,
     shadowOpacity : 0.25,
@@ -104,7 +104,7 @@ export default styles = StyleSheet.create({
     width: '99%',
     height : 200 ,
     backgroundColor: theme.colorAccent,
-    borderRadius : 8,
+    // borderRadius : 8,
     marginTop: 4,
     marginBottom : 4,
     shadowColor: theme.primaryTextColor,
@@ -120,20 +120,20 @@ export default styles = StyleSheet.create({
     // flexDirection : 'row',
     // alignItems : 'center'
   },
-  ImageView : {
-    width : 40,
-    height : 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius : (Platform.OS === 'ios') ? 20 : 30,
-    marginTop : 4
-  },  
-  personImage : {
-    resizeMode : 'cover',
-    height : 39,
-    width : 39,
-    borderRadius : (Platform.OS === 'ios') ? 20 : 30
-  },
+  // ImageView : {
+  //   width : 40,
+  //   height : 40,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   borderRadius : (Platform.OS === 'ios') ? 20 : 30,
+  //   marginTop : 4
+  // },  
+  // personImage : {
+  //   resizeMode : 'cover',
+  //   height : 39,
+  //   width : 39,
+  //   borderRadius : (Platform.OS === 'ios') ? 20 : 30
+  // },
   txtView : {
     flexDirection : 'column',
     height : '100%',
@@ -143,7 +143,7 @@ export default styles = StyleSheet.create({
   headerText : {
     fontFamily : theme.secondaryFont,
     fontSize : theme.SmallerFont,
-    color : colors.blue,
+    color : colors.red,
     marginTop : 4,
   },
   subHeaderText : {
@@ -156,7 +156,8 @@ export default styles = StyleSheet.create({
   reportInfo : {
     fontFamily : theme.secondaryFont,
     fontSize : theme.SmallerFont,
-    color : theme.primaryTextColor,
+    // color : theme.primaryTextColor,
+    color : "#333",
     marginTop : 4
   },
   iconView : {
@@ -189,7 +190,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems : 'center',
     height : 40,
-    borderRadius : 4,
+    // borderRadius : 4,
   },
   btnText : {
     fontSize: 18,
@@ -203,6 +204,6 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems : 'center',
     height : 40,
-    borderRadius : 4,
+    // borderRadius : 4,
   }
 });

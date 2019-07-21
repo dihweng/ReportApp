@@ -54,7 +54,7 @@ export default class DashBoard extends Component {
   }
   toggleDrawer = () => {
     //Props to open/close the drawer
-    this.props.navigation.toggleDrawer();
+    // this.props.navigation.toggleDrawer();
   };
 
   render () {
@@ -88,7 +88,7 @@ export default class DashBoard extends Component {
               style = {StyleSheet.flatten(styles.searchIcon)}
             />
             <InputField
-              placeholder = {'Search Following'}
+              placeholder = {'Search Anything'}
               placeholderTextColor = {theme.secondaryTextColor}
               textColor={theme.primaryTextColor}
               inputType={'name'}
@@ -103,7 +103,9 @@ export default class DashBoard extends Component {
             /> 
          </View>
         </View>
-        <AppTabNavigation/>
+        <View style = {{flex: 1}}>
+          <AppTabNavigation/>
+        </View>
       </SafeAreaView>
     )
   }

@@ -18,9 +18,9 @@ export default styles = StyleSheet.create({
   },
   welcomeText: {
     fontSize: 24,
-    color: colors.green_background,
+    color: theme.primaryColor,
     fontFamily: 'Roboto-Regular',
-    marginTop: 8,
+    marginVertical : 16
     // letterSpacing: 2
   },
   wrapper: {
@@ -40,9 +40,9 @@ export default styles = StyleSheet.create({
     alignItems : 'center',
   },
   formHeaderTxt: {
-    fontSize: 16,
+    fontSize: theme.SmallFont,
     color: colors.darkGray,
-    fontFamily: 'Roboto-Light',
+    fontFamily: theme.secondaryFont,
   },
   formPwdHint : {
     fontSize: 12,
@@ -163,7 +163,7 @@ export default styles = StyleSheet.create({
     alignItems : 'center',
     height : 40,
     borderRadius : 30,
-    marginTop: 16,
+    marginTop: 8,
 
   },
   btnText : {

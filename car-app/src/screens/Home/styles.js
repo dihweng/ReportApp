@@ -72,7 +72,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems : 'center',
     height : 40,
-    borderRadius : 4,
+    // borderRadius : 4,
     marginTop: 16,
   },
   btnView : {
@@ -149,7 +149,7 @@ export default styles = StyleSheet.create({
     width : '100%',
     height : 45,
     backgroundColor : colors.white,
-    borderRadius : 4,
+    // borderRadius : 4,
     flexDirection : 'row',
     alignItems : 'center',
     marginTop : 16,
