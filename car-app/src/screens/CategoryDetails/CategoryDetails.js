@@ -1,7 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, ScrollView, SafeAreaView, StatusBar, FlatList, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, } from '../../components';
+import { View, ScrollView, SafeAreaView, StatusBar, FlatList, Image,TouchableOpacity, StyleSheet,} from 'react-native';
+import {DisplayText, SubmitButton } from '../../components';
 import styles from './styles';
 
 
@@ -18,44 +18,95 @@ export default class CategoryDetails extends Component {
   reports = [
     {    
       "_id": "5d1c92249b0b080017036e53",
-      "name": "Town Law",
+      "reportName": "Alh. Abubakar V Mr Prakash",
+      "Citation": "Citation (2018) Electronic - court of appeal",
+      "name": "Tunde Anwo",
+      "Reports": "Report(E-C.A.R) - 516",
+      "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
+
   },
   {
     "_id": "5d1c92249b0b080017036e59",
-    "name": "State law",
+    "reportName": "Chief Chukwuka V Mallam Sanni ",
+    "Citation": "Citation (2018) Electronic - court of appeal",
+      "name": "Tunde Anwo",
+      "Reports": "Report(E-C.A.R) - 516",
+      "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
+
   },
   {
     "_id": "5d1c92249b0b080017036e93",
-    "name": "Local  Gov Law",
-  
+    "reportName": "Dr Edima SamSon V Mr Dihweng Che",
+    "Citation": "Citation (2018) Electronic - court of appeal",
+    "name": "Tunde Anwo",
+    "Reports": "Report(E-C.A.R) - 516",
+    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
+
   },
   {
     "_id": "5d1c92249b0b080017037e53",
-    "name": "Anotated Law Report",
+    "reportName": "Alh. Abubakar V Mr Prakash",
+    "Citation": "Citation (2018) Electronic - court of appeal",
+    "name": "Tunde Anwo",
+    "Reports": "Report(E-C.A.R) - 516",
+    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
+
   },
   {
     "_id": "5d1c92249b0b080017636e53",
-    "name": "Financial law Report",
+    "reportName": "Mrs Johnson V Miss Mary",
+    "Citation": "Citation (2018) Electronic - court of appeal",
+    "name": "Tunde Anwo",
+    "Reports": "Report(E-C.A.R) - 516",
+    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
+
   },
   {
     "_id": "5d1c92249b0b080017236e53",
-    "name": "Compnay Law Report",
+    "reportName": "Alh. Abubakar V Mr Prakash",
+    "Citation": "Citation (2018) Electronic - court of appeal",
+    "name": "Tunde Anwo",
+    "Reports": "Report(E-C.A.R) - 516",
+    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
+
   },
   {
     "_id": "5d1c92249b0b08001703me53",
-    "name": "Social Law Report",
+    "reportName": "Alh. Abubakar V Mr Prakash",
+    "Citation": "Citation (2018) Electronic - court of appeal",
+    "name": "Tunde Anwo",
+    "Reports": "Report(E-C.A.R) - 516",
+    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
+
   },
   {
     "_id": "5d1c92249b0b080017036e23",
-    "name" : "Country Law"
+    "reportName": "Alh. Abubakar V Mr Prakash",
+    "Citation": "Citation (2018) Electronic - court of appeal",
+    "name": "Tunde Anwo",
+    "Reports": "Report(E-C.A.R) - 516",
+    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
+
   },
   {
     "_id": "5d1c92249b0b08001707a6e53",
-    "name": "Crime Law",
+    "reportName": "Alh. Abubakar V Mr Prakash",
+    "Citation": "Citation (2018) Electronic - court of appeal",
+    "name": "Tunde Anwo",
+    "Reports": "(E-C.A.R) - 516",
+    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
 
   },
 ];
-
 
 
 componentWillMount(){
@@ -63,6 +114,15 @@ componentWillMount(){
   this.setState({
     data:this.reports
   })
+}
+handleAddFavourite = () => {
+  alert('hello add me to favourite')
+}
+handleReadLater = () => {
+  alert('hello read me later')
+}
+handleGoBack = () => {
+  return this.props.navigation.goBack();
 }
 renderRow = ({item}) => {
   return (
@@ -72,9 +132,47 @@ renderRow = ({item}) => {
         style = {styles.cardView}>
         <View style ={styles.reportHeader}>
           <DisplayText
-            text = {item.name}
-            styles = {StyleSheet.flatten(styles.categoryName)}
+            numberOfLines = { 2 } 
+            ellipsizeMode = 'middle'
+            text = {item.reportName}
+            styles = {StyleSheet.flatten(styles.reportName)}
           />
+
+        <View style = {styles.txtView}>
+          <DisplayText
+            numberOfLines = { 2 } 
+            // ellipsizeMode = 'middle'
+            text = {item.Citation}
+            styles = {StyleSheet.flatten(styles.headerText)}
+          />
+
+          <DisplayText
+            numberOfLines = { 2 } 
+            // ellipsizeMode = 'middle'
+            text = {item.Reports}
+            styles = {StyleSheet.flatten(styles.headerText)}
+          />
+          <DisplayText
+            numberOfLines = { 4 } 
+            ellipsizeMode = 'middle'
+            text = {item.short_details}
+            styles = {StyleSheet.flatten(styles.reportInfo)}
+          />
+          <View style={styles.buttonView}>
+            <SubmitButton
+              title={'Add Favourite'}
+              onPress={this.handleAddFavourite}
+              titleStyle={styles.btnText}
+              btnStyle = {styles.btnStyle}
+            />
+            <SubmitButton
+              title={'Read Later'}
+              onPress={this.handleReadLater}
+              titleStyle={styles.btnText}
+              btnStyle = {styles.btnReadLate}
+            />
+          </View>
+        </View>
         </View>
           
       </TouchableOpacity>
@@ -82,12 +180,51 @@ renderRow = ({item}) => {
     );
 }
 
+
   render () {
+    const {navigation} = this.props,
+      name = navigation.getParam('name');
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
-       <View style = {styles.viewBody}>
-        
+
+        <View style = {styles.navBar}>
+          <TouchableOpacity 
+            onPress = {this.handdleBackPress}
+            style = {styles.headerImage}>
+            <Image
+              onPress = {this.handleG0Back}
+              source = {require('../../assets/images/back.png')}
+              style = {StyleSheet.flatten(styles.headerIcon)}
+            />
+          </TouchableOpacity>
+          <View style = {styles.nameView}>
+            <DisplayText
+              text={'Category'}
+              styles = {StyleSheet.flatten(styles.txtHeader)}/>
+          </View>
+        </View> 
+      <View style = {styles.viewBody}>
+        <View style = {styles.cards}>
+          <TouchableOpacity
+            onPress = {this.handleGoBack} 
+            style = {styles.angleView}>
+            <Image
+              onPress = {this.handleGoBack}
+              source = {require('../../assets/images/angle_back.png')}
+              style = {StyleSheet.flatten(styles.angleBack)}
+            />
+          </TouchableOpacity>
+          <View style ={styles.verticcalLine}></View>
+
+          <View style = { styles.viewText}>
+            <DisplayText
+              text={name}
+              styles = {StyleSheet.flatten(styles.categoryName)}
+            />
+          </View>
+          
+        </View>
         <FlatList          
           data={this.state.data}          
           renderItem={this.renderRow}          

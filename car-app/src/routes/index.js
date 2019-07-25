@@ -18,7 +18,10 @@ import Division from '../screens/Division/Division';
 import CategoryDetails from '../screens/CategoryDetails/CategoryDetails';
 // import Faq from '../screens/Faq/Faq';
 // import TermsConditions from '../screens/TermsConditions/TermsConditions';
-
+import ManageSubscription from '../screens/ManageSubscription/ManageSubscription'
+import Subscribe from '../screens/Subscribe/Subscribe';
+import Subscription from '../screens/Subscription/Subscription';
+import ViewPlan from '../screens/ViewPlan/ViewPlan';
 
  const AuthStack = createStackNavigator({ 
   Home: {
@@ -117,7 +120,30 @@ const MenuStack = createStackNavigator({
       header : null,
     }
   },
-
+  ManageSubscription : {
+    screen : ManageSubscription,
+    navigationOptions : {
+      header : null,
+    }
+  },
+  Subscribe : {
+    screen : Subscribe,
+    navigationOptions : {
+      header : null,
+    }
+  },
+  Subscription : {
+    screen : Subscription,
+    navigationOptions : {
+      header : null,
+    }
+  },
+  ViewPlan : {
+    screen : ViewPlan,
+    navigationOptions : {
+      header : null,
+    }
+  }
   // Faq : {
   //   screen : Faq,
   //   navigationOptions : {

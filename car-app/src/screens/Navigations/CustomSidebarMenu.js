@@ -13,7 +13,9 @@ const dashboard = require('../../assets/images/dashboard.png'),
  account_settings = require('../../assets/images/account_settings.png'),
  faq = require('../../assets/images/faq.png'),
  terms = require('../../assets/images/terms.png'),
- logout = require('../../assets/images/logout.png');
+ report = require('../../assets/images/report.png'),
+ logout = require('../../assets/images/logout.png'),
+ manage_subscription = require('../../assets/images/manage.png')
 
 export default class CustomSidebarMenu extends Component {
   constructor() {
@@ -36,9 +38,14 @@ export default class CustomSidebarMenu extends Component {
         screenToNavigate: 'DashBoard',
       },
       {
-        navOptionThumb: investment,
-        navOptionName: 'Investment',
-        screenToNavigate: 'Investment',
+        navOptionThumb: report,
+        navOptionName: 'Report',
+        screenToNavigate: 'Report',
+      },
+      {
+        navOptionThumb: manage_subscription,
+        navOptionName: 'Manage Subscription',
+        screenToNavigate: 'ManageSubscription',
       },
       { 
         navOptionThumb: support_desk,
@@ -172,7 +179,7 @@ export default class CustomSidebarMenu extends Component {
           </View>
         </View>
         {/*Divider between Top Image and Sidebar Option*/}
-        <View style={styles.divider}/>
+        {/* <View style={styles.divider}/> */}
         {/*Setting up Navigation Options from option array using loop*/}
         <View style={{ width: '100%' }}>
           {this.items.map((item, key) => (
@@ -188,7 +195,7 @@ export default class CustomSidebarMenu extends Component {
                 paddingBottom: 10,
                 backgroundColor: global.currentScreenIndex === key ? colors.field_color : colors.white,
                 borderLeftWidth: global.currentScreenIndex === key ? 4 : 0,
-                borderColor : colors.green_background,
+                borderColor : theme.primaryColor,
               }}>
                 
               <View style={{ marginRight: 10, marginLeft: 20 }}>
@@ -207,7 +214,7 @@ export default class CustomSidebarMenu extends Component {
               <Text
                 style={{
                   fontSize: 15,
-                  fontFamily : 'Roboto-Regular',
+                  fontFamily : theme.secondaryFont,
                   color: global.currentScreenIndex === key ? '#ABABAB' : colors.darkGray,
                 }}
                 key = {key}

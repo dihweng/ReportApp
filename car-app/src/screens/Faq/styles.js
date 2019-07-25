@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 const window = Dimensions.get('window');
 import Constants from 'expo-constants'
 import colors from '../../assets/colors';
-
+import theme from '../../assets/theme';
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -33,8 +33,8 @@ export default styles = StyleSheet.create({
   navBar: {
     flexDirection : 'row',
     // paddingTop : (Platform.OS === "ios") ? 16 : 14,
-    height : 60,
-    backgroundColor: colors.green_background,
+    height : (Platform.OS === "ios") ? 40 : 60,
+    backgroundColor: theme.toolBarColor,
     width: '100%',
     alignItems: 'center',
     paddingBottom: 4

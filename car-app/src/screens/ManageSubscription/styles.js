@@ -7,15 +7,13 @@ import theme from '../../assets/theme';
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor : colors.field_color
-
   },
   navbarStyle: {
     paddingTop: Constants.statusBarHeight,
     height: Constants.startHeaderHeight,
-    backgroundColor: colors.green,
+    backgroundColor: theme.primaryColor,
     borderBottomWidth: 1,
-    borderBottomColor: colors.green
+    borderBottomColor: theme.primaryColor
   },
   headerItem: {
     flexDirection: 'row',
@@ -36,8 +34,8 @@ export default styles = StyleSheet.create({
   navBar: {
     flexDirection : 'row',
     // paddingTop : (Platform.OS === "ios") ? 16 : 14,
-    height : (Platform.OS === "ios") ? 40 : 60,
-    backgroundColor: theme.primaryColor,
+    height : (Platform.OS === "ios") ? 40 : 50,
+    backgroundColor: theme.toolBarColor,
     width: '100%',
     alignItems: 'center',
     paddingBottom: 4
@@ -86,24 +84,23 @@ export default styles = StyleSheet.create({
     top : 470,
     right :30
   },
-  cardBody: {
-    width: '100%',
-    height: '70%',
-    paddingLeft : 24,
-    paddingRight : 24,
-    marginTop : 16
+  // cardBody: {
+  //   width: '100%',
+  //   height: '70%',
+  //   paddingLeft : 24,
+  //   paddingRight : 24,
+  //   marginTop : 16
     
-    },
+  //   },
   cards : {
-    shadowColor: colors.gray,
-    shadowOffset: { width: 0, height: 2 },
+    width : '100%',
+    shadowColor: theme.primaryTextColor,
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.5,
-    shadowRadius: 2,
+    shadowRadius: 2.56,
     elevation: 1,    
-    height: 55,
-    marginTop : 12,
-    backgroundColor : colors.card,
-    borderRadius : 4,
+    height: 40,
+    backgroundColor : theme.colorAccent,
     flexDirection : 'row'
 
   },
@@ -183,17 +180,30 @@ export default styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     marginLeft : 4
   },
-  angleView : {
-    width : '15%',
-    borderTopRightRadius : 4,
-    borderBottomRightRadius : 4,
+  customTabTp : {
+    width : '33%',
+    alignItems: 'center',
+    borderBottomColor : theme.primaryColor,
+    borderBottomWidth : 2,
+    marginLeft : 10,
+    paddingTop : 14
+  },
+
+  customTabTp2 : {
+    width : '33%',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop : 14
+
+  },
+  txtTabHeader: {
+    fontFamily : theme.LightRoboto,
+    fontSize : theme.SmallFont,
+    color : theme.textGray,
   },
   angleForward : {
     width : 12,
     height : 12,
     tintColor : colors.green_background,
-
   }
 });

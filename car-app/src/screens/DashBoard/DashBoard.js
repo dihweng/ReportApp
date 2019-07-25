@@ -104,69 +104,69 @@ export default class DashBoard extends Component {
          </View>
         </View>
         <View style = {{flex: 1}}>
-          <AppTabNavigation/>
+          {/* <AppTabNavigation/> */}
         </View>
       </SafeAreaView>
     )
   }
 } 
-const AppTabNavigation = createAppContainer( createMaterialTopTabNavigator({
-  AllReports: {
-    screen: AllReports,
-    navigationOptions: {
-      tabBarLabel: 'Reports',
-    }
-  },
-  Citation: {
-    screen: Citation,
-    navigationOptions: {
-      tabBarLabel: 'Citation',
-    }
-  },
-  Category: {
-    screen: Category,
-    navigationOptions: {
-      tabBarLabel: 'Category',
+// const AppTabNavigation = createAppContainer( createMaterialTopTabNavigator({
+//   AllReports: {
+//     screen: AllReports,
+//     navigationOptions: {
+//       tabBarLabel: 'Reports',
+//     }
+//   },
+//   Citation: {
+//     screen: Citation,
+//     navigationOptions: {
+//       tabBarLabel: 'Citation',
+//     }
+//   },
+//   Category: {
+//     screen: Category,
+//     navigationOptions: {
+//       tabBarLabel: 'Category',
       
-    }
-  },
-  Division: {
-    screen: Division,
-    navigationOptions: {
-      tabBarLabel: 'Division',
-    }
-  },
-}
-  ,{
-    initialRouteName: 'AllReports',
-    tabBarPosition: 'top',
-    swipeEnabled: true,
-    tabBarOptions: {
-      activeTintColor: theme.colorAccent,
-      inactiveTintColor: theme.textGray,
-      labelStyle: {
-        fontSize: 11,
-      },
-      // tabStyle: {
-      //   width: 100,
-      // },
-      style: {
-        backgroundColor: theme.primaryColor,
-        borderBottomWidth: 0.5,
-        borderBottomColor: theme.primaryColor,
-        shadowOffset: {width: 0, height: 1},
-        shadowColor: 'gray',
-        shadowOpacity: 0.25,
-        elevation: 1,
-        fontFamily: theme.secondaryFont,
-        height: 50,
-        width : '100%',
-      },
-      indicatorStyle: {
-        height: 1,
-        backgroundColor: theme.colorAccent
-      },
-      showIcon: false
-    }
-  }
-))
+//     }
+//   },
+//   Division: {
+//     screen: Division,
+//     navigationOptions: {
+//       tabBarLabel: 'Division',
+//     }
+//   },
+// }
+//   ,{
+//     initialRouteName: 'AllReports',
+//     tabBarPosition: 'top',
+//     swipeEnabled: true,
+//     tabBarOptions: {
+//       activeTintColor: theme.colorAccent,
+//       inactiveTintColor: theme.textGray,
+//       labelStyle: {
+//         fontSize: 11,
+//       },
+//       // tabStyle: {
+//       //   width: 100,
+//       // },
+//       style: {
+//         backgroundColor: theme.primaryColor,
+//         borderBottomWidth: 0.5,
+//         borderBottomColor: theme.primaryColor,
+//         shadowOffset: {width: 0, height: 1},
+//         shadowColor: 'gray',
+//         shadowOpacity: 0.25,
+//         elevation: 1,
+//         fontFamily: theme.secondaryFont,
+//         height: 50,
+//         width : '100%',
+//       },
+//       indicatorStyle: {
+//         height: 1,
+//         backgroundColor: theme.colorAccent
+//       },
+//       showIcon: false
+//     }
+//   }
+// ))

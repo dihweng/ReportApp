@@ -7,7 +7,7 @@ import styles from './styles';
 import colors from '../../assets/colors';
 
 
-export default class Referral extends Component {
+export default class ManageAccount extends Component {
   constructor(props) {
     super(props);
     this.state ={

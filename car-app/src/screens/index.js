@@ -9,17 +9,20 @@ import CreateNewPassword from './CreateNewPassword';
 import DashBoard from './DashBoard';
 import Navigations from './Navigations';
 import Logout from './Logout'
-// import Faq from './Faq';
-// import TermsConditions from './TermsConditions';
-// import SurpportDesk from './SurpportDesk';
-// import Message from './Message/index.js';
+import Faq from './Faq';
+import TermsConditions from './TermsConditions';
+import SurpportDesk from './SurpportDesk';
+import Message from './Message/index.js';
 import ChangePhone from './ChangePhone/ChangePhone';
 import AllReports from './AllReports/AllReports';
 import Citation from './AllReports/AllReports';
 import Category from './Category/Category';
 import Division from './Division/Division';
 import CategoryDetails from './CategoryDetails/CategoryDetails';
-
+import ManageSubscription from './ManageSubscription/ManageSubscription';
+import Subscribe from './Subscribe/Subscribe';
+import Subscription from './Subscription/Subscription';
+import ViewPlan from './ViewPlan/ViewPlan';
 export default {
   Register, 
   Home, 
@@ -37,4 +40,9 @@ export default {
   Category,
   Division,
   CategoryDetails,
+  ManageSubscription,
+  Subscribe,
+  Subscription,
+  ViewPlan
+
 };

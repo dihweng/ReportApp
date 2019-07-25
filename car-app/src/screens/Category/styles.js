@@ -10,9 +10,9 @@ export default styles = StyleSheet.create({
   navbarStyle: {
     paddingTop: Constants.statusBarHeight,
     height: Constants.startHeaderHeight,
-    backgroundColor: colors.green,
+    backgroundColor: theme.primaryColor,
     borderBottomWidth: 1,
-    borderBottomColor: colors.green
+    borderBottomColor: theme.primaryColor
   },
   headerItem: {
     flexDirection: 'row',

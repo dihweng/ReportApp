@@ -39,7 +39,7 @@ export default class Category extends Component {
   },
   {
     "_id": "5d1c92249b0b080017236e53",
-    "name": "Compnay Law Report",
+    "name": "Company Law Report",
   },
   {
     "_id": "5d1c92249b0b08001703me53",
@@ -65,8 +65,9 @@ componentWillMount(){
   })
 }
 hadnleCategoryMain=(item)=>{
-  return this.props.navigation.navigate('CategoryDetails');
-  // alert('hhhhhh');
+  return this.props.navigation.navigate('CategoryDetails',{
+    'name' : item.name,
+  });
 }
 
 renderRow = ({item}) => {
