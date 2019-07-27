@@ -21,18 +21,14 @@ export default class Profile extends Component {
 
     }
   }
-
-  
   render () {
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
-      <View>
-        <DisplayText
-          styles={StyleSheet.flatten(styles.exitTxt)}
-          text = {'Logout'}
-          onPress = {this.handleLogout}
-        />  
+      <View style = {styles.subscribtionView}>
+        <View style = {styles.subPlanView}>
+
+        </View>
       </View>
     </SafeAreaView>
     

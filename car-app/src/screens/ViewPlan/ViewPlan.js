@@ -1,7 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, } from '../../components';
+import {DisplayText, SubmitButton} from '../../components';
 import styles from './styles';
 
 
@@ -15,12 +15,12 @@ export default class ViewPlan extends Component {
   }
 
   async componentDidMount(){
-    let userDetails = await getUserDatials();
+    // let userDetails = await getUserDatials();
 
-    let bank = userDetails.data.bank_name;
-    this.setState({
-      bankName: bank,
-    });
+    // let bank = userDetails.data.bank_name;
+    // this.setState({
+    //   bankName: bank,
+    // });
   }
 
 
@@ -34,12 +34,13 @@ export default class ViewPlan extends Component {
     return this.props.navigation.navigate('Subscribe');
   }
 
-  
   toggleDrawer = () => {
     //Props to open/close the drawer
     this.props.navigation.toggleDrawer();
   };
-
+  handleSelectPlan = () => {
+    console.log('handle plan select');
+  }
  
   render () {
    return(
@@ -84,12 +85,86 @@ export default class ViewPlan extends Component {
         <TouchableOpacity
           onPress = {this.handleViewPlan}  
           style = {styles.customTabTp}>
-            <DisplayText
+          <DisplayText
             text={'View Plan'}
             onPress = {this.handleViewPlan}  
             styles = {StyleSheet.flatten(styles.txtTabHeader)}
           />
         </TouchableOpacity>
+      </View>
+      <View style = {styles.subscribtionView}>
+        <View style = {styles.subPlanView}>
+          
+        </View>
+        <ScrollView 
+          style={{flex:1,}}
+          showsVerticalScrollIndicator={false}>
+          <View>
+            <View style = {styles.plandCard}>
+              <DisplayText
+                text={'One Month Plan'}
+                styles = {StyleSheet.flatten(styles.cardType)}
+              />
+              <View style = {styles.lineView}></View>
+              <DisplayText
+                text={'₦1200'}
+                styles = {StyleSheet.flatten(styles.amount)}
+              />
+              <DisplayText
+                text={'Enjoy Unlimited access to the entire\n Volumes of the Court of Appeal\n Reports(from(2015) till date) for one\n month for just ₦1200'}
+                styles = {StyleSheet.flatten(styles.planDetails)}
+              />
+               <SubmitButton
+                title={'Select Plan'} 
+                onPress={this.handleSelectPlan}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnStyle}
+              />
+            </View>
+            <View style = {styles.plandCard}>
+              <DisplayText
+                text={'Six Month Plan'}
+                styles = {StyleSheet.flatten(styles.cardType)}
+              />
+              <View style = {styles.lineView}></View>
+              <DisplayText
+                text={'₦6000'}
+                styles = {StyleSheet.flatten(styles.amount)}
+              />
+              <DisplayText
+                text={'Enjoy Unlimited access to the entire\n Volumes of the Court of Appeal\n Reports(from(2015) till date) for one\n month for just ₦6000'}
+                styles = {StyleSheet.flatten(styles.planDetails)}
+              />
+               <SubmitButton
+                title={'Select Plan'} 
+                onPress={this.handleSelectPlan}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnStyle}
+              />
+            </View>
+            <View style = {styles.plandCard}>
+              <DisplayText
+                text={'One Year Plan'}
+                styles = {StyleSheet.flatten(styles.cardType)}
+              />
+              <View style = {styles.lineView}></View>
+              <DisplayText
+                text={'₦12000'}
+                styles = {StyleSheet.flatten(styles.amount)}
+              />
+              <DisplayText
+                text={'Enjoy Unlimited access to the entire\n Volumes of the Court of Appeal\n Reports(from(2015) till date) for one\n month for just ₦12000'}
+                styles = {StyleSheet.flatten(styles.planDetails)}
+              />
+               <SubmitButton
+                title={'Select Plan'} 
+                onPress={this.handleSelectPlan}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnStyle}
+              />
+            </View>
+          </View>        
+        </ScrollView>
       </View>
     </SafeAreaView>
     )

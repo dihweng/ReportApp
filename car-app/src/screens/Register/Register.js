@@ -28,7 +28,7 @@ import {
   Image,
   TouchableHighlight,
 } from 'react-native';
-import { Container, Item, Input, Icon } from 'native-base'
+import { Input, Icon } from 'native-base'
 
 class Register extends Component {
   constructor(props) {

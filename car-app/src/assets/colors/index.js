@@ -5,6 +5,7 @@ export default {
   whitePurple : '#f7f7f7',
   whiteGray : '#E5E2DD',
   gray : '#dddddd',
+  darkGrayTxt: '#949494',
   gold: '#deaf1b',
   green: '#27ae60',
   darkSilver: '#bdc3c7',

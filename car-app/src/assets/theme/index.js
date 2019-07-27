@@ -1,7 +1,7 @@
 import colors from '../colors';
 export default defaultTheme = {
   // Font Sizes
-  XlargeFont: 35,
+  XlargeFont: 30,
   LargeFont: 24,
   MediumFont: 18,
   SmallFont: 16,
@@ -22,6 +22,7 @@ export default defaultTheme = {
   formBorderColor : colors.gray,
   inputFieldBg : colors.field_color,
   textGray : colors.darkGray,
+  lightTextGRay: colors.darkGrayTxt,
   whiteShadeTxt : colors.whiteShade,
   inputTxtColor : colors.text,
   // Font Type
@@ -31,6 +32,6 @@ export default defaultTheme = {
   subHeaderFont : 'Roboto-Thin',
   headerFont : 'Roboto-Black', 
 }
-
+//₦
 // POPPINS: for Headers
 // ORKNEY: for subs

@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, ScrollView, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
+import { View, ScrollView, SafeAreaView, StatusBar, Image, FlatList, TouchableOpacity, StyleSheet,} from 'react-native';
 import {DisplayText, SubmitButton, SingleButtonAlert } from '../../components';
 import { getUserDatials } from '../Utils/Utils';
 import styles from './styles';
@@ -11,19 +11,155 @@ export default class ManageSubscription extends Component {
   constructor(props) {
     super(props);
     this.state ={
-     bankName : ''
-
+      data : [],
     }
   }
+  subscription = [
+    {    
+      "_id": "5d1c92249b0b080017036e53",
+      "reportName": "Online Payment-2Months",
+      "date" : "19/06/2019",
+      "name": "Tunde Anwo",
+      "expires" : "19/07/2019",
+      "amount" : "350",
+      "Status" : "active"
+    },
+    {    
+      "_id": "5d1c90249b0b080017036e53",
+      "reportName": "Online Payment-2Months",
+      "date" : "19/05/2018",
+      "name": "Tunde Anwo",
+      "expires" : "19/07/2018",
+      "amount" : "350",
+      "Status" : "Expire"
+    },
+    {    
+      "_id": "541c92249b0b080017036e53",
+      "reportName": "Online Payment-2Months",
+      "date" : "19/06/2016",
+      "name": "Tunde Anwo",
+      "expires" : "19/07/2016",
+      "amount" : "350.12",
+      "Status" : "Expire"
+    },
+    {    
+      "_id": "5d1cn2249b0b080017036e53",
+      "reportName": "Online Payment-2Months",
+      "date" : "19/06/2016",
+      "name": "Tunde Anwo",
+      "expires" : "19/07/2016",
+      "amount" : "350.23",
+      "Status" : "Expire"
+    },
+    {    
+      "_id": "5d1c92g49b0b080017036e53",
+      "reportName": "Online Payment-2Months",
+      "date" : "19/06/2016",
+      "name": "Tunde Anwo",
+      "expires" : "19/07/2016",
+      "amount" : "350.12",
+      "Status" : "Expire"
+    },
+    {    
+      "_id": "5d1c92249b0b082017036e53",
+      "reportName": "Online Payment-2Months",
+      "date" : "19/06/2016",
+      "name": "Tunde Anwo",
+      "expires" : "19/07/2016",
+      "amount" : "350.12",
+      "Status" : "Expire"
+    },
+    {    
+      "_id": "5d1c92249b0b0800170g6e53",
+      "reportName": "Online Payment-2Months",
+      "date" : "19/06/2016",
+      "name": "Tunde Anwo",
+      "expires" : "19/07/2016",
+      "amount" : "350",
+      "Status" : "Expire"
+    },
+    {    
+      "_id": "5d1c92249b0b080317036e53",
+      "reportName": "Online Payment-2Months",
+      "date" : "19/06/2016",
+      "name": "Tunde Anwo",
+      "expires" : "19/07/2016",
+      "amount" : "350",
+      "Status" : "Expire"
+    },
+    {    
+      "_id": "5d1c92249b0b083017036e53",
+      "reportName": "Online Payment-2Monthz",
+      "date" : "19/06/2016",
+      "name": "Tunde Anwo",
+      "expires" : "19/07/2016",
+      "amount" : "350",
+      "Status" : "Expire"
+    },
+ 
+];
+  
+// componentWillMount(){
+//   // logout();
+//   this.setState({
+//     data:this.reports
+//   });
+// }
+async componentDidMount(){
+  this.setState({
+    data:this.subscription
+  });
+    // let userDetails = await getUserDatials();
 
-  async componentDidMount(){
-    let userDetails = await getUserDatials();
-
-    let bank = userDetails.data.bank_name;
-    this.setState({
-      bankName: bank,
-    });
+    // let bank = userDetails.data.bank_name;
+    // this.setState({
+    //   bankName: bank,
+    // });
   }
+  renderRow = ({item}) => {
+    return (
+      <View style = {styles.listViewItem}>    
+        <TouchableOpacity 
+          onPress = {()=>this.handlePeopleMain(item)}
+          style = {styles.cardView}>
+          <View style ={styles.subView}>
+            <DisplayText
+              numberOfLines = { 2 } 
+              ellipsizeMode = 'middle'
+              text = {item.reportName.toUpperCase()}
+              styles = {StyleSheet.flatten(styles.subName)}
+            />
+            <DisplayText
+              text = {item.date}
+              styles = {StyleSheet.flatten(styles.subDate)}
+            />
+
+          </View>
+          <View style = {styles.subView}>
+            <DisplayText
+                text = {item.name}
+                styles = {StyleSheet.flatten(styles.subscriberName)}
+              />
+            <DisplayText
+              text = {item.amount}
+              styles = {StyleSheet.flatten(styles.amount)}
+            />
+          </View>
+          <View style = {styles.subView}>
+            <DisplayText
+                text = {"Expires-" + item.expires}
+                styles = {StyleSheet.flatten(styles.expireTxt)}
+              />
+            <DisplayText
+              text = {item.Status.toUpperCase()}
+              styles = {StyleSheet.flatten(styles.statusTxt)}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
 
 
   handleSubscription = () => {
@@ -93,6 +229,19 @@ export default class ManageSubscription extends Component {
             styles = {StyleSheet.flatten(styles.txtTabHeader)}
           />
         </TouchableOpacity>
+      </View>
+      <View style = { styles.subscribtionView}>
+        <View style = {styles.devices}>
+
+        </View>
+        <View style = {styles.FlatListView}>
+          <FlatList          
+            data={this.state.data}          
+            renderItem={this.renderRow}          
+            keyExtractor={ data=> data._id}   
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
       </View>
     </SafeAreaView>
     )

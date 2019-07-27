@@ -170,7 +170,7 @@ export default class CustomSidebarMenu extends Component {
               </Text> 
             :
               <DisplayText
-                onPress = {this.handleGetProfile}
+                // onPress = {this.handleGetProfile}
                 text = {''}
                 style = {styles.txtEmail}
               />

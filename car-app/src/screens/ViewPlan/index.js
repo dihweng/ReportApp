@@ -1,3 +1,3 @@
-import Profile from './Profile';
+import ViewPlan from './ViewPlan';
 
-export{Profile};
+export{ViewPlan};

@@ -27,7 +27,10 @@ import AllReports from '../../screens/AllReports/AllReports';
 import Citation from '../../screens/Citation/Citation';
 import Category from '../../screens/Category/Category';
 import Division from '../Division/Division';
+import Subscribe from '../Subscribe/Subscribe';
+import ViewPlan from '../ViewPlan/ViewPlan';
 import CustomSidebarMenu from './CustomSidebarMenu';
+
 import Icon from '@expo/vector-icons/Ionicons';
 
 class Navigations extends Component {
@@ -119,6 +122,22 @@ const SurpportDesk_StackNavigator = createStackNavigator({
     screen: SurpportDesk,
     navigationOptions: {
       header : null,
+    }
+  },
+});
+const ViewPlan_StackNavigator = createStackNavigator({
+  ViewPlan : {
+    screen : ViewPlan,
+    navigationOptions: {
+      header: null,
+    }
+  },
+});
+const Subscribe_StackNavigator = createStackNavigator({
+  Subscribe : {
+    screen : Subscribe,
+    navigationOptions: {
+      header: null,
     }
   },
 });
@@ -266,6 +285,18 @@ const DrawerNavigator = createDrawerNavigator({
     screen : SurpportDesk_StackNavigator,
     navigationOptions: {
       drawerLabel: "Surpport Desk",
+    }
+  },
+  ViewPlan : {
+    screen : ViewPlan_StackNavigator,
+    navigationOptions: {
+      drawerLabel: "View Plan",
+    }
+  },
+  Subscribe : {
+    screen : Subscribe_StackNavigator,
+    navigationOptions: {
+      drawerLabel: "Subscribe",
     }
   },
 },

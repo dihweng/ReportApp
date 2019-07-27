@@ -34,7 +34,7 @@ export default styles = StyleSheet.create({
   navBar: {
     flexDirection : 'row',
     // paddingTop : (Platform.OS === "ios") ? 16 : 14,
-    height : (Platform.OS === "ios") ? 40 : 50,
+    height : (Platform.OS === "ios") ? 50 : 50,
     backgroundColor: theme.toolBarColor,
     width: '100%',
     alignItems: 'center',
@@ -84,14 +84,6 @@ export default styles = StyleSheet.create({
     top : 470,
     right :30
   },
-  // cardBody: {
-  //   width: '100%',
-  //   height: '70%',
-  //   paddingLeft : 24,
-  //   paddingRight : 24,
-  //   marginTop : 16
-    
-  //   },
   cards : {
     width : '100%',
     shadowColor: theme.primaryTextColor,
@@ -172,12 +164,12 @@ export default styles = StyleSheet.create({
   referralTxt : {
     fontSize: 14,
     color: colors.text_color,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
   },
   codeTxt : {
     fontSize: 16,
     color: colors.green_background,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
     marginLeft : 4
   },
   customTabTp : {
@@ -201,9 +193,96 @@ export default styles = StyleSheet.create({
     fontSize : theme.SmallFont,
     color : theme.textGray,
   },
-  angleForward : {
-    width : 12,
-    height : 12,
-    tintColor : colors.green_background,
+  subscribtionView : {
+    height : '100%',
+    padding : 20,
+    // backgroundColor : 'red'
+  },
+  devices : {
+    width : '100%',
+    shadowColor: theme.primaryTextColor,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2.56,
+    elevation: 1,    
+    height: 80,
+    backgroundColor : theme.colorAccent,
+    borderRadius : 2,
+  },
+  FlatListView : {
+    height : (Platform.OS === 'ios') ? '75%' : '70%',
+    marginTop : (Platform.OS === 'ios') ? 14 : 10,
+  },
+  listViewItem : {
+    alignItems : 'center',
+    width : '100%',
+    justifyContent: 'center',
+    marginBottom : 4
+  },
+  cardView:{
+    width: '99%',
+    height : 100 ,
+    backgroundColor: theme.colorAccent,
+    borderRadius : 2,
+    marginTop: 4,
+    marginBottom : 4,
+    shadowColor: theme.primaryTextColor,
+    shadowOffset: { 
+      width: 0, 
+      height: 1 
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
+    elevation: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+  subView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 4,
+    paddingLeft: 8,
+    paddingRight: 8,
+  },
+  amountNameView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: 8,
+    paddingRight: 8,
+    },
+  subName: {
+    fontFamily: theme.primaryFont,
+    fontSize: theme.SmallerFont,
+    color: theme.lightTextGRay,
+  },
+  subDate:{
+    fontFamily: theme.primaryFont,
+    fontSize: theme.SmallerFont,
+    color: theme.lightTextGRay,
+  },
+  subscriberName: {
+    fontFamily: theme.primaryFont,
+    fontSize: theme.SmallFont,
+    color: theme.textGray,
+  },
+  amount: {
+    fontFamily: theme.primaryFont,
+    fontSize: theme.SmallFont,
+    color: theme.textGray
+  },
+  statusTxt : {
+    fontFamily: theme.primaryFont,
+    fontSize: theme.SmallerFont,
+    color: theme.textGray,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+  },
+  expireTxt: {
+    fontFamily: theme.primaryFont,
+    fontSize: theme.SmallFont,
+    color: theme.lightTextGRay,
   }
+
 });
