@@ -167,15 +167,6 @@ export default class Subscribe extends Component {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress = {this.handleSubscribe}  
-            style = {styles.customTabTp}>
-              <DisplayText
-              text={'Subscribe'}
-              onPress = {this.handleSubscribe}  
-              styles = {StyleSheet.flatten(styles.txtTabHeader)}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
             onPress = {this.handleViewPlan}  
             style = {styles.customTabTp2}>
               <DisplayText
@@ -184,6 +175,16 @@ export default class Subscribe extends Component {
               styles = {StyleSheet.flatten(styles.txtTabHeader)}
             />
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress = {this.handleSubscribe}  
+            style = {styles.customTabTp}>
+              <DisplayText
+              text={'Subscribe'}
+              onPress = {this.handleSubscribe}  
+              styles = {StyleSheet.flatten(styles.txtTabHeader)}
+            />
+          </TouchableOpacity>
+          
         </View>
       <View style = {styles.subscribtionView}>
         <KeyboardAvoidingView

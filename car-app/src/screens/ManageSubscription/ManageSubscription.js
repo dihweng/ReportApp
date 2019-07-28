@@ -212,20 +212,18 @@ async componentDidMount(){
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress = {this.handleSubscribe}  
-          style = {styles.customTabTp2}>
-            <DisplayText
-            text={'Subscribe'}
-            onPress = {this.handleSubscribe}  
-            styles = {StyleSheet.flatten(styles.txtTabHeader)}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
           onPress = {this.handleViewPlan}  
           style = {styles.customTabTp2}>
             <DisplayText
             text={'View Plan'}
             onPress = {this.handleViewPlan}  
+            styles = {StyleSheet.flatten(styles.txtTabHeader)}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style = {styles.customTabTp2}>
+            <DisplayText
+            text={'Subscribe'}
             styles = {StyleSheet.flatten(styles.txtTabHeader)}
           />
         </TouchableOpacity>

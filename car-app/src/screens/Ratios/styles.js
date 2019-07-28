@@ -8,29 +8,7 @@ export default styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  navbarStyle: {
-    paddingTop: Constants.statusBarHeight,
-    height: Constants.startHeaderHeight,
-    backgroundColor: theme.primaryColor,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.primaryColor
-  },
-  headerItem: {
-    flexDirection: 'row',
-    paddingLeft: 16,
-    paddingRight:16,
-    marginBottom: 16,
-    marginTop: 16,
-    width: '100%',
-    justifyContent: 'space-between'
-  },
-  exitTxt: {
-    fontSize: 40,
-    color: colors.text_color,
-    fontFamily: theme.primaryFont,
-    marginLeft: 16
-  },
-  
+
   navBar: {
     flexDirection : 'row',
     // paddingTop : (Platform.OS === "ios") ? 16 : 14,

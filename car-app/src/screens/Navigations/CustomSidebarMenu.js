@@ -40,7 +40,7 @@ export default class CustomSidebarMenu extends Component {
       {
         navOptionThumb: report,
         navOptionName: 'Report',
-        screenToNavigate: 'Report',
+        screenToNavigate: 'DashBoard',
       },
       {
         navOptionThumb: manage_subscription,

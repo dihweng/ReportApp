@@ -109,16 +109,14 @@ export default class AllReports extends Component {
   },
 ];
 
-  componentWillMount(){
+  componentDidMount(){
     // logout();
     this.setState({
       data:this.reports
     })
   }
-  handlePeopleMain(item){
-    // return this.props.navigation.navigate('', {
-    //    item
-    // });
+  handleFullReport(item){
+    return this.props.navigation.navigate('FullReport');
   }
   handleAddFavourite = () => {
     alert('hello read me later')
@@ -130,13 +128,14 @@ export default class AllReports extends Component {
     return (
        <View style = {styles.listViewItem}>    
         <TouchableOpacity 
-          onPress = {()=>this.handlePeopleMain(item)}
+          onPress = {()=>this.handleFullReport(item)}
           style = {styles.cardView}>
           <View style ={styles.reportHeader}>
             <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
               text = {item.reportName}
+              onPress = {()=>this.handleFullReport(item)}
               styles = {StyleSheet.flatten(styles.reportName)}
             />
 
@@ -145,6 +144,7 @@ export default class AllReports extends Component {
               numberOfLines = { 2 } 
               // ellipsizeMode = 'middle'
               text = {item.Citation}
+              onPress = {()=>this.handleFullReport(item)}
               styles = {StyleSheet.flatten(styles.headerText)}
             />
 
@@ -152,12 +152,14 @@ export default class AllReports extends Component {
               numberOfLines = { 2 } 
               // ellipsizeMode = 'middle'
               text = {item.Reports}
+              onPress = {()=>this.handleFullReport(item)}
               styles = {StyleSheet.flatten(styles.headerText)}
             />
             <DisplayText
               numberOfLines = { 4 } 
               ellipsizeMode = 'middle'
               text = {item.short_details}
+              onPress = {()=>this.handleFullReport(item)}
               styles = {StyleSheet.flatten(styles.reportInfo)}
             />
             <View style={styles.buttonView}>

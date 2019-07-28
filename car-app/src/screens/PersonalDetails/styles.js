@@ -7,32 +7,10 @@ export default styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  navbarStyle: {
-    paddingTop: Constants.statusBarHeight,
-    height: Constants.startHeaderHeight,
-    backgroundColor: colors.green,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.green
-  },
-  headerItem: {
-    flexDirection: 'row',
-    paddingLeft: 16,
-    paddingRight:16,
-    marginBottom: 16,
-    marginTop: 16,
-    width: '100%',
-    justifyContent: 'space-between'
-  },
-  exitTxt: {
-    fontSize: 40,
-    color: colors.text_color,
-    fontFamily: 'Roboto-Regular',
-    marginLeft: 16
-  },
   navBar: {
     flexDirection : 'row',
     // paddingTop : (Platform.OS === "ios") ? 16 : 14,
-    height : (Platform.OS === "ios") ? 40 : 60,
+    height : (Platform.OS === "ios") ? 50 : 60,
     backgroundColor: theme.toolBarColor,
     width: '100%',
     alignItems: 'center',
@@ -65,18 +43,18 @@ export default styles = StyleSheet.create({
     color: colors.white,
     marginLeft: 8,
     alignSelf: 'center',
-    fontFamily : 'Roboto-Regular'
+    fontFamily : theme.primaryFont
   },
   cards : {
-    shadowColor: colors.gray,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
+    shadowColor: theme.textGray,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.25,
+    shadowRadius: 2.56,
     elevation: 1,    
-    height: 55,
+    height: 50,
     width : '90%',
     marginTop : 12,
-    backgroundColor : colors.card,
+    backgroundColor : theme.inputFieldBg,
     borderRadius : 4,
     flexDirection : 'row',
     alignSelf : "center"
@@ -85,7 +63,7 @@ export default styles = StyleSheet.create({
   cardImageView : {
     width : '15%',
     height : '100%',
-    backgroundColor : colors.white, 
+    backgroundColor : theme.colorAccent, 
     borderTopLeftRadius : 4,
     borderBottomLeftRadius : 4,
     justifyContent: 'center',
@@ -95,7 +73,7 @@ export default styles = StyleSheet.create({
     height : 20,
     width : 20,
     resizeMode : 'contain',
-    tintColor : colors.orange,
+    tintColor : theme.primaryColor,
   },
   viewText : {
     paddingLeft : 24,
@@ -106,8 +84,8 @@ export default styles = StyleSheet.create({
   },
   amtText : {
     fontSize: 16,
-    color: colors.green_background,
-    fontFamily: 'Roboto-Regular',
+    color: theme.primaryColor,
+    fontFamily : theme.primaryFont
   },
   angleView : {
     width : '15%',
@@ -119,7 +97,7 @@ export default styles = StyleSheet.create({
   angleBack : {
     width : 12,
     height : 12,
-    tintColor : colors.green_background,
+    tintColor : theme.primaryColor,
 
   },
   
@@ -159,12 +137,12 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   iconStyle: {
-    color: colors.green_background,
+    color: theme.primaryColor,
     fontSize: 20,
   },
   genderText : {
-    fontFamily: 'Roboto-Regular',
-    color: colors.text_color,
+    fontFamily : theme.primaryFont,    
+    color: theme.primaryTextColor,
     fontSize: 16,
 
   },
@@ -193,11 +171,11 @@ export default styles = StyleSheet.create({
     color: colors.text_color,
     marginTop: 6,
     marginBottom: 6,
-    fontFamily: 'Roboto-Regular'
+    fontFamily : theme.primaryFont
   },
   textHeaderStyle: {
     fontSize:  22,
-    fontFamily: 'Roboto-medium',
+    fontFamily : theme.primaryFont,
     marginTop: 8,
     color: colors.green
 
@@ -205,13 +183,13 @@ export default styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    fontFamily: 'Roboto-Regular',
-    color: colors.green_background,
+    fontFamily : theme.primaryFont,
+    color: theme.primaryTextColor,
     // backgroundColor : colors.field_color,
     
   },
   modalTp : {
-    backgroundColor: colors.field_color,
+    backgroundColor: theme.inputFieldBg,
     width : 50,
     height : 39,
     justifyContent: 'center',
@@ -285,7 +263,7 @@ export default styles = StyleSheet.create({
     paddingBottom : 15
   },
   btnStyle : {
-    backgroundColor : colors.orange,
+    backgroundColor : theme.primaryColor,
     width : '50%',
     justifyContent: 'center',
     alignItems : 'center',

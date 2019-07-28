@@ -23,12 +23,18 @@ import ManageSubscription from './ManageSubscription/ManageSubscription';
 import Subscribe from './Subscribe/Subscribe';
 import Subscription from './Subscription/Subscription';
 import ViewPlan from './ViewPlan/ViewPlan';
+import FullReport from './FullReport/FullReport';
+import CitedAuthorities from './CitedAuthorities/CitedAuthorities';
 export default {
   Register, 
   Home, 
   Profile, 
   Verification,
   ResetCode,
+  Faq,
+  TermsConditions,
+  SurpportDesk,
+  Message,
   ForgetPassword,
   CreateNewPassword,
   DashBoard, 
@@ -43,6 +49,7 @@ export default {
   ManageSubscription,
   Subscribe,
   Subscription,
-  ViewPlan
-
+  ViewPlan,
+  FullReport,
+  CitedAuthorities
 };

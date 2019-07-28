@@ -17,12 +17,12 @@ export default class ManageAccount extends Component {
   }
 
   async componentDidMount(){
-    let userDetails = await getUserDatials();
+    // let userDetails = await getUserDatials();
 
-    let bank = userDetails.data.bank_name;
-    this.setState({
-      bankName: bank,
-    });
+    // let bank = userDetails.data.bank_name;
+    // this.setState({
+    //   bankName: bank,
+    // });
   }
 
 
@@ -92,7 +92,7 @@ export default class ManageAccount extends Component {
             <DisplayText
               onPress = {this.handlePersonalDetail}
               text={'Personal Details'}
-              styles = {StyleSheet.flatten(styles.amtText)}
+              styles = {StyleSheet.flatten(styles.cardText)}
             />
           </View>
           <TouchableOpacity
@@ -118,7 +118,7 @@ export default class ManageAccount extends Component {
             <DisplayText
               onPress = {this.handleContactDetails}
               text={'Contact Details'}
-              styles = {StyleSheet.flatten(styles.amtText)}
+              styles = {StyleSheet.flatten(styles.cardText)}
             />
           </View>
           <TouchableOpacity 
@@ -144,7 +144,7 @@ export default class ManageAccount extends Component {
             <DisplayText
               onPress = {this.handleSecurity}
               text={'Security'}
-              styles = {StyleSheet.flatten(styles.amtText)}
+              styles = {StyleSheet.flatten(styles.cardText)}
             />
           </View>
           <TouchableOpacity 

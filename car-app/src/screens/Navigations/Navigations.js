@@ -29,8 +29,11 @@ import Category from '../../screens/Category/Category';
 import Division from '../Division/Division';
 import Subscribe from '../Subscribe/Subscribe';
 import ViewPlan from '../ViewPlan/ViewPlan';
-import CustomSidebarMenu from './CustomSidebarMenu';
+import Ratios from '../Ratios/Ratios';
+import CitedAuthorities from '../CitedAuthorities/CitedAuthorities';
+import FullReport from '../FullReport/FullReport';
 
+import CustomSidebarMenu from './CustomSidebarMenu';
 import Icon from '@expo/vector-icons/Ionicons';
 
 class Navigations extends Component {
@@ -136,6 +139,30 @@ const ViewPlan_StackNavigator = createStackNavigator({
 const Subscribe_StackNavigator = createStackNavigator({
   Subscribe : {
     screen : Subscribe,
+    navigationOptions: {
+      header: null,
+    }
+  },
+});
+const Full_Report_StackNavigator = createStackNavigator({
+  FullReport : {
+    screen : FullReport,
+    navigationOptions: {
+      header: null,
+    }
+  },
+});
+const Ratios_StackNavigator = createStackNavigator({
+  Ratios : {
+    screen : Ratios,
+    navigationOptions: {
+      header: null,
+    }
+  },
+});
+const Cited_Authorities_StackNavigator = createStackNavigator({
+  CitedAuthorities : {
+    screen : CitedAuthorities,
     navigationOptions: {
       header: null,
     }
@@ -299,6 +326,25 @@ const DrawerNavigator = createDrawerNavigator({
       drawerLabel: "Subscribe",
     }
   },
+  Ratios : {
+    screen : Ratios_StackNavigator,
+    navigationOptions: {
+      drawerLabel: "Ratios",
+    }
+  },
+  CitedAuthorities : {
+    screen : Cited_Authorities_StackNavigator,
+    navigationOptions: {
+      drawerLabel: "Cited Authorities",
+    }
+  },
+  FullReport : {
+    screen : Full_Report_StackNavigator,
+    navigationOptions: {
+      drawerLabel: "Full Report",
+    }
+  },
+  
 },
 {
   contentComponent : CustomSidebarMenu,

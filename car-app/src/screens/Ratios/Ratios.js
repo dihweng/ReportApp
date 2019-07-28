@@ -6,7 +6,7 @@ import styles from './styles';
 import theme from '../../assets/theme';
 
 
-export default class FullReport extends Component {
+export default class Ratios extends Component {
   constructor(props) {
     super(props);
     this.state ={
@@ -45,10 +45,10 @@ export default class FullReport extends Component {
         <StatusBar barStyle="default" /> 
         <View style = {styles.navBar}>
           <TouchableOpacity
-            onPress={this.handleOnBackPress} 
+            onPress={this.handleOnBackPress.bind(this)} 
             style = {styles.headerImage}>
             <Image
-              onPress={this.handleOnBackPress} 
+              onPress={this.handleOnBackPress.bind(this)} 
               source = {require('../../assets/images/back.png')}
               style = {StyleSheet.flatten(styles.headerIcon)}
             />
@@ -63,7 +63,7 @@ export default class FullReport extends Component {
         <View style = {styles.cards}>
           <TouchableOpacity
             onPress = {this.handleFullReport}  
-            style = {styles.customTabTp}>
+            style = {styles.customTabTp2}>
               <DisplayText
               text={'Full Report'}
               onPress = {this.handleFullReport}  
@@ -72,7 +72,7 @@ export default class FullReport extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress = {this.handleRatio}  
-            style = {styles.customTabTp2}>
+            style = {styles.customTabTp}>
               <DisplayText
               text={'Ratio'}
               onPress = {this.handleRatio}  
@@ -89,7 +89,8 @@ export default class FullReport extends Component {
             />
           </TouchableOpacity>
         </View>
-      </SafeAreaView> 
+      
+    </SafeAreaView>
     )
   }
 } 

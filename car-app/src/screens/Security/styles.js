@@ -8,32 +8,11 @@ export default styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  navbarStyle: {
-    paddingTop: Constants.statusBarHeight,
-    height: Constants.startHeaderHeight,
-    backgroundColor: colors.green,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.green
-  },
-  headerItem: {
-    flexDirection: 'row',
-    paddingLeft: 16,
-    paddingRight:16,
-    marginBottom: 16,
-    marginTop: 16,
-    width: '100%',
-    justifyContent: 'space-between'
-  },
-  exitTxt: {
-    fontSize: 40,
-    color: colors.text_color,
-    fontFamily: 'Roboto-Regular',
-    marginLeft: 16
-  },
+ 
   navBar: {
     flexDirection : 'row',
     // paddingTop : (Platform.OS === "ios") ? 16 : 14,
-    height : (Platform.OS === "ios") ? 40 : 60,
+    height : (Platform.OS === "ios") ? 50 : 60,
     backgroundColor: theme.toolBarColor,
     width: '100%',
     alignItems: 'center',
@@ -74,10 +53,10 @@ export default styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 2,
     elevation: 1,    
-    height: 55,
+    height: 50,
     width : '90%',
-    marginTop : 12,
-    backgroundColor : colors.card,
+    marginVertical : 30,
+    backgroundColor : theme.inputFieldBg,
     borderRadius : 4,
     flexDirection : 'row',
     alignSelf : "center"
@@ -96,7 +75,7 @@ export default styles = StyleSheet.create({
     height : 20,
     width : 20,
     resizeMode : 'contain',
-    tintColor : colors.orange,
+    tintColor : theme.primaryColor,
   },
   viewText : {
     paddingLeft : 24,
@@ -107,7 +86,7 @@ export default styles = StyleSheet.create({
   },
   amtText : {
     fontSize: 16,
-    color: colors.green_background,
+    color: theme.primaryTextColor,
     fontFamily: 'Roboto-Regular',
   },
   angleView : {
@@ -120,7 +99,7 @@ export default styles = StyleSheet.create({
   angleBack : {
     width : 12,
     height : 12,
-    tintColor : colors.green_background,
+    tintColor : theme.primaryColor,
 
   },
   wrapper: {
@@ -175,7 +154,7 @@ export default styles = StyleSheet.create({
     borderRadius : 25,
   },
   btnStyle : {
-    backgroundColor : colors.orange,
+    backgroundColor : theme.primaryColor,
     width : '50%',
     justifyContent: 'center',
     alignItems : 'center',

@@ -16,12 +16,7 @@ import {
   FlatList, 
   TouchableWithoutFeedback,
 } from 'react-native';
-import {
-  Container,
-  Item,
-  Input,
-  Icon
-} from 'native-base'
+import {Input, Icon} from 'native-base'
 import {DisplayText, InputField, SingleButtonAlert, SubmitButton} from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors'
@@ -30,6 +25,7 @@ import moment from 'moment';
 import data from '../Register/Countries';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import { UpdateBankDetails, putRoute, getUserDatials } from '../Utils/Utils';
+import theme from '../../assets/theme';
 
 const defaultFlag = data.filter(
   obj => obj.name === 'Nigeria'
@@ -406,7 +402,7 @@ render () {
                 styles = {styles.formHeaderTxt}
               />
               <InputField
-                textColor={colors.text_color}
+                textColor={theme.textGray}
                 inputType={'name'}
                 keyboardType={'default'}
                 onChangeText = {this.handleFullName}

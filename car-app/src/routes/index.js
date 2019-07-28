@@ -16,13 +16,18 @@ import Citation from '../screens/Citation/Citation';
 import Category from '../screens/Category/Category';
 import Division from '../screens/Division/Division';
 import CategoryDetails from '../screens/CategoryDetails/CategoryDetails';
-// import Faq from '../screens/Faq/Faq';
-// import TermsConditions from '../screens/TermsConditions/TermsConditions';
+import Faq from '../screens/Faq/Faq';
+import TermsConditions from '../screens/TermsConditions/TermsConditions';
 import ManageSubscription from '../screens/ManageSubscription/ManageSubscription'
 import Subscribe from '../screens/Subscribe/Subscribe';
 import Subscription from '../screens/Subscription/Subscription';
 import ViewPlan from '../screens/ViewPlan/ViewPlan';
-
+import FullReport from '../screens/FullReport/FullReport'
+import PersonalDetails from '../screens/PersonalDetails/PersonalDetails'
+import ContactDetails from '../screens/ContactDetails/ContactDetails';
+import Security from '../screens/Security/Security';
+import CitedAuthorities from '../screens/CitedAuthorities/CitedAuthorities';
+import Ratios from '../screens/Ratios/Ratios';
  const AuthStack = createStackNavigator({ 
   Home: {
     screen: Home,
@@ -143,19 +148,55 @@ const MenuStack = createStackNavigator({
     navigationOptions : {
       header : null,
     }
-  }
-  // Faq : {
-  //   screen : Faq,
-  //   navigationOptions : {
-  //     header : null,
-  //   }
-  // },
-  // TermsConditions : {
-  //   screen : TermsConditions,
-  //   navigationOptions : {
-  //     header : null,
-  //   }
-  // },
+  },
+  Faq : {
+    screen : Faq,
+    navigationOptions : {
+      header : null,
+    }
+  },
+  TermsConditions : {
+    screen : TermsConditions,
+    navigationOptions : {
+      header : null,
+    }
+  },
+  FullReport : {
+    screen: FullReport,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  PersonalDetails: {
+    screen: PersonalDetails,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  ContactDetails: {
+    screen: ContactDetails,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Security: {
+    screen: Security,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Ratios: {
+    screen: Ratios,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  CitedAuthorities: {
+    screen: CitedAuthorities,
+    navigationOptions: {
+      header: null,
+    }
+  },
 
   // ChangePhone : {
   //   screen : ChangePhone,

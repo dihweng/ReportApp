@@ -38,8 +38,8 @@ export default class ViewPlan extends Component {
     //Props to open/close the drawer
     this.props.navigation.toggleDrawer();
   };
-  handleSelectPlan = () => {
-    console.log('handle plan select');
+  handleSelectPlan = (item) => {
+    return this.props.navigation.navigate('Subscribe');
   }
  
   render () {
@@ -74,15 +74,6 @@ export default class ViewPlan extends Component {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress = {this.handleSubscribe}  
-          style = {styles.customTabTp2}>
-            <DisplayText
-            text={'Subscribe'}
-            onPress = {this.handleSubscribe}  
-            styles = {StyleSheet.flatten(styles.txtTabHeader)}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
           onPress = {this.handleViewPlan}  
           style = {styles.customTabTp}>
           <DisplayText
@@ -91,6 +82,14 @@ export default class ViewPlan extends Component {
             styles = {StyleSheet.flatten(styles.txtTabHeader)}
           />
         </TouchableOpacity>
+        <TouchableOpacity
+          style = {styles.customTabTp2}>
+            <DisplayText
+            text={'Subscribe'}
+            styles = {StyleSheet.flatten(styles.txtTabHeader)}
+          />
+        </TouchableOpacity>
+        
       </View>
       <View style = {styles.subscribtionView}>
         <View style = {styles.subPlanView}>

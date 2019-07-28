@@ -7,36 +7,12 @@ import theme from '../../assets/theme';
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor : colors.field_color
-
+    backgroundColor : colors.colorAccent,
   },
-  navbarStyle: {
-    paddingTop: Constants.statusBarHeight,
-    height: Constants.startHeaderHeight,
-    backgroundColor: colors.green,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.green
-  },
-  headerItem: {
-    flexDirection: 'row',
-    paddingLeft: 16,
-    paddingRight:16,
-    marginBottom: 16,
-    marginTop: 16,
-    width: '100%',
-    justifyContent: 'space-between'
-  },
-  exitTxt: {
-    fontSize: 40,
-    color: colors.text_color,
-    fontFamily: 'Roboto-Regular',
-    marginLeft: 16
-  },
-  
   navBar: {
     flexDirection : 'row',
     // paddingTop : (Platform.OS === "ios") ? 16 : 14,
-    height : (Platform.OS === "ios") ? 40 : 60,
+    height : (Platform.OS === "ios") ? 50 : 60,
     backgroundColor: theme.primaryColor,
     width: '100%',
     alignItems: 'center',
@@ -73,19 +49,7 @@ export default styles = StyleSheet.create({
     alignSelf: 'center',
     fontFamily : 'Roboto-Regular'
   },
-  footerIcon : {},
-  formView: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems : 'center',
-    paddingLeft : 16,
-  },
-  footerView : {
-    width : '100%',
-    position : 'absolute',
-    top : 470,
-    right :30
-  },
+  
   cardBody: {
     width: '100%',
     height: '70%',
@@ -95,14 +59,14 @@ export default styles = StyleSheet.create({
     
     },
   cards : {
-    shadowColor: colors.gray,
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: theme.textGray,
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.5,
     shadowRadius: 2,
     elevation: 1,    
     height: 55,
     marginTop : 12,
-    backgroundColor : colors.card,
+    backgroundColor : theme.inputFieldBg,
     borderRadius : 4,
     flexDirection : 'row'
 
@@ -110,7 +74,7 @@ export default styles = StyleSheet.create({
   cardImageView : {
     width : '15%',
     height : '100%',
-    backgroundColor : colors.white, 
+    backgroundColor : theme.colorAccent, 
     borderTopLeftRadius : 4,
     borderBottomLeftRadius : 4,
     justifyContent: 'center',
@@ -120,45 +84,17 @@ export default styles = StyleSheet.create({
     height : 20,
     width : 20,
     resizeMode : 'contain',
-    tintColor : colors.orange,
+    tintColor : theme.primaryColor,
   },
-  btnView : {
-    width : '100%',
-    justifyContent : 'center',
-    alignItems : 'center',
-    marginTop : 8,  
-  },
-  loginBtn : {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '60%',
-    height: 40,
-    backgroundColor: colors.dardgold,
-    borderRadius : 25,    
-  },
-  buttonBorder: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '20%',
-    height: 40,
-    backgroundColor: colors.white,
-    borderRadius : 25,
-  },
-  btnText : {
+  cardText : {
     fontSize: 16,
-    color: colors.white,
-    fontFamily: 'Roboto-Regular',
-    alignSelf: 'center',    
-  },
-  amtText : {
-    fontSize: 16,
-    color: colors.green_background,
-    fontFamily: 'Roboto-Regular',
+    color: theme.primaryColor,
+    fontFamily: theme.primaryFont,
   },
   txtInvest : {
     fontSize: 14,
     color: colors.text,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
   },
   viewText : {
     paddingLeft : 24,
@@ -175,12 +111,12 @@ export default styles = StyleSheet.create({
   referralTxt : {
     fontSize: 14,
     color: colors.text_color,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
   },
   codeTxt : {
     fontSize: 16,
     color: colors.green_background,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
     marginLeft : 4
   },
   angleView : {
@@ -193,7 +129,7 @@ export default styles = StyleSheet.create({
   angleForward : {
     width : 12,
     height : 12,
-    tintColor : colors.green_background,
+    tintColor : theme.primaryColor,
 
   }
 });

@@ -195,7 +195,7 @@ render () {
         <View style = {styles.cards}>
           <View style = {styles.cardImageView}>
             <Image
-              source = {require('../../assets/images/locked-padlock.png')}
+              source = {require('../../assets/images/lock_Icon.png')}
               style = {StyleSheet.flatten(styles.cardIcon)}
             />
           </View>
