@@ -1,19 +1,18 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, View, Text, Modal, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, View, Text, Image,Modal, TouchableOpacity} from 'react-native';
 import colors from '../../assets/colors';
 import PropTypes from 'prop-types';
+import theme from '../../assets/theme';
 
-
-export default class Alert extends Component {
+export default class SuccessAlert extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       modalVisible: false,
     };
-
     this.closeNotification = this.closeNotification.bind(this);
   }
 
@@ -23,9 +22,9 @@ export default class Alert extends Component {
 
   render() {
 
-    const {title, message, visible, positiveButton, negetiveButton,} = this.props;
-      const posButton = positiveButton || 'OK';
-      const negButton = negetiveButton || 'CANCEL';
+    const {title, message, visible, positiveButton} = this.props;
+      const posButton = positiveButton || 'Continue';
+     
     return (
       <View>
        <Modal
@@ -38,40 +37,33 @@ export default class Alert extends Component {
 
           <View style={styles.Alert_Main_View}>
 
+            <Image
+              source={require('../../assets/images/success.png')}
+              style={StyleSheet.flatten(styles.logoIcon)}/> 
              <Text style={styles.Alert_Title}>
                {title}
               </Text>
 
-             <View style={{ width: '100%', height: StyleSheet.hairlineWidth, backgroundColor: colors.gold}} />
+             <View style={styles.messages} />
               <Text style={styles.Alert_Message}>
                 {message} 
               </Text>
 
              <View style={{ width: '100%', height: StyleSheet.hairlineWidth, backgroundColor: colors.gold}} />
-              <View style={{flexDirection: 'row', height: '30%'}}>
+              <View style={{flexDirection: 'row', height: '30%', position : 'absolute', bottom : 0}}>
 
                 <TouchableOpacity 
                   style={styles.buttonStyle}
                   onPress={this.closeNotification } 
-                  activeOpacity={0.2} 
-                >
-
-                  <Text style={styles.TextStyle}>
-                    {negButton}
-                  </Text>
+                  activeOpacity={0.2}>
+                                           
+                  <TouchableOpacity onPress={this.closeNotification }>
+                    <Text 
+                      style={styles.TextStyle}>
+                      {posButton}
+                    </Text>
+                  </TouchableOpacity>
          
-                </TouchableOpacity>
-
-                <View style={{ width: StyleSheet.hairlineWidth, height: '100%', backgroundColor: colors.gold}} />
-
-                <TouchableOpacity 
-                  style={styles.buttonStyle} 
-                  onPress={this.closeNotification } 
-                  activeOpacity={0.2} 
-                  >
-                  <Text style={styles.TextStyle}>
-                    {posButton}
-                  </Text>
                 </TouchableOpacity>
              </View> 
             </View>
@@ -82,8 +74,7 @@ export default class Alert extends Component {
   }
 }
 
-
-Alert.propTypes = {
+SuccessAlert.propTypes = {
   title: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   visible: PropTypes.bool.isRequired,
@@ -100,46 +91,53 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor : colors.white, 
-    height: 155 ,
+    height: 220,
     width: '80%',
-    borderWidth: 0.5,
-    borderColor: colors.gold,
-    borderRadius:4,
+    borderRadius: 8,
+    elevation : 4,
+    shadowColor : theme.primaryTextColor,
+    shadowOffset : {height : 2, width : 0},
+    shadowOpacity: 0.25,
+    shadowRadius:  2.25,
     
    },
     
    Alert_Title:{  
-    fontSize: 20, 
-    color: colors.gold,
+    fontSize: theme.MediumFont, 
+    color: colors.green,
+    fontFamily: theme.semiBoldFont,
     textAlign: 'center',
-    padding: 5,
-    height: '25%',
-    fontFamily: 'Roboto-Regular',
-    
+    // padding: 5,
+    // height: '25%',    
    },
     
    Alert_Message:{
-    fontSize: 18, 
-    color: colors.gold,
+    fontSize: theme.SmallFont, 
+    color: colors.green,
     textAlign: 'center',
-    padding: 10,
-    height: '42%'
-      
+    fontFamily : theme.subHeaderFont,
+    marginBottom : 60,
+
   },
-    
-   buttonStyle: {  
-    width: '50%',
+  messages : { 
+    width: '100%', 
+    height: StyleSheet.hairlineWidth, 
+  },
+  buttonStyle: {  
+    width: '100%',
     height: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
-    
-   },
+    alignItems: 'center',
+    backgroundColor: colors.green,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+  },
       
    TextStyle:{
-    color: colors.gold,
+    color: theme.colorAccent,
     textAlign:'center',
     fontSize: 18,
-    fontFamily: 'Roboto-Regular',
-    marginTop: -5
+    fontFamily: theme.secondaryFont,
+    // marginTop: -5
    }
 })

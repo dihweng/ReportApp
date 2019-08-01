@@ -54,7 +54,7 @@ export default class ForgetPassword extends Component {
     //       this.setState({ 
     //         showLoading : false, 
     //       }); 
-    //       this.props.navigation.navigate('Home');
+    //       this.props.navigation.navigate('Login');
     //     }
     //   });
   }
@@ -84,7 +84,7 @@ export default class ForgetPassword extends Component {
     return this.props.navigation.navigate('CreateNewPassword')
   }
   handleBackToLogin = () => {
-    return this.props.navigation.navigate('Home')
+    return this.props.navigation.navigate('Login')
   }
 
   render () {

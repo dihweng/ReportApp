@@ -5,7 +5,8 @@ import {DisplayText } from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
 
-export default class Ratios extends Component {
+
+export default class FavoriteList extends Component {
   constructor(props) {
     super(props);
     this.state ={
@@ -16,14 +17,14 @@ export default class Ratios extends Component {
     }
   }
 
-  handleRatio = () => {
-    return this.props.navigation.navigate('Ratios');
+  handlePlainReport = () => {
+    return this.props.navigation.navigate('PlainReport');
   }
-  handleFullReport = () => {
-    return this.props.navigation.navigate('FullReport');
+  handleFavoriteList = () => {
+    return this.props.navigation.navigate('FavoriteList');
   }
-  handleCitedAuthorities = () =>{
-    return this.props.navigation.navigate('CitedAuthorities')
+  handleReadLaterList = () =>{
+    return this.props.navigation.navigate('ReadLaterList')
   }
   
   handleOnBackPress = () => {
@@ -34,6 +35,8 @@ export default class Ratios extends Component {
     alert('confirm coming soon');
   }
 
+  
+
   render () {
     const { title, message, showAlert, showLoading } = this.state
 
@@ -42,10 +45,10 @@ export default class Ratios extends Component {
         <StatusBar barStyle="default" /> 
         <View style = {styles.navBar}>
           <TouchableOpacity
-            onPress={this.handleOnBackPress.bind(this)} 
+            onPress={this.handleOnBackPress} 
             style = {styles.headerImage}>
             <Image
-              onPress={this.handleOnBackPress.bind(this)} 
+              onPress={this.handleOnBackPress} 
               source = {require('../../assets/images/back.png')}
               style = {StyleSheet.flatten(styles.headerIcon)}
             />
@@ -59,35 +62,34 @@ export default class Ratios extends Component {
         </View> 
         <View style = {styles.cards}>
           <TouchableOpacity
-            onPress = {this.handleFullReport}  
+            onPress = {this.handlePlainReport}  
             style = {styles.customTabTp2}>
               <DisplayText
-              text={'Full Report'}
-              onPress = {this.handleFullReport}  
+              text={'Plain Report'}
+              onPress = {this.handlePlainReport}  
               styles = {StyleSheet.flatten(styles.txtTabHeader)}
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress = {this.handleRatio}  
+            onPress = {this.handleReadLaterList}  
+            style = {styles.customTabTp2}>
+              <DisplayText
+              text={'Read Later'}
+              onPress = {this.handleReadLaterList}  
+              styles = {StyleSheet.flatten(styles.txtTabHeader)}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress = {this.handleFavoriteList}  
             style = {styles.customTabTp}>
               <DisplayText
-              text={'Ratio'}
-              onPress = {this.handleRatio}  
-              styles = {StyleSheet.flatten(styles.txtTabHeader)}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress = {this.handleCitedAuthorities}  
-            style = {styles.customTabTp2}>
-              <DisplayText
-              text={'Cited Authorities'}
-              onPress = {this.handleCitedAuthorities}  
-              styles = {StyleSheet.flatten(styles.txtTabHeader)}
+              text={'Favorite'}
+              onPress = {this.handleFavoriteList}  
+              styles = {StyleSheet.flatten(styles.txtTabHeaderWhite)}
             />
           </TouchableOpacity>
         </View>
-      
-    </SafeAreaView>
+      </SafeAreaView> 
     )
   }
 } 

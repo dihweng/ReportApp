@@ -19,7 +19,7 @@ export default styles = StyleSheet.create({
   welcomeText: {
     fontSize: 24,
     color: theme.primaryColor,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
     marginVertical : 16
     // letterSpacing: 2
   },
@@ -47,7 +47,7 @@ export default styles = StyleSheet.create({
   formPwdHint : {
     fontSize: 12,
     color: colors.darkGray,
-    fontFamily: 'Roboto-Light',
+    fontFamily: theme.LightRoboto,
   },
   formView: {
     flexDirection: 'column',
@@ -86,7 +86,6 @@ export default styles = StyleSheet.create({
   phoneView : {
     flexDirection : 'row',
     width : '100%',
-    height : 40,
     borderRadius : 4,
     borderWidth : 1,
     borderColor : colors.textInput_border,
@@ -94,6 +93,34 @@ export default styles = StyleSheet.create({
     // justifyContent: 'center',
     alignItems : 'center',
     // backgroundColor : colors.green_background
+  },
+  phoneborder: {
+    flexDirection : 'row',
+    width : '100%',
+    height : 40,
+    borderRadius : 4,
+    borderWidth : 0.5,
+    borderColor : colors.textInput_border,
+    alignItems : 'center',
+  },
+   input: {
+    flex: 1,
+    fontSize: 16,
+    fontFamily: theme.primaryFont,
+    color: colors.darkGray,
+    paddingLeft : 8,
+    
+  },
+  textInputView : {
+    width : '100%',
+    // height : 45,
+    backgroundColor : colors.white,
+    borderRadius : 4,
+    // flexDirection : 'row',
+    alignItems : 'center',
+    // marginTop : 16,
+    borderWidth : 1,
+    borderColor : theme.secondaryTextColor,
   },
   flag : {
     borderWidth : 1,
@@ -275,22 +302,15 @@ export default styles = StyleSheet.create({
   textBtn: {
     fontSize: 16,
     color: colors.whiteShade,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
   },
   iconStyle: {
-    color: colors.green_background,
+    color: theme.primaryColor,
     fontSize: 20,
     marginRight: (Platform.OS === 'ios') ? 4 : 2
   },
 
-  input: {
-    flex: 1,
-    fontSize: 16,
-    fontFamily: 'Roboto-Regular',
-    color: colors.darkGray,
-    paddingLeft : 8,
-    
-  },
+ 
   scrollview: { 
     flexDirection:'row',
     padding: 8,
@@ -307,7 +327,7 @@ export default styles = StyleSheet.create({
       fontSize: 20,
       color: colors.darkGray,
       alignSelf: 'center',  
-      fontFamily: 'Roboto-Medium',
+      fontFamily: theme.primaryFont,
       // width : '100%',
       marginRight : 16,
     },
@@ -318,7 +338,7 @@ export default styles = StyleSheet.create({
     },
   titleText: {
     fontSize:18,
-    fontFamily : 'Roboto-Medium',
+    fontFamily: theme.primaryFont,
     color: colors.darkGray,
     textAlign:'left',
     marginBottom: 4,
@@ -328,7 +348,7 @@ export default styles = StyleSheet.create({
     color: colors.darkGray,
     textAlign:'justify',
     marginBottom: 4,
-    fontFamily : 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
     paddingLeft : 4,
     paddingRight: 4,
     },
@@ -337,7 +357,7 @@ export default styles = StyleSheet.create({
     color: colors.Black,
     textAlign:'justify',
     marginBottom: 4,
-    fontFamily : 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
     paddingLeft : 12,
     },
   sethLogoModal : {
@@ -353,7 +373,7 @@ export default styles = StyleSheet.create({
     },
   logoText: {
     color: colors.white,
-    fontFamily: 'Roboto-Medium',
+    fontFamily: theme.primaryFont,
     fontSize: 14,
     fontWeight: '200',
     marginLeft: 8,

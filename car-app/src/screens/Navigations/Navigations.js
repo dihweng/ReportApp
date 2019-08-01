@@ -1,10 +1,12 @@
 'use strict';
 import React, {Component} from 'react';
-import {View, StatusBar, Image, ScrollView, SafeAreaView,TouchableOpacity} from 'react-native';
+import {View, StatusBar, Image, Platform,Button, SafeAreaView,TouchableOpacity} from 'react-native';
 import styles from './styles';
 import colors from '../../assets/colors';
 import theme from '../../assets/theme';
 import {DisplayText} from '../../components';
+import CustomSidebarMenu from './CustomSidebarMenu';
+import Icon from '@expo/vector-icons/Ionicons';
 
 import { 
   createDrawerNavigator, 
@@ -32,18 +34,34 @@ import ViewPlan from '../ViewPlan/ViewPlan';
 import Ratios from '../Ratios/Ratios';
 import CitedAuthorities from '../CitedAuthorities/CitedAuthorities';
 import FullReport from '../FullReport/FullReport';
-
-import CustomSidebarMenu from './CustomSidebarMenu';
-import Icon from '@expo/vector-icons/Ionicons';
+import PlainReport from '../PlainReport/PlainReport';
+import FavoriteList from '../FavoriteList/FavoriteList';
+import ReadLaterList from '../ReadLaterList/ReadLaterList';
 
 class Navigations extends Component {
+
+  constructor(props) {
+    super(props);
+    state = {
+      count: 0,
+    };  
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({ increaseCount: this._increaseCount });
+  }
 
   //Structure for the navigatin Drawer
   toggleDrawer = () => {
     //Props to open/close the drawer
     this.props.navigationProps.toggleDrawer();
   };
-  
+
+  _increaseCount = () => {
+    this.setState({ count: this.state.count + 1 });
+    alert(this.state.count)
+  };
+
   render(){
     return(
       <SafeAreaView style={{ flexDirection: 'row' }}>
@@ -168,6 +186,30 @@ const Cited_Authorities_StackNavigator = createStackNavigator({
     }
   },
 });
+const PlainReport_StackNavigation = createStackNavigator({
+  PlainReport: {
+    screen: PlainReport,
+    navigationOptions: {
+      header: null,
+    }
+  }
+});
+const Favorite_List_StackNavigation = createStackNavigator({
+  FavoriteList: {
+    screen: FavoriteList,
+    navigationOptions: {
+      header: null,
+    }
+  }
+});
+const ReadLater_List_StackNavigation = createStackNavigator({
+  ReadLaterList: {
+    screen: ReadLaterList,
+    navigationOptions: {
+      header: null,
+    }
+  }
+});
 
 const AppTabNavigation =  createMaterialTopTabNavigator({
   AllReports: {
@@ -203,7 +245,16 @@ const AppTabNavigation =  createMaterialTopTabNavigator({
       [navigation.state.index];
       return {
         headerTitle :routeName,
+        headerForceInset: (Platform.OS === 'android') ? { top: 'never', bottom: 'never' } : null,
         headerStyle: {
+          height: (Platform.OS === 'ios') ? 40 : 50,
+          elevation: 0,
+          shadowOpacity: 0,
+          shadowRadius: 0,
+          shadowOffset: {
+              height: 0,
+          },
+          borderBottomWidth: 0,
           backgroundColor: theme.primaryColor,
         },
         headerTintColor: '#fff',
@@ -222,7 +273,7 @@ const AppTabNavigation =  createMaterialTopTabNavigator({
     swipeEnabled: true,
     tabBarOptions: {
       activeTintColor: theme.colorAccent,
-      inactiveTintColor: theme.textGray,
+      inactiveTintColor: theme.formBorderColor,
       labelStyle: {
         fontSize: 11,
       },
@@ -252,14 +303,42 @@ const DashBoardTopNavigator = createStackNavigator({
   AppTabNavigation : AppTabNavigation
 },
   {
-   defaultNavigationOptions : ({navigation}) => {
-     return {headerLeft : 
-      <Icon 
-        onPress = {()=>navigation.openDrawer()}
-        style = {styles.navToolbar} 
-        name = "md-menu" size = {30}/>
+    defaultNavigationOptions : ({navigation}) => {
+      
+      return {
+        headerLeft : 
+          <Icon 
+            onPress = {()=>navigation.openDrawer()}
+            style = {styles.navToolbar} 
+            name = "md-menu" size = {20}
+          />,
+
+        //   headerRight: (
+        //     <TouchableOpacity
+        //       style={styles.overflowBtn}  
+        //       onPress={navigation.getParam('increaseCount')}>
+        //       <Image
+        //         onPress={navigation.getParam('increaseCount')}
+        //         style = {styles.imageMore}
+        //         source={require('../../assets/images/more.png')}
+        //       />
+        //     </TouchableOpacity>
+              
+        // ),
+        headerForceInset: { top: 'never', bottom: 'never' },
+        headerStyle: {
+          elevation: 0,
+          shadowOpacity: 0,
+          shadowRadius: 0,
+          shadowOffset: {
+              height: 0,
+          },
+          borderBottomWidth: 0,
+
+        }
+
       }
-   }
+    }
   }
 );
 
@@ -342,6 +421,24 @@ const DrawerNavigator = createDrawerNavigator({
     screen : Full_Report_StackNavigator,
     navigationOptions: {
       drawerLabel: "Full Report",
+    }
+  },
+  PlainReport : {
+    screen : PlainReport_StackNavigation,
+    navigationOptions: {
+      drawerLabel: "Plain Report",
+    }
+  },
+  FavoriteList : {
+    screen : Favorite_List_StackNavigation,
+    navigationOptions: {
+      drawerLabel: "Favorite List",
+    }
+  },
+  ReadLaterList : {
+    screen : ReadLater_List_StackNavigation,
+    navigationOptions: {
+      drawerLabel: "Read Later List",
     }
   },
   

@@ -119,6 +119,7 @@ export default class AllReports extends Component {
     return this.props.navigation.navigate('FullReport');
   }
   handleAddFavourite = () => {
+    return this.props.navigation.navigate('PlainReport');
     alert('hello read me later')
   }
   handleReadLater = () => {

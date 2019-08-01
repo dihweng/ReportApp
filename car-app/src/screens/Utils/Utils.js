@@ -1,4 +1,4 @@
-const Baseurl = 'http://seth-env.nbqe8b452a.us-east-1.elasticbeanstalk.com/';
+const Baseurl = 'http://45.76.189.218/';
 import { AsyncStorage } from 'react-native';
 import { Alert } from 'react-native';
 const LoginEndpoint = `${Baseurl}oauth/token`,
@@ -50,22 +50,20 @@ export const isPhoneValid = (phone) => {
   }
 }
 
-
 export const postRoute = (endpoint, body) => {
-  console.log({dataggggg: body})
   return fetch(endpoint, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
-    body: body
+     body : JSON.stringify(body),
+    })
+    .then((res) => {
+      return res;
     })
     .then((res) => {
       return res.json();
-    })
-    .then((res) => {
-      return res
     })
     .catch((error) => {
       return error;
@@ -84,7 +82,7 @@ export const postWithToken = (endpoint, body, token) => {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
   },
-  body: body
+  body : JSON.stringify(body),
   })
   .then((res) => {
     return res.json();

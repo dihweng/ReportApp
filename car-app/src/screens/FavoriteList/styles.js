@@ -27,7 +27,7 @@ export default styles = StyleSheet.create({
   exitTxt: {
     fontSize: 40,
     color: colors.text_color,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
     marginLeft: 16
   },
   
@@ -41,8 +41,8 @@ export default styles = StyleSheet.create({
     paddingBottom: 4
   },
   headerIcon: {
-    height: 20,
-    width: 20,
+    height: 18,
+    width: 18,
     tintColor : colors.white,
   },
 
@@ -69,7 +69,7 @@ export default styles = StyleSheet.create({
     color: colors.white,
     marginLeft: 8,
     alignSelf: 'center',
-    fontFamily : 'Roboto-Regular'
+    fontFamily: theme.primaryFont,
   },
   footerIcon : {},
   formView: {
@@ -84,6 +84,14 @@ export default styles = StyleSheet.create({
     top : 470,
     right :30
   },
+  // cardBody: {
+  //   width: '100%',
+  //   height: '70%',
+  //   paddingLeft : 24,
+  //   paddingRight : 24,
+  //   marginTop : 16
+    
+  //   },
   cards : {
     width : '100%',
     shadowColor: theme.primaryTextColor,
@@ -92,8 +100,10 @@ export default styles = StyleSheet.create({
     shadowRadius: 2.56,
     elevation: 1,    
     height: 40,
-    backgroundColor : theme.colorAccent,
-    flexDirection : 'row'
+    backgroundColor : theme.primaryColor,
+    flexDirection : 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal : 16
 
   },
   cardImageView : {
@@ -114,7 +124,7 @@ export default styles = StyleSheet.create({
   btnView : {
     width : '100%',
     justifyContent : 'center',
-    alignItems : 'center',
+    // alignItems : 'center',
     marginTop : 8,  
   },
   loginBtn : {
@@ -136,18 +146,18 @@ export default styles = StyleSheet.create({
   btnText : {
     fontSize: 16,
     color: colors.white,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
     alignSelf: 'center',    
   },
   amtText : {
     fontSize: 16,
     color: colors.green_background,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
   },
   txtInvest : {
     fontSize: 14,
     color: colors.text,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: theme.primaryFont,
   },
   viewText : {
     paddingLeft : 24,
@@ -175,9 +185,9 @@ export default styles = StyleSheet.create({
   customTabTp : {
     width : '33%',
     alignItems: 'center',
-    borderBottomColor : theme.primaryColor,
+    borderBottomColor : theme.colorAccent,
     borderBottomWidth : 2,
-    marginLeft : 10,
+    // marginLeft : 10,
     paddingTop : 14
   },
 
@@ -189,17 +199,17 @@ export default styles = StyleSheet.create({
 
   },
   txtTabHeader: {
-    fontFamily : theme.LightRoboto,
-    fontSize : theme.SmallFont,
-    color : theme.textGray,
+    fontFamily: theme.LightRoboto,
+    fontSize: theme.SmallFont,
+    color: theme.textGray,
   },
-  subscribtionView : {
-    height : '100%',
-    padding : 20,
-    // backgroundColor : 'red'
+  txtTabHeaderWhite: {
+    fontFamily: theme.LightRoboto,
+    fontSize: theme.SmallFont,
+    color: theme.colorAccent,    
   },
-  devices : {
-    width : '100%',
+  subPlanView: {
+    width: '99%',
     shadowColor: theme.primaryTextColor,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
@@ -207,94 +217,94 @@ export default styles = StyleSheet.create({
     elevation: 1,    
     height: 80,
     backgroundColor : theme.colorAccent,
-    borderRadius : 2,
+    borderRadius: 2,
+    margin: 1
   },
-  FlatListView : {
-    height : (Platform.OS === 'ios') ? '75%' : '70%',
-    marginTop : (Platform.OS === 'ios') ? 14 : 10,
+  subscribtionView:{
+    height : '100%',
+    padding : 20,
   },
-  listViewItem : {
-    alignItems : 'center',
+  wrapper: {
+    flex: 1,
+    marginTop: 20,
     width : '100%',
-    justifyContent: 'center',
-    marginBottom : 4
   },
-  cardView:{
-    width: '99%',
-    height : 100 ,
-    backgroundColor: theme.colorAccent,
-    borderRadius : 2,
-    marginTop: 4,
-    marginBottom : 4,
-    shadowColor: theme.primaryTextColor,
-    shadowOffset: { 
-      width: 0, 
-      height: 1 
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 2,
-    elevation: 1,
-    paddingHorizontal: 8,
-    paddingVertical: 8,
+  formView: {
+    flexDirection: 'column',
+    width : '100%',
+    paddingTop : 4
   },
-  subView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 4,
-    paddingLeft: 8,
-    paddingRight: 8,
-  },
-  amountNameView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingLeft: 8,
-    paddingRight: 8,
-    },
-  subName: {
-    fontFamily: theme.primaryFont,
-    fontSize: theme.SmallerFont,
-    color: theme.lightTextGRay,
-  },
-  subDate:{
-    fontFamily: theme.primaryFont,
-    fontSize: theme.SmallerFont,
-    color: theme.lightTextGRay,
-  },
-  subscriberName: {
-    fontFamily: theme.primaryFont,
+  formHeaderTxt: {
     fontSize: theme.SmallFont,
     color: theme.textGray,
+    fontFamily: theme.LightRoboto,
   },
-  amount: {
-    fontFamily: theme.primaryFont,
+  formstyle : {
+    backgroundColor : theme.inputFieldBg
+  },
+  btnStyle : {
+    backgroundColor : theme.primaryColor,
+    width : '45%',
+    justifyContent: 'center',
+    alignItems : 'center',
+    height : 40,
+    borderRadius : 2,
+    marginTop: 16,
+  },
+  btnText : {
     fontSize: theme.SmallFont,
-    color: theme.textGray
-  },
-  statusTxtActive : {
-    fontFamily: theme.primaryFont,
-    fontSize: theme.thinyFont,
     color: theme.colorAccent,
-    paddingVertical: 4,
-    paddingHorizontal: 16,
-    backgroundColor: theme.buttonGreen,
-    borderRadius: 16
-  },
-  statusTxtExpire : {
     fontFamily: theme.primaryFont,
-    fontSize: theme.thinyFont,
-    color: theme.colorAccent,
-    paddingVertical: 4,
-    paddingHorizontal: 16,
-    backgroundColor: theme.buttonRed,
-    borderRadius: 16
+    alignSelf: 'center',    
   },
-  
-  expireTxt: {
+  modalContainer: {
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    paddingTop: 80,
+  },
+  modalStyle: {
+    backgroundColor: colors.whiteShade, 
+    borderColor: colors.gray,
+    height: '40%', 
+    width: '90%',
+    padding: 16,  
+    borderRadius: 4
+  },
+  modalTxt:{
+    fontSize: 18,
+    color: colors.text_color,
+    marginTop: 6,
+    marginBottom: 6,
     fontFamily: theme.primaryFont,
-    fontSize: theme.SmallFont,
-    color: theme.lightTextGRay,
-  }
+  },
+  textHeaderStyle: {
+    fontSize:  22,
+    fontFamily: theme.secondaryFont,
+    marginTop: 8,
+    color: colors.green
 
+  },
+  textBoder: {
+    backgroundColor : theme.inputFieldBg,
+    height: 40,
+    paddingLeft: 8,
+    width:'100%',
+    borderRadius : 4,
+    paddingRight : 8,
+    justifyContent : 'center',
+  },
+  viewTxtPlan : {
+    width : '100%',
+    flexDirection : 'row',
+    justifyContent : 'space-between',
+    alignItems: 'center'
+
+  },
+  genderText : {
+    fontFamily: theme.primaryFont,
+    color: colors.text_color,
+    fontSize: 16,
+
+  },
 });

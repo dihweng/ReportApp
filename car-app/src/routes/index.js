@@ -2,7 +2,7 @@ import { createSwitchNavigator, createAppContainer, createStackNavigator } from 
 
 import { StatusBar } from 'react-native';
 import Register  from '../screens/Register/Register';
-import Home  from '../screens/Home/Home';
+import Login  from '../screens/Login/Login';
 import Profile from '../screens/Profile/Profile';
 import Verification from '../screens/Verification/Verification';
 import ResetCode from '../screens/ResetCode/ResetCode';
@@ -28,9 +28,13 @@ import ContactDetails from '../screens/ContactDetails/ContactDetails';
 import Security from '../screens/Security/Security';
 import CitedAuthorities from '../screens/CitedAuthorities/CitedAuthorities';
 import Ratios from '../screens/Ratios/Ratios';
+import PlainReport from '../screens/PlainReport/PlainReport';
+import FavoriteList from '../screens/FavoriteList/FavoriteList';
+import ReadLaterList from '../screens/ReadLaterList/ReadLaterList';
+
  const AuthStack = createStackNavigator({ 
-  Home: {
-    screen: Home,
+  Login: {
+    screen: Login,
     navigationOptions: {
       header: null,
     }
@@ -198,12 +202,24 @@ const MenuStack = createStackNavigator({
     }
   },
 
-  // ChangePhone : {
-  //   screen : ChangePhone,
-  //   navigationOptions : {
-  //     header : null,
-  //   }
-  // },
+  PlainReport : {
+    screen : PlainReport,
+    navigationOptions : {
+      header : null,
+    }
+  },
+  FavoriteList : {
+    screen : FavoriteList,
+    navigationOptions : {
+      header : null,
+    }
+  },
+  ReadLaterList : {
+    screen : ReadLaterList,
+    navigationOptions : {
+      header : null,
+    }
+  },
 },
   {
     mode: 'modal',
@@ -213,7 +229,7 @@ const MenuStack = createStackNavigator({
 );
 
 const AppSwitchNavigator = createSwitchNavigator({
-  AuthLoading:Home,
+  AuthLoading:Login,
   Auth:AuthStack,
   Menu: MenuStack,
 },

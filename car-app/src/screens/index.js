@@ -1,6 +1,6 @@
 // import Login from './Login';
 import Register from './Register';
-import Home from './Home';
+import Login from './Login';
 import Profile from './Profile';
 import Verification from './Verification';
 import ResetCode from './ResetCode';
@@ -25,9 +25,11 @@ import Subscription from './Subscription/Subscription';
 import ViewPlan from './ViewPlan/ViewPlan';
 import FullReport from './FullReport/FullReport';
 import CitedAuthorities from './CitedAuthorities/CitedAuthorities';
+import PlainReport from './PlainReport/PlainReport';
+import FavoriteList from './FavoriteList/FavoriteList';
 export default {
   Register, 
-  Home, 
+  Login, 
   Profile, 
   Verification,
   ResetCode,
@@ -51,5 +53,7 @@ export default {
   Subscription,
   ViewPlan,
   FullReport,
-  CitedAuthorities
+  CitedAuthorities,
+  PlainReport,
+  FavoriteList
 };

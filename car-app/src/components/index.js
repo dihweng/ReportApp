@@ -1,4 +1,4 @@
-import { Alert , SingleButtonAlert} from './Alert';
+import { Alert , SingleButtonAlert, ErrorAlert, SuccessAlert} from './Alert';
 import {SubmitButton} from './Buttons';
 import {InputField, InputFieldBorder}  from './TextInput';
 // import {Preloader}  from './Preloader';
@@ -10,6 +10,8 @@ import {AuthBackground} from './AuthBackground';
 export {
   Alert , 
   SingleButtonAlert, 
+  ErrorAlert,
+  SuccessAlert,
   SubmitButton, 
   InputField, 
   DisplayText, 

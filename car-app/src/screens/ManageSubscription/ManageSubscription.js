@@ -12,6 +12,7 @@ export default class ManageSubscription extends Component {
     super(props);
     this.state ={
       data : [],
+      
     }
   }
   subscription = [
@@ -22,7 +23,7 @@ export default class ManageSubscription extends Component {
       "name": "Tunde Anwo",
       "expires" : "19/07/2019",
       "amount" : "350",
-      "Status" : "active"
+      "Status" : "Active"
     },
     {    
       "_id": "5d1c90249b0b080017036e53",
@@ -150,10 +151,19 @@ async componentDidMount(){
                 text = {"Expires-" + item.expires}
                 styles = {StyleSheet.flatten(styles.expireTxt)}
               />
-            <DisplayText
-              text = {item.Status.toUpperCase()}
-              styles = {StyleSheet.flatten(styles.statusTxt)}
-            />
+            
+            {
+              (item.Status === 'Active') ?
+                <DisplayText
+                  text = {item.Status.toUpperCase()}
+                  styles = {StyleSheet.flatten(styles.statusTxtActive)}
+                />
+              :
+                <DisplayText
+                  text = {item.Status.toUpperCase()}
+                  styles = {StyleSheet.flatten(styles.statusTxtExpire)}
+                />
+            }
           </View>
         </TouchableOpacity>
       </View>

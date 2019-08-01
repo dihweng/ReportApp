@@ -7,7 +7,7 @@ import theme from '../../assets/theme';
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
-     
+     padding: 0,
     //backgroundColor: colors.background_color,
   },
     navbarStyle: {
@@ -34,8 +34,8 @@ export default styles = StyleSheet.create({
     backgroundColor: colors.divider,
   },
   imageLogo: {
-    height: 24,
-    width: 24,
+    height: 20,
+    width: 20,
     tintColor: theme.colorAccent,
     marginLeft : 16
   },
@@ -138,5 +138,16 @@ export default styles = StyleSheet.create({
   navToolbar : {
     paddingLeft : 10,
     color : theme.colorAccent,
-  }
+  },
+  imageMore: {
+    height: 18,
+    width: 18,
+    tintColor: colors.white,
+  },
+  overflowBtn : {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: theme.primaryColor,
+    marginRight: 4,
+  },
 });

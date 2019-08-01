@@ -1,7 +1,6 @@
 'use strict';
-
 import React, {Component} from 'react';
-import {DisplayText, InputField, SingleButtonAlert, SubmitButton} from '../../components';
+import {DisplayText, InputField, SingleButtonAlert, ErrorAlert,SubmitButton} from '../../components';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL }  from './styles';
 import { isEmailValid,RegisterEndpoint, postRoute, isPhoneValid} from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
@@ -34,38 +33,42 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      flag : '',
-      nameCode : '',
-      phoneNumber : '',
-      modalVisible : false,
-      isEmailValid : false,
-      isValidPhoneNumber : false,
-      isValidFullName : false,
-      isValidOthername : false,
-      isValidPassword : false,
-      isValidPassword2 : false,
-      isValidGender : false,
-      showAlert : false,
-      showLoading : false,
-      visible : false,
+      flag: '',
+      nameCode: '',
+      phoneNumber: '',
+      modalVisible: false,
+      isEmailValid: false,
+      isValidPhoneNumber: false,
+      isValidFullName: false,
+      isValidOthername: false,
+      isValidPassword: false,
+      isValidPassword2: false,
+      isValidGender: false,
+      isValidUsername: false,
+      showAlert: false,
+      showLoading: false,
+      visible: false,
       modalVisibleTerms: false,
-      name : '',
-      othernames : '',
-      email : '',
-      password : '',
-      password2 : '',
-      title : '',
-      token : '',
-      message : '',
-      termsVisible : false,
+      name: '',
+      othernames: '',
+      email: '',
+      password: '',
+      password2: '',
+      username: '',
+      title: '',
+      token: '',
+      message: '',
+      termsVisible: false,
       modalTermsVisible: false,
       terms: 'Terms and Conditions',
       isValidTerms: false,
-      isChecked : true,
-      isNameFocused : false,
-      isEmailFocused : false,
-      isConformPwdFocused : false,
-      isPasswordFocused : false,
+      isChecked: true,
+      isNameFocused: false,
+      isEmailFocused: false,
+      isUserNameFocused: false,
+      isConformPwdFocused: false,
+      isPasswordFocused: false,
+      isPhoneFocused: false,
     };
     this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
   }
@@ -138,68 +141,90 @@ class Register extends Component {
     console.log('#####: onBlur');
   }
   handleLogin = () => {
-    return this.props.navigation.navigate('Home');
+    return this.props.navigation.navigate('Login');
   }
-
-  handleSignUp = async () => {
-    const { name, email, password, password2, phoneNumber, nameCode,  } = this.state;
-    if(!isEmailValid(email)){
-      return this.setState({
-        showAlert: true,
-        message: 'Invalid Email Address',
-        title: 'Hello',
-      });
-    }
-    else if(!isPhoneValid(phoneNumber)){
-      return this.setState({
-        showAlert: true,
-        message: 'Invalid Phone Number',
-        title: 'Hello',
-      });
-    }
-    else if(password !== password2) {
-      return this.setState({
-        showAlert: true,
-        message: 'Passwords Do not Match',
-        title: 'Hello',
-      });
-    }
+  showLoadingDialogue =()=> {
     this.setState({
       showLoading: true,
     });
-    
-      const body = JSON.stringify({
-        password : password, 
-        email : email.toLowerCase(), 
-        phone : phoneNumber, 
-        name : name, 
-        country : nameCode,
-      });
-      console.log({body: body});
+  }
+
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
+
+showNotification = message => {
+  this.setState({ 
+    showLoading : false,
+    title : 'Error!',
+    message : message,
+    showAlert : true,
+  }); 
+}
+checkEmail(email) {
+  if(!isEmailValid(email)){
+    let message = 'Invalid Email Address';
+    return this.showNotification(message);
+  }
+}
+checkPhone(phoneNumber) {
+  if(!isPhoneValid(phoneNumber)){
+    let message = 'Invalid Phone Number';
+    return this.showNotification(message);
+  }
+}
+checkPassword(password1, password2) {
+    if(password1 !== password2) {
+    let message = 'Passwords Do not Match';
+    return this.showNotification(message);
+  }
+}
+  register = async(body) =>{
+    this.showLoadingDialogue();
     postRoute(RegisterEndpoint, body)
       .then((res) => {
-        const value = Object.values(res.errors);
-        console.log({responses: value})
-        // console.log({responses: res})
-        if (typeof res.message !== 'undefined' || typeof res.message === 'The given data was invalid') {  
-          return  this.setState({ 
-            showLoading : false,
-            title : 'Alert',
-            message : value[0].toString(),
-            showAlert : true,
-          }); 
+        if(typeof res.errors !== 'undefined') {
+          const value = Object.values(res.errors);
+          if (typeof res.message !== 'undefined') {  
+            let message = value[0].toString();
+            return this.showNotification(message);
+          }   
+        }  
+        else if(res.data) {
+          this.hideLoadingDialogue();
+          return this.props.navigation.navigate('Login');
         }
-        else {
-          const id = res.data.id;
-          console.log({residdddd : id})
-          this.setState({ 
-            showLoading : false, 
-          }); 
-          return this.props.navigation.navigate('Home');
-        }
-      });
-    
+      else {
+        let message = 'Check Your Network Connection';
+        return this.showNotification(message);
+      }
+    });
+  } 
 
+  handleSignUp = async () =>{
+    const { name, email, password, password2, phoneNumber, nameCode } = this.state;
+  
+    this.showLoadingDialogue();
+    await this.checkEmail(email);
+    await this.checkPhone(phoneNumber);
+    await this.checkPassword(password, password2);
+
+    let body = {
+      password : password, 
+      email : email.toLowerCase(), 
+      phone : phoneNumber, 
+      name : name, 
+      // country : nameCode,
+    };
+
+    try {
+      await this.register(body)
+    }
+    catch(e) {
+      console.log({e})
+    }
   }
 
   handleCloseNotification = () => {
@@ -219,6 +244,21 @@ class Register extends Component {
       if (name.length < 1) {
         this.setState({
           isValidFullName : false
+        });
+      }
+    }
+  }
+  handleUserName = (username) => {
+    if(username.length > 0) {
+      this.setState({
+        isValidUsername: true,
+        username : username
+      });
+    }
+    else {
+      if (username.length < 1) {
+        this.setState({
+          isValidUsername : false
         });
       }
     }
@@ -309,9 +349,13 @@ class Register extends Component {
   }
 
   toggleButtonState = () => {
-    const { isValidFullName, isEmailValid, isValidPassword, isValidPassword2} = this.state;
+    const { isValidFullName, isValidUsername, isEmailValid, isValidPassword, isValidPassword2 } = this.state;
           
-    if ( isEmailValid && isValidPassword && isValidFullName  && isValidPassword2) {
+    if ( isEmailValid && 
+      isValidPassword && 
+      isValidFullName  && 
+      isValidPassword2 && 
+      isValidUsername ) {
       return true;
     } 
     else {
@@ -366,7 +410,6 @@ class Register extends Component {
     this.setState({ modalVisible: false })
     // Refocus on the Input field after selecting the country code
     this.refs.PhoneInput._root.focus()
-
   }
 
   render () {
@@ -394,9 +437,9 @@ class Register extends Component {
                 text={'Full Name *'}
                 styles = {styles.formHeaderTxt}
               />
-              <View style = {{ borderColor: this.state.isNameFocused
-                 ? theme.primaryColor
-                 : colors.blackShade}}> 
+              <View style = {[styles.textInputView,{ borderColor: this.state.isNameFocused
+                ? theme.primaryColor
+                : theme.whiteShade}]}> 
                 <InputField
                   textColor={colors.darkGray}
                   inputType={'name'}
@@ -404,7 +447,7 @@ class Register extends Component {
                   onChangeText = {this.handleFullName}
                   autoCapitalize = "words"
                   height = {40}
-                  borderWidth = {1}
+                  borderWidth = {0.5}
                   borderColor={colors.darkSilver}
                   borderRadius={4}
                   paddingLeft = {8}
@@ -413,6 +456,37 @@ class Register extends Component {
                   blurOnSubmit={false}
                   onFocus={()=>this.setState({isNameFocused:true})}
                   onBlur={()=>this.setState({isNameFocused:false})}
+                  onSubmitEditing={() => { 
+                    this.usernameRef && this.usernameRef.focus()
+                  }}
+                /> 
+              </View>
+            </View>
+            <View style = {styles.formView}>
+              <DisplayText
+                text={'Username *'}
+                styles = {styles.formHeaderTxt}
+              />
+              <View style = {[styles.textInputView,{ borderColor: this.state.isUserNameFocused
+                ? theme.primaryColor
+                : colors.whiteShade}]}> 
+                <InputField
+                  textColor={colors.darkGray}
+                  inputType={'name'}
+                  keyboardType={'default'}
+                  onChangeText = {this.handleUserName}
+                  autoCapitalize = "words"
+                  height = {40}
+                  borderWidth = {0.5}
+                  borderColor={colors.darkSilver}
+                  borderRadius={4}
+                  paddingLeft = {8}
+                  returnKeyType={'next'}
+                  paddingLeft = {8}
+                  refs={(input) => { this.usernameRef = input; }}
+                  blurOnSubmit={false}
+                  onFocus={()=>this.setState({isUserNameFocused:true})}
+                  onBlur={()=>this.setState({isUserNameFocused:false})}
                   onSubmitEditing={() => { 
                     this.emailRef && this.emailRef.focus()
                   }}
@@ -424,6 +498,9 @@ class Register extends Component {
                 text={'Email *'}
                 styles = {styles.formHeaderTxt}
               />
+              <View style = {[styles.textInputView,{ borderColor: this.state.isEmailFocused
+                ? theme.primaryColor
+                : colors.whiteShade}]}> 
               <InputField
                 textColor={colors.darkGray}
                 inputType={'email'}
@@ -431,27 +508,30 @@ class Register extends Component {
                 onChangeText = {this.handleEmailChange}
                 autoCapitalize = "none"
                 height = {40}
-                borderWidth = {1}
+                borderWidth = {0.5}
                 borderColor={colors.darkSilver}
                 borderRadius={4}
                 paddingLeft = {8}
                 returnKeyType={'next'}
-                blurOnSubmit={false}
                 refs={(input) => { this.emailRef = input; }}
-                onFocus={()=>this.setState({isNameFocused:true})}
-                onBlur={()=>this.setState({isNameFocused:false})}
+                blurOnSubmit={false}
+                onFocus={()=>this.setState({isEmailFocused:true})}
+                onBlur={()=>this.setState({isEmailFocused:false})}
                 onSubmitEditing={() => { 
                   this.phoneRef && this.phoneRef.focus()
                 }}
               />
+              </View>
             </View> 
             <View style = {styles.formView}>
               <DisplayText
                 text={'Phone Number *'}
                 styles = {styles.formHeaderTxt}
               /> 
-              <View style = {styles.phoneView}>
-                {/* <View style = {styles.flag}> */}
+              <View style = {[styles.phoneView,{ borderColor: this.state.isPhoneFocused
+                ? theme.primaryColor
+                : colors.whiteShade}]}> 
+                <View style = {styles.phoneborder}>
                 <TouchableOpacity 
                   style = {styles.modalTp}
                   // onPress={() => this.showModal()}
@@ -470,7 +550,7 @@ class Register extends Component {
                   />
                 </TouchableOpacity>
                 {/* </View> */}
-                <Input
+                <TextInput
                   style={styles.input}
                   placeholder='+2348012341234'
                   placeholderTextColor='#adb4bc'
@@ -491,10 +571,13 @@ class Register extends Component {
                       this.onChangeText('phoneNumber', val)
                     }}
                   }
+                  onFocus={()=>this.setState({isPhoneFocused:true})}
+                  onBlur={()=>this.setState({isPhoneFocused:false})}
                   onSubmitEditing={() => { 
                     this.passwordRef && this.passwordRef.focus()
                   }}
                 />
+                </View>
               </View>
             </View>
             {/* Modal for country code and flag */}
@@ -537,59 +620,67 @@ class Register extends Component {
                 text={'Password *'}
                 styles = {styles.formHeaderTxt}
               /> 
-            <InputField
-              textColor={colors.darkGray}
-              inputType={'password'}
-              onChangeText = {this.handlePasswordChange}
-              autoCapitalize = "none"
-              height = {40}
-              borderWidth = {1}
-              borderColor={colors.darkSilver}
-              borderRadius = {4}
-              paddingLeft = {8}
-              returnKeyType={'next'}
-              paddingLeft = {8}
-              refs = {(input) => {this.passwordRef = input}}
-              blurOnSubmit={false}
-              onFocus={()=>this.setState({isPasswordFocused:true})}
-              onBlur={()=>this.setState({isPasswordFocused:false})}
-              onSubmitEditing={() => { 
-                this.confirmPwdRef && this.confirmPwdRef.focus()
-              }}
-            /> 
-            <DisplayText
-                text={'Enter at least 8 characters'}
-                styles = {styles.formPwdHint}
-              /> 
-          </View>
+              <View style = {[styles.textInputView,{ borderColor: this.state.isPasswordFocused
+                ? theme.primaryColor
+                : colors.whiteShade}]}> 
+                <InputField
+                  textColor={colors.darkGray}
+                  inputType={'password'}
+                  onChangeText = {this.handlePasswordChange}
+                  autoCapitalize = "none"
+                  height = {40}
+                  borderWidth = {0.5}
+                  borderColor={colors.darkSilver}
+                  borderRadius = {4}
+                  paddingLeft = {8}
+                  returnKeyType={'next'}
+                  paddingLeft = {8}
+                  refs = {(input) => {this.passwordRef = input}}
+                  blurOnSubmit={false}
+                  onFocus={()=>this.setState({isPasswordFocused:true})}
+                  onBlur={()=>this.setState({isPasswordFocused:false})}
+                  onSubmitEditing={() => { 
+                    this.confirmPwdRef && this.confirmPwdRef.focus()
+                  }}
+                />
+              </View> 
+                <DisplayText
+                  text={'Enter at least 8 characters'}
+                  styles = {styles.formPwdHint}
+                /> 
+              
+            </View>
             <View style = {styles.formView}>
               <DisplayText
                 text={'Confirm Password *'}
                 styles = {styles.formHeaderTxt}
                 onPress = {this.handleRegistration}
               /> 
-            <InputField
-              textColor={colors.darkGray}
-              inputType={'password'}
-              onChangeText = {this.handlePassword2Change}
-              autoCapitalize = "none"
-              height = {40}
-              borderWidth = {1}
-              borderColor={colors.darkSilver}
-              borderRadius = {4}
-              paddingLeft = {8}
-              refs={(input) => { this.confirmPwdRef = input; }}
-              returnKeyType={'done'}
-              blurOnSubmit={false}
-              paddingLeft = {8}
-              onFocus={()=>this.setState({isConformPwdFocused:true})}
-              onBlur={()=>this.setState({isConformPwdFocused:false})}
-              onSubmitEditing={() => { 
-                this.handleSignIn();
-              }}
-            /> 
-          </View>
-          
+              <View style = {[styles.textInputView,{ borderColor: this.state.isConformPwdFocused
+                ? theme.primaryColor
+                : colors.whiteShade}]}> 
+                <InputField
+                  textColor={colors.darkGray}
+                  inputType={'password'}
+                  onChangeText = {this.handlePassword2Change}
+                  autoCapitalize = "none"
+                  height = {40}
+                  borderWidth = {1}
+                  borderColor={colors.darkSilver}
+                  borderRadius = {4}
+                  paddingLeft = {8}
+                  refs={(input) => { this.confirmPwdRef = input; }}
+                  returnKeyType={'done'}
+                  blurOnSubmit={false}
+                  paddingLeft = {8}
+                  onFocus={()=>this.setState({isConformPwdFocused:true})}
+                  onBlur={()=>this.setState({isConformPwdFocused:false})}
+                  onSubmitEditing={() => { 
+                    this.handleSignUp();
+                  }}
+                /> 
+              </View>
+            </View>
             <View style = {StyleSheet.flatten(styles.checkBoxView)}>
               <CheckBox
                 style={styles.checkBox}
@@ -674,7 +765,7 @@ class Register extends Component {
               visible={showLoading}
               title="Processing"
               message="Please wait..."/>
-              <SingleButtonAlert
+              <ErrorAlert
                 title = {title} 
                 message = {message}
                 handleCloseNotification = {this.handleCloseNotification}
@@ -687,7 +778,7 @@ class Register extends Component {
             <SubmitButton
               title={'Sign Up'}
               disabled={!this.toggleButtonState()}
-              onPress={this.handleAcceptTerms}
+              onPress={this.handleSignUp}
               titleStyle={styles.btnText}
               btnStyle = {styles.btnStyle}
             />

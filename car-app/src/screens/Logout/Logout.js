@@ -18,7 +18,7 @@ export default class Profile extends Component {
 
    handleLogout = async() => {
     await AsyncStorage.clear();
-      this.props.navigation.navigate('Home');
+      this.props.navigation.navigate('Login');
   }
   
   render () {

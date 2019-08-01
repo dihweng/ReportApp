@@ -57,7 +57,7 @@ export default styles = StyleSheet.create({
 
   createAccount : {
     fontSize: theme.MediumFont,
-    color: theme.whiteShadeTxt,
+    color: theme.whiteShadehade,
     fontFamily: theme.headerFont,
     alignSelf: 'center',
   },
@@ -79,24 +79,22 @@ export default styles = StyleSheet.create({
     width : '100%',
     justifyContent : 'center',
     alignItems : 'center',
-    paddingLeft: 30,
-    paddingRight: 30,
+    // paddingLeft: 30,
+    // paddingRight: 30,
   },
   btnText : {
     fontSize: 20,
-    color: colors.whiteShade,
+    color: theme.whiteShade,
     fontFamily: theme.headerFont,
     alignSelf: 'center',    
   },
   wrapper: {
-    paddingLeft: 30,
-    paddingRight: 30,
-    marginTop: 44,
-    paddingTop: 8,
-    paddingBottom : 8,
+    flex: 1,
+    // paddingBottom : 8,
     justifyContent: 'center',
     alignItems : 'center',
-    width : '90%',
+    width : '100%',
+    paddingHorizontal: 30
     // backgroundColor: colors.green_background
   },
   logoIcon : {
@@ -115,8 +113,8 @@ export default styles = StyleSheet.create({
     fontSize : theme.LargeFont,
     color : theme.colorAccent,
   },
-  logoView : {
-    // marginTop: 20, 
+  logoView: {
+    width: '100%',
     justifyContent: 'center', 
     alignItems: 'center', 
   },
@@ -132,19 +130,19 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
     height : '100%',
     width : 40,
-    borderTopLeftRadius : 4,
-    borderBottomLeftRadius : 4,
   },
-
   formView : {
     flexDirection : 'row',
-    width : '100%',
     justifyContent: 'center',
     alignItems : 'center',
     backgroundColor : theme.colorAccent,
     marginTop : 4,
+    paddingHorizontal: 20
   },
-
+  formContainer: {
+    paddingTop : 40, 
+    paddingHorizontal: 20
+  },
   textInputView : {
     width : '100%',
     height : 45,
