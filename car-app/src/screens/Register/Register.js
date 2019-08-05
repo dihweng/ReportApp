@@ -193,6 +193,7 @@ checkPassword(password1, password2) {
           }   
         }  
         else if(res.data) {
+          console.log({res: res.data});
           this.hideLoadingDialogue();
           return this.props.navigation.navigate('Login');
         }
@@ -204,7 +205,7 @@ checkPassword(password1, password2) {
   } 
 
   handleSignUp = async () =>{
-    const { name, email, password, password2, phoneNumber, nameCode } = this.state;
+    const { name, email, password, password2, phoneNumber, username } = this.state;
   
     this.showLoadingDialogue();
     await this.checkEmail(email);
@@ -212,11 +213,11 @@ checkPassword(password1, password2) {
     await this.checkPassword(password, password2);
 
     let body = {
-      password : password, 
-      email : email.toLowerCase(), 
-      phone : phoneNumber, 
       name : name, 
-      // country : nameCode,
+      email : email.toLowerCase(), 
+      password : password, 
+      phone : phoneNumber, 
+      username : username,
     };
 
     try {
@@ -665,7 +666,7 @@ checkPassword(password1, password2) {
                   onChangeText = {this.handlePassword2Change}
                   autoCapitalize = "none"
                   height = {40}
-                  borderWidth = {1}
+                  borderWidth = {0.5}
                   borderColor={colors.darkSilver}
                   borderRadius = {4}
                   paddingLeft = {8}

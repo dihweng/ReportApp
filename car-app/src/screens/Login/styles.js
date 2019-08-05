@@ -57,7 +57,7 @@ export default styles = StyleSheet.create({
 
   createAccount : {
     fontSize: theme.MediumFont,
-    color: theme.whiteShadehade,
+    color: theme.whiteShade,
     fontFamily: theme.headerFont,
     alignSelf: 'center',
   },
@@ -167,5 +167,11 @@ export default styles = StyleSheet.create({
     resizeMode : 'contain',
     tintColor : theme.colorAccent,
   },
-
+  
+  splashView : {
+    flex : 1,
+    justifyContent: 'center', 
+    alignItems :'center', 
+    backgroundColor: theme.primaryColor,
+  },
 });

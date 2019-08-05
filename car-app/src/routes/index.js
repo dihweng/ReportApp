@@ -135,12 +135,7 @@ const MenuStack = createStackNavigator({
       header : null,
     }
   },
-  Subscribe : {
-    screen : Subscribe,
-    navigationOptions : {
-      header : null,
-    }
-  },
+  
   Subscription : {
     screen : Subscription,
     navigationOptions : {
@@ -149,6 +144,12 @@ const MenuStack = createStackNavigator({
   },
   ViewPlan : {
     screen : ViewPlan,
+    navigationOptions : {
+      header : null,
+    }
+  },
+  Subscribe : {
+    screen : Subscribe,
     navigationOptions : {
       header : null,
     }

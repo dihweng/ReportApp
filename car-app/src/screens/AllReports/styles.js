@@ -205,5 +205,29 @@ export default styles = StyleSheet.create({
     alignItems : 'center',
     height : 40,
     // borderRadius : 4,
-  }
+  },
+  FlatListHeader : {
+    width : '100%',
+    height : 48,
+    marginTop : 8,
+    justifyContent : 'space-between',
+    flexDirection : 'row',
+    alignItems : 'center',
+    paddingLeft : 16,
+    paddingRight : 16,
+    borderRadius : 30,
+    shadowColor: '#000',
+    shadowOffset: { 
+      width: 0, 
+      height: 4 
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 3,
+    marginBottom : 4
+  },
+  headerMessageView : {
+    paddingLeft : 16,
+    paddingRight : 16,
+  },
 });

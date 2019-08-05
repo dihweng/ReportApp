@@ -211,7 +211,42 @@ export default styles = StyleSheet.create({
     height: 80,
     backgroundColor : theme.colorAccent,
     borderRadius: 2,
-    margin: 1
+    margin: 1,
+    padding: 20,
+    paddingTop: 16,
+  },
+  planName: {
+    fontFamily: theme.LightRoboto,
+    fontSize: theme.SmallFont,
+    color: theme.primaryTextColor,
+    marginLeft: 8,
+  },
+  planView: {
+    marginLeft: 20,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  viewCicle: {
+    height: 16,
+    width: 16,
+    borderWidth: 2,
+    borderRadius: 16,
+    padding: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: theme.primaryColor
+  },
+  innerView: {
+    height: 10,
+    width: 10,
+    borderWidth: 2,
+    borderRadius: 16,
+    backgroundColor: theme.primaryColor
+  },
+  subName: {
+    fontFamily: theme.primaryFont,
+    fontSize: theme.MediumFont,
+    color: theme.primaryTextColor,
   },
   subscribtionView:{
     height : '100%',

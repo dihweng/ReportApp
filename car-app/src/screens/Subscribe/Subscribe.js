@@ -1,13 +1,14 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, Text, Modal, FlatList, TouchableHighlight, ScrollView, SafeAreaView, StatusBar, Image, KeyboardAvoidingView,TouchableOpacity, StyleSheet,} from 'react-native';
+import { View, Text,  ScrollView, SafeAreaView, StatusBar, Image, KeyboardAvoidingView,TouchableOpacity, StyleSheet,} from 'react-native';
 import {DisplayText,InputField, SubmitButton, SingleButtonAlert } from '../../components';
+import { getUserDatials } from '../Utils/Utils'
 import styles from './styles';
 import theme from '../../assets/theme';
 import data from '../Utils/Countries';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import colors from '../../assets/colors'
-import { Input, Icon } from 'native-base'
+import numeral from 'numeral';
 
 export default class Subscribe extends Component {
   constructor(props) {
@@ -15,34 +16,36 @@ export default class Subscribe extends Component {
     this.state ={
       name: '',
       email: '',
-      plan: 'Plan',
+      plan: '',
+      phoneNumber: '',
+      address: '',
       flag: '',
-      phoneNumber : '',
-      modalVisible : false,
-      showAlert : false,
-      showLoading : false,
-      visible : false,
+      planType: '',
+      amount: 0,
+      modalVisible: false,
+      showAlert: false,
+      showLoading: false,
+      visible: false,
       message: '',
       title: '',
       modalPlanVisible: false,
       isValidPlan: false, 
     }
+    
   }
 
   async componentDidMount(){
     const defaultFlag = data.filter(obj => obj.name === 'Nigeria')[0].flag;
-    this.setState({
+    let userDetails = await getUserDatials();
+    
+    await this.setState({
+      email: userDetails.data.email,
+      phoneNumber: userDetails.data.phone,
+      name: userDetails.data.name,
       flag :defaultFlag,
-    })
-    // let userDetails = await getUserDatials();
-
-    // let bank = userDetails.data.bank_name;
-    // this.setState({
-    //   bankName: bank,
-    // });
+    });
+    await this.handleGetProduct();
   }
-
-
   handleSubscription = () => {
     return this.props.navigation.navigate('ManageSubscription');
   }
@@ -53,7 +56,17 @@ export default class Subscribe extends Component {
     return this.props.navigation.navigate('Subscribe');
   }
 
-  
+  handleGetProduct = async() => {
+    const { navigation } = this.props;
+    const amount = navigation.getParam('amount', 'NO-ID');
+    const planType = navigation.getParam('planType', 'NO-ID');
+    console.log({plandddd: planType, amount: amount});
+
+    await this.setState ({
+      planType,
+      amount,
+    });
+  }
   toggleDrawer = () => {
     //Props to open/close the drawer
     this.props.navigation.toggleDrawer();
@@ -80,9 +93,7 @@ export default class Subscribe extends Component {
         phone : text
       });
     }
-
   }
-
   handleEmailChange = (email) => {
     if(email.length > 0) {
       this.setState({
@@ -123,19 +134,9 @@ export default class Subscribe extends Component {
     this.togglePlanModal(!this.state.modalPlanVisible);
   };
 
-
-
   render () {
-    const { title, message, showAlert, showLoading } = this.state
-    const pickerPlanPersonal = [
-      {title: 'One Month Plan ₦1200', value: '1200'},
-      {title: 'Six Month Plan ₦6000', value: '6000'},
-      {title: 'One Year Plan ₦12000', value: '12000'},
-    ];
-    const pickerPlanCooperate = [
-      {title: 'Six Month Plan ₦6000', value: '6000'},
-      {title: 'One Year Plan ₦12000', value: '12000'},
-    ];
+    const { title, message, showAlert, showLoading, name, phoneNumber, email, amount, planType } = this.state
+
     return(
       <SafeAreaView style={styles.container}> 
         <StatusBar barStyle="default" /> 
@@ -194,67 +195,66 @@ export default class Subscribe extends Component {
             style={{flex:1,}}
             showsVerticalScrollIndicator={false}>
               <View style = {styles.subPlanView}>
-
+                <DisplayText
+                  text={'Subscribtion Plan'}
+                  styles = {StyleSheet.flatten(styles.subName)}
+                />
+                
+                <View style={styles.planView}>
+                  <View style={styles.viewCicle}>
+                    <View style={styles.innerView}></View>
+                  </View>
+                  <DisplayText
+                    text={planType}
+                    styles = {StyleSheet.flatten(styles.planName)}
+                  />
+                </View>
               </View>
               
               <View style = {styles.formView}>
                 <DisplayText
-                  text={'Address *'}
+                  text={'Name *'}
                   styles = {styles.formHeaderTxt}
                 />
-                <InputField
-                  textColor={theme.inputTxtColor}
-                  inputType={'name'}
-                  keyboardType={'default'}
-                  onChangeText = {this.handleChangeAddress}
-                  autoCapitalize = "words"
-                  height = {40}
-                  // borderWidth = {1}
-                  borderColor={theme.formBorderColor}
-                  borderRadius={4}
-                  paddingLeft = {8}
-                  formStyle = {styles.formstyle}
-                  
-                /> 
+                <TouchableOpacity 
+                  underlayColor={colors.white}
+                  style = {styles.textBoder}>
+                  <View style = {styles.viewTxtPlan}>
+                    <Text style = {styles.genderText}>
+                      {name}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
               <View style = {styles.formView}>
                 <DisplayText
                   text={'Email *'}
                   styles = {styles.formHeaderTxt}
                 />
-                <InputField
-                  textColor={colors.text_color}
-                  inputType={'email'}
-                  keyboardType={'default'}
-                  onChangeText = {this.handleEmailChange}
-                  autoCapitalize = "none"
-                  height = {40}
-                  borderWidth = {1}
-                  borderColor={colors.field_color}
-                  borderRadius={4}
-                  paddingLeft = {8}
-                  formStyle = {styles.formstyle}
-                />
+                <TouchableOpacity 
+                  underlayColor={colors.white}
+                  style = {styles.textBoder}>
+                  <View style = {styles.viewTxtPlan}>
+                    <Text style = {styles.genderText}>
+                      {email}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View> 
               <View style = {styles.formView}>
                 <DisplayText
                   text={'Phone Number *'}
                   styles = {styles.formHeaderTxt}
                 />
-                <InputField
-                  textColor={colors.text_color}
-                  inputType={'phone'}
-                  keyboardType={'default'}
-                  onChangeText = {this.handlePhoneChange}
-                  autoCapitalize = "none"
-                  height = {40}
-                  borderWidth = {1}
-                  borderColor={colors.field_color}
-                  borderRadius={4}
-                  paddingLeft = {8}
-                  formStyle = {styles.formstyle}
-                  returnKeyType = {'done'}
-                />
+                <TouchableOpacity 
+                  underlayColor={colors.white}
+                  style = {styles.textBoder}>
+                  <View style = {styles.viewTxtPlan}>
+                    <Text style = {styles.genderText}>
+                      {phoneNumber}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View> 
                {/* Plan modal selection */}
                <View style = {styles.formContainer}>
@@ -264,50 +264,14 @@ export default class Subscribe extends Component {
                 />
                 <TouchableOpacity 
                   underlayColor={colors.white}
-                  onPress = {this.handlePlan}
                   style = {styles.textBoder}>
                   <View style = {styles.viewTxtPlan}>
                     <Text style = {styles.genderText}>
-                      {this.state.plan}
+                      {amount}
                     </Text>
-                    <Icon
-                      active
-                      name='md-arrow-dropdown'
-                      style={styles.iconStyle}
-                    />
                   </View>
                 </TouchableOpacity>
-                
               </View>
-              <Modal
-              animationType="slide"
-              transparent={true}
-              visible = {this.state.modalPlanVisible}
-              onRequestClose={() => {console.log('Request was closed')}}>
-              <View style={styles.modalContainer}> 
-                <View style={styles.modalStyle}>
-                  <ScrollView 
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ padding: 16}}>
-                    <View style={{flex: 1, justifyContent: 'center'}}>
-                      <DisplayText
-                        style={styles.textHeaderStyle}
-                        text ={' Subscription Plan '} 
-                        />
-                        {pickerPlanPersonal.map((value, index) => {
-                          return <TouchableHighlight key={index} onPress={() => this.setPlanPicker(value.value)}>
-                            <Text style={styles.modalTxt}>{value.title}</Text>
-                          </TouchableHighlight>;
-                        })
-                        }                    
-                      </View>
-                    </ScrollView>
-                  </View>
-                </View>
-              </Modal>
-            
-            {/* Plan */}
-
             <View style = {styles.btnView}>
               <ProgressDialog
                 visible={showLoading}

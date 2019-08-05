@@ -211,10 +211,27 @@ export default styles = StyleSheet.create({
     height: 80,
     backgroundColor : theme.colorAccent,
     borderRadius : 2,
+    flexDirection : 'column',
+    paddingHorizontal: 20,
+    paddingTop: 8
+  },
+  planCheckView: {
+    marginVertical : (Platform.OS === 'ios') ? 4 : 4,
+    flexDirection : 'row',
+    marginTop : 8,
+    justifyContent : 'space-between',
+    alignItems: 'center',
   },
   subscribtionView:{
     height : (Platform.OS ==='ios') ? '85%' : '85%',
     padding : 20,
+  },
+  listViewItem : {
+    alignItems : 'center',
+    width : '100%',
+    justifyContent: 'center',
+    // paddingLeft : 20,
+    // paddingRight : 20,
   },
   plandCard: {
     width : '99%',
@@ -271,5 +288,9 @@ export default styles = StyleSheet.create({
     color: theme.colorAccent,
     fontFamily: theme.primaryFont,
     alignSelf: 'center',    
+  },
+  viewBody : {
+    // alignItems : 'center',
+    height : (Platform.OS === 'ios') ? '90%' :'85%',
   },
 });

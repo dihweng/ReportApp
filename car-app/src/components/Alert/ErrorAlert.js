@@ -41,7 +41,7 @@ export default class ErrorAlert extends Component {
               <Text style={styles.Alert_Message}>
                 {message} 
               </Text>
-              <View style={{flexDirection: 'row', height: '30%', position : 'absolute', bottom : 0}}>
+              <View style={{flexDirection: 'row', position : 'absolute', bottom : 0}}>
                 <TouchableOpacity 
                   style={styles.buttonStyle}
                   onPress={this.closeNotification } 
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor : colors.white, 
-    height: 220,
+    // height: 220,
     width: '80%',
     borderRadius: 8,
     elevation : 4,
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   },
    buttonStyle: {  
     width: '100%',
-    height: '100%',
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.errorRed,

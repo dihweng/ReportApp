@@ -201,7 +201,7 @@ export default styles = StyleSheet.create({
   txtTabHeader: {
     fontFamily: theme.LightRoboto,
     fontSize: theme.SmallFont,
-    color: theme.textGray,
+    color: theme.formBorderColor,
   },
   txtTabHeaderWhite: {
     fontFamily: theme.LightRoboto,

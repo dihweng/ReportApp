@@ -1,9 +1,9 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, StyleSheet, StatusBar,TouchableOpacity, SafeAreaView, Image, KeyboardAvoidingView,ScrollView } from 'react-native';
-import {DisplayText, InputField, SingleButtonAlert,SubmitButton, AuthBackground} from '../../components';
+import {DisplayText, InputField, SingleButtonAlert, ErrorAlert,SubmitButton, AuthBackground} from '../../components';
 import styles, { IMAGE_HEIGHT, }  from './styles';
-import { getProfile, LoginEndpoint, postRoute, isPhoneValid, saveProfile} from '../Utils/Utils';
+import { getProfile, LoginEndpoint, postRoute, saveProfile} from '../Utils/Utils';
 import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import theme from '../../assets/theme';
@@ -14,13 +14,13 @@ export default class Login extends Component {
 
     this.state ={
       restoring : true,
-      isPhoneNumberValid: false,
+      isEmailValid: false,
       isPasswordValid: false,
       showAlert: false,
       showLoading: false,
       title: '',
       message: '', 
-      phone: '',
+      email: '',
       password: '',
       switchValue: true,
       session : '',
@@ -37,11 +37,11 @@ export default class Login extends Component {
   checkLogin =  async() => {
     let profile = await getProfile();
     console.log({profilessss: profile})
-    if(typeof profile.expires !== 'undefined' && profile.expires !== null ) {
+    if(typeof profile.expires !== 'undefined' ) {
       this.setState({
         restoring : false,
       });
-      return this.props.navigation.navigate('Navigations');
+      return this.props.navigation.navigate('Menu');
     }
     else {
       this.setState({
@@ -49,17 +49,17 @@ export default class Login extends Component {
       });
     }
   }
-    showLoadingDialogue =()=> {
-      this.setState({
-        showLoading: true,
-      });
-    }
+  showLoadingDialogue =()=> {
+    this.setState({
+      showLoading: true,
+    });
+  }
 
-    hideLoadingDialogue =()=> {
-      this.setState({
-        showLoading: false,
-      });
-    }
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
 
   showNotification = message => {
     this.setState({ 
@@ -78,6 +78,7 @@ export default class Login extends Component {
           return this.showNotification(res.message);
         }   
         else {
+          console.log({responseee: res})
           this.hideLoadingDialogue();
           saveProfile(
             res.access_token,
@@ -85,28 +86,27 @@ export default class Login extends Component {
             res.expires_in
           );
           this.hideLoadingDialogue();
-          return this.props.navigation.navigate('Navigations');
+          return this.props.navigation.navigate('Menu');
         }
       }
     );
   } 
   handleSignIn = async () =>{
-    const { password, phoneNumber,  } = this.state,
+    const { password, email,  } = this.state,
       grant_type = 'password',
       client_id = '2',
-      client_secret = 'pHixEbVKUcIuI3vKKcA2sz2tEOEdnfMJ3dwusOiX';
-    this.showLoadingDialogue();
+      client_secret = 'dkcZSvegMYo8ARF3RruOr21qoTPN7K0VQcbzQhy0';
+
+      this.showLoadingDialogue();
 
     let body = {
-      phone : phoneNumber, 
+      username : email, 
       password : password, 
-      // username : phoneNumber, 
       grant_type : grant_type,
       client_id : client_id,
       client_secret : client_secret,
       scope : '*',
     };
-
     try {
       await this.login(body)
     }
@@ -114,24 +114,21 @@ export default class Login extends Component {
       console.log({e})
     }
   }
-  
-
-  handlePhoneChange = (phone) => {
-    if(phone.length > 0) {
+  handleEmailChange = (email) => {
+    if(email.length > 0) {
       this.setState({
-        isPhoneNumberValid: true,
-        phone : phone
+        isEmailValid: true,
+        email : email
       });
     }
     else {
-      if (phone.length < 1) {
+      if (email.length < 1) {
         this.setState({
-          isPhoneNumberValid : false
+          isEmailValid : false
         });
       }
     }
   }
-
   handlePasswordChange = (password) => {
     if (password.length > 0) {
       this.setState({
@@ -147,26 +144,22 @@ export default class Login extends Component {
       }
     }
   }
-
   handleRegistration = () => {
     return this.props.navigation.navigate('Register');
   };
-
   handleForgetPassword = () => {
     return this.props.navigation.navigate('ForgetPassword');
     // return this.props.navigation.navigate('Verification');
   }
-
   handleCloseNotification = () => {
     return this.setState({
        showAlert : false
      })
   }
-
   toggleButtonState = () => {
-    const { isPhoneNumberValid, isPasswordValid } = this.state;
+    const { isEmailValid, isPasswordValid } = this.state;
           
-    if ( isPhoneNumberValid && isPasswordValid ) {
+    if ( isEmailValid && isPasswordValid ) {
       return true;
     } 
     else {
@@ -179,10 +172,10 @@ export default class Login extends Component {
 
     if(restoring) {
       return (
-        <SafeAreaView>    
-          {/* <Image
-            source={require('../../assets/images/splash.png')}
-            style={StyleSheet.flatten(styles.logoIcon)}/>  */}
+        <SafeAreaView style = {styles.splashView}>    
+          <Image
+            source={require('../../assets/images/logo_login.png')}
+            style={StyleSheet.flatten(styles.logoIcon)}/> 
         </SafeAreaView>
       );
     }
@@ -216,15 +209,16 @@ export default class Login extends Component {
               : colors.whiteShade}]}> 
                 <View style = {styles.inputImageView}>
                   <Image
-                    source={require('../../assets/images/phone.png')}
+                    source={require('../../assets/images/email.png')}
                     style={StyleSheet.flatten(styles.iconForm)}/> 
                 </View>
                 <InputField
-                  placeholder={'Phone Number'}
+                  placeholder={'Email Address'}
                   placeholderTextColor = {theme.inputTxtColor}
-                  textColor={theme.inputTxtColor}
-                  inputType={'phone'}
-                  onChangeText = {this.handlePhoneChange}
+                  textColor={colors.darkGray}
+                  inputType={'email'}
+                  keyboardType={'default'}                  
+                  onChangeText = {this.handleEmailChange}
                   autoCapitalize = "none"
                   height = {40}
                   width = {'90%'}
@@ -252,7 +246,7 @@ export default class Login extends Component {
                   <InputField
                   placeholder={'Password'}
                   placeholderTextColor = {theme.inputTxtColor}
-                  textColor={theme.inputTxtColor}
+                  textColor={colors.darkGray}
                   inputType={'password'}
                   onChangeText = {this.handlePasswordChange}
                   autoCapitalize = "none"
@@ -285,7 +279,7 @@ export default class Login extends Component {
               titleStyle={styles.btnText}
               btnStyle = {styles.btnStyle}
             />
-            <SingleButtonAlert
+            <ErrorAlert
               title = {title} 
               message = {message}
               handleCloseNotification = {this.handleCloseNotification}

@@ -8,7 +8,7 @@ const LoginEndpoint = `${Baseurl}oauth/token`,
   VerificationEndpoint = `${Baseurl}api/users/`,
   CreateInvestment = `${Baseurl}api/investments`,
   UpdateBankDetails = `${Baseurl}api/users`,
-  AllInvestmentEndpoint = `${Baseurl}api/users/`,
+  getAllReport = `${Baseurl}api/reports`,
   WithdrawInvestment = `${Baseurl}api/investments/`,
   WithdrawReferal = `${Baseurl}api/users/`,
   CreateSupport = `${Baseurl}api/support`,
@@ -16,7 +16,10 @@ const LoginEndpoint = `${Baseurl}oauth/token`,
   TicketMessageEndpoint = `${Baseurl}api/support/`,
   GetAllMessageEndPoint = `${Baseurl}api/support`,
   ChangePassword = `${Baseurl}api/users/`,
-  ForgotPassword = `${Baseurl}api/users/password/forgot`;
+  ForgotPassword = `${Baseurl}api/users/password/forgot`,
+  PlanEndpoint = `${Baseurl}api/plans`,
+  AddFavoriteEndPoint = `${Baseurl}api/reports/`,
+  AddReadLaterEndPoint = `${Baseurl}api/reports/`;
 export {
   LoginEndpoint,
   RegisterEndpoint,
@@ -25,7 +28,7 @@ export {
   VerificationEndpoint,
   CreateInvestment,
   UpdateBankDetails,
-  AllInvestmentEndpoint,
+  getAllReport,
   WithdrawInvestment,
   WithdrawReferal,
   CreateSupport,
@@ -34,6 +37,9 @@ export {
   GetAllMessageEndPoint,
   ChangePassword,
   ForgotPassword,
+  PlanEndpoint,
+  AddFavoriteEndPoint,
+  AddReadLaterEndPoint,
 }
 
 
@@ -118,7 +124,26 @@ export const postToken = (endpoint, token) => {
   });
 }
 
-export const getRoute = (endpoint, token) => {
+export const getRoute = (endpoint) => {
+  return fetch(endpoint, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    })
+    .then((res) => {
+      return res.json();
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return Alert.alert(error.toString())
+  });
+}
+
+export const getRouteToken = (endpoint, token) => {
   console.log({endpoint: endpoint , token: token});
   return fetch(endpoint, {
     method: 'GET',
@@ -137,7 +162,6 @@ export const getRoute = (endpoint, token) => {
     .catch((error) => {
       return Alert.alert(error.toString())
   });
-
 }
 
 export const putRoute = (endpoint, body, token) => {
@@ -161,11 +185,11 @@ export const putRoute = (endpoint, body, token) => {
   });
 }
 
-export const saveProfile = async( access_token, expires, rememberME ) => {
+export const saveProfile = async( access_token, refresh_token, expires_in ) => {
   let profile = {
     'access_token' : access_token,
-    'expires' : expires,
-    'rememberMe' : rememberME
+    'refresh_token' : refresh_token,
+    'expires' : expires_in
   };
   return await AsyncStorage.setItem('profile', JSON.stringify(profile))
 }

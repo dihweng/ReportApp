@@ -15,7 +15,9 @@ const dashboard = require('../../assets/images/dashboard.png'),
  terms = require('../../assets/images/terms.png'),
  report = require('../../assets/images/report.png'),
  logout = require('../../assets/images/logout.png'),
- manage_subscription = require('../../assets/images/manage.png')
+ manage_subscription = require('../../assets/images/manage.png'),
+ favorite= require('../../assets/images/favourite.png');
+
 
 export default class CustomSidebarMenu extends Component {
   constructor() {
@@ -32,15 +34,15 @@ export default class CustomSidebarMenu extends Component {
     },
     this.items = [
       {
-        // navOptionThumb: 'podium',
-        navOptionThumb : dashboard,
-        navOptionName: 'Dashboard',
-        screenToNavigate: 'DashBoard',
-      },
-      {
         navOptionThumb: report,
         navOptionName: 'Report',
         screenToNavigate: 'DashBoard',
+      },
+      {
+        // navOptionThumb: 'podium',
+        navOptionThumb :favorite,
+        navOptionName: 'Favorite/Read Later',
+        screenToNavigate: 'FavoriteList',
       },
       {
         navOptionThumb: manage_subscription,
