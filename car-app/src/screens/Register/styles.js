@@ -310,7 +310,12 @@ export default styles = StyleSheet.create({
     marginRight: (Platform.OS === 'ios') ? 4 : 2
   },
 
- 
+  toastView: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: (Platform.OS == 'ios') ? 20 : 0,
+  },
   scrollview: { 
     flexDirection:'row',
     padding: 8,

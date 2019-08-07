@@ -31,6 +31,7 @@ import Ratios from '../screens/Ratios/Ratios';
 import PlainReport from '../screens/PlainReport/PlainReport';
 import FavoriteList from '../screens/FavoriteList/FavoriteList';
 import ReadLaterList from '../screens/ReadLaterList/ReadLaterList';
+import Payment from '../screens/Payment/Payment';
 
  const AuthStack = createStackNavigator({ 
   Login: {
@@ -219,6 +220,12 @@ const MenuStack = createStackNavigator({
     screen : ReadLaterList,
     navigationOptions : {
       header : null,
+    }
+  },
+  Payment: {
+    screen: Payment,
+    navigationOptions: {
+      header: null,
     }
   },
 },

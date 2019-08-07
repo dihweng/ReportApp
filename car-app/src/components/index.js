@@ -6,9 +6,10 @@ import {DisplayText}  from './Text';
 import  {Symbol} from './Symbol/Symbol';
 import {OtpInputs} from './OTPComponent';
 import {AuthBackground} from './AuthBackground';
+import {CustomToast} from './CustomToast';
 
 export {
-  Alert , 
+  Alert, 
   SingleButtonAlert, 
   ErrorAlert,
   SuccessAlert,
@@ -19,4 +20,5 @@ export {
   InputFieldBorder,
   OtpInputs,
   AuthBackground,
+  CustomToast,
 } 

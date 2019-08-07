@@ -116,9 +116,9 @@ export default class ViewPlan extends Component {
   handleViewPlan = () => {
     return this.props.navigation.navigate('ViewPlan');
   }
-  handleSubscribe = () => {
-    return this.props.navigation.navigate('Subscribe');
-  }
+  // handleSubscribe = () => {
+  //   return this.props.navigation.navigate('Subscribe');
+  // }
 
 //Radio Button selection on press
   onCheckPlan = (plan) => {
@@ -167,11 +167,11 @@ export default class ViewPlan extends Component {
 
   handleSelectPlan = async(item) => {
     const { planType } = this.state;
-    console.log({navigationPropss: item.amount, planType: planType});      
 
     return await this.props.navigation.navigate('Subscribe', {
       'amount': item.amount,
       'planType': planType,
+      'name' : item.name,
     });
   }
   

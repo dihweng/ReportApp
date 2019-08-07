@@ -80,11 +80,13 @@ export default styles = StyleSheet.create({
   viewBody : {
     // alignItems : 'center',
     flex : 1,
-    padding : 20
+    justifyContent: 'center',
+    // padding : 20
   },
   searchIcon : {
-    width : 20,
-    height : 20,
+    width: 20,
+    height: 20,
+    tintColor: theme.primaryColor
   },
   // listItems : {
   //   marginTop : 8,
@@ -94,11 +96,27 @@ export default styles = StyleSheet.create({
   //   height : 100,
   // },
   listViewItem : {
-    alignItems : 'center',
-    width : '100%',
+    alignItems: 'center',
+    width: '100%',
     justifyContent: 'center',
-    // paddingLeft : 20,
-    // paddingRight : 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 8,
+  },
+  searchView : {
+    width: '100%',
+    // marginTop : 8,
+    backgroundColor: theme.colorAccent,
+    height : 35,
+    borderRadius: 2,
+    elevation: 1,
+    shadowColor: theme.primaryTextColor,
+    shadowOpacity: 0.25,
+    shadowRadius: 2.56,
+    shadowOffset: {height : 1, width : 0},
+    flexDirection: 'row',
+    paddingLeft: 16,
+    alignItems: 'center'
   },
   cardView:{
     width: '99%',
@@ -206,10 +224,7 @@ export default styles = StyleSheet.create({
     height : 40,
     // borderRadius : 4,
   },
-  FlatListHeader : {
-    width : '100%',
-    height : 48,
-    marginTop : 8,
+  FlatListHeader : {    
     justifyContent : 'space-between',
     flexDirection : 'row',
     alignItems : 'center',
@@ -226,8 +241,22 @@ export default styles = StyleSheet.create({
     elevation: 3,
     marginBottom : 4
   },
+  
   headerMessageView : {
-    paddingLeft : 16,
-    paddingRight : 16,
+    paddingLeft: 16,
+    paddingRight: 16,
+    width: '100%',
+    height: 55,
+    backgroundColor: theme.primaryColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  toastView: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: (Platform.OS == 'ios') ? 20 : 0,
+    marginBottom: 20
   },
 });

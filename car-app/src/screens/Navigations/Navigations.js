@@ -88,14 +88,7 @@ const DashBoard_StackNavigator = createStackNavigator({
     }
   },
 });
-const Manage_Sub_StackNavigation  = createStackNavigator({
-  ManageSubscription: {
-    screen: ManageSubscription,
-    navigationOptions: {
-      header : null
-    }
-  },
-});
+
 
 const Manage_Account_StackNavigator = createStackNavigator({
   ManageAccount: {
@@ -146,6 +139,14 @@ const SurpportDesk_StackNavigator = createStackNavigator({
     }
   },
 });
+// const Manage_Sub_StackNavigation  = createStackNavigator({
+//   ManageSubscription: {
+//     screen: ManageSubscription,
+//     navigationOptions: {
+//       header : null
+//     }
+//   },
+// });
 const ViewPlan_StackNavigator = createStackNavigator({
   ViewPlan : {
     screen : ViewPlan,
@@ -162,30 +163,30 @@ const Subscribe_StackNavigator = createStackNavigator({
     }
   },
 });
-const Full_Report_StackNavigator = createStackNavigator({
-  FullReport : {
-    screen : FullReport,
-    navigationOptions: {
-      header: null,
-    }
-  },
-});
-const Ratios_StackNavigator = createStackNavigator({
-  Ratios : {
-    screen : Ratios,
-    navigationOptions: {
-      header: null,
-    }
-  },
-});
-const Cited_Authorities_StackNavigator = createStackNavigator({
-  CitedAuthorities : {
-    screen : CitedAuthorities,
-    navigationOptions: {
-      header: null,
-    }
-  },
-});
+// const Full_Report_StackNavigator = createStackNavigator({
+//   FullReport : {
+//     screen : FullReport,
+//     navigationOptions: {
+//       header: null,
+//     }
+//   },
+// });
+// const Ratios_StackNavigator = createStackNavigator({
+//   Ratios : {
+//     screen : Ratios,
+//     navigationOptions: {
+//       header: null,
+//     }
+//   },
+// });
+// const Cited_Authorities_StackNavigator = createStackNavigator({
+//   CitedAuthorities : {
+//     screen : CitedAuthorities,
+//     navigationOptions: {
+//       header: null,
+//     }
+//   },
+// });
 const PlainReport_StackNavigation = createStackNavigator({
   PlainReport: {
     screen: PlainReport,
@@ -356,12 +357,12 @@ const DrawerNavigator = createDrawerNavigator({
       header: null
     }
   },
-  ManageSubscription : {
-    screen : Manage_Sub_StackNavigation,
-    navigationOptions : {
-      header: null
-    }
-  },
+  // ManageSubscription : {
+  //   screen : Manage_Sub_StackNavigation,
+  //   navigationOptions : {
+  //     header: null
+  //   }
+  // },
   Investment : {
     screen : Investment_StackNavigator,
     navigationOptions: {
@@ -393,36 +394,36 @@ const DrawerNavigator = createDrawerNavigator({
       drawerLabel: "Surpport Desk",
     }
   },
-  ViewPlan : {
-    screen : ViewPlan_StackNavigator,
-    navigationOptions: {
-      drawerLabel: "View Plan",
-    }
-  },
-  Subscribe : {
-    screen : Subscribe_StackNavigator,
-    navigationOptions: {
-      drawerLabel: "Subscribe",
-    }
-  },
-  Ratios : {
-    screen : Ratios_StackNavigator,
-    navigationOptions: {
-      drawerLabel: "Ratios",
-    }
-  },
-  CitedAuthorities : {
-    screen : Cited_Authorities_StackNavigator,
-    navigationOptions: {
-      drawerLabel: "Cited Authorities",
-    }
-  },
-  FullReport : {
-    screen : Full_Report_StackNavigator,
-    navigationOptions: {
-      drawerLabel: "Full Report",
-    }
-  },
+  // ViewPlan : {
+  //   screen : ViewPlan_StackNavigator,
+  //   navigationOptions: {
+  //     drawerLabel: "View Plan",
+  //   }
+  // },
+  // Subscribe : {
+  //   screen : Subscribe_StackNavigator,
+  //   navigationOptions: {
+  //     drawerLabel: "Subscribe",
+  //   }
+  // },
+  // Ratios : {
+  //   screen : Ratios_StackNavigator,
+  //   navigationOptions: {
+  //     drawerLabel: "Ratios",
+  //   }
+  // },
+  // CitedAuthorities : {
+  //   screen : Cited_Authorities_StackNavigator,
+  //   navigationOptions: {
+  //     drawerLabel: "Cited Authorities",
+  //   }
+  // },
+  // FullReport : {
+  //   screen : Full_Report_StackNavigator,
+  //   navigationOptions: {
+  //     drawerLabel: "Full Report",
+  //   }
+  // },
   PlainReport : {
     screen : PlainReport_StackNavigation,
     navigationOptions: {

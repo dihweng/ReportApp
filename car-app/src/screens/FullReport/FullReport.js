@@ -4,6 +4,7 @@ import { View, Text, ScrollView, SafeAreaView, StatusBar, Image,TouchableOpacity
 import {DisplayText } from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
+import HTML from 'react-native-render-html';
 
 
 export default class FullReport extends Component {
@@ -14,9 +15,25 @@ export default class FullReport extends Component {
       showLoading : false,
       message: '',
       title: '',
+      content: '',
     }
   }
+  async componentDidMount(){
+    await this.handleGetReport()
+  }
+  
+  handleGetReport = async() => {
+    const{navigation} = this.props;
 
+    const id = navigation.getParam('id', 'NO-ID'),
+      content = navigation.getParam('content', 'NO-ID'),
+      excerpt = navigation.getParam('excerpt', 'NO-ID');
+      
+      return await this.setState({
+        content: content,
+      });
+    // console.log({id: id, content: content, exerpt: excerpt});
+  }
   handleRatio = () => {
     return this.props.navigation.navigate('Ratios');
   }
@@ -38,7 +55,7 @@ export default class FullReport extends Component {
   
 
   render () {
-    const { title, message, showAlert, showLoading } = this.state
+    const { title, message, showAlert, showLoading, content } = this.state
 
     return(
       <SafeAreaView style={styles.container}> 
@@ -89,6 +106,11 @@ export default class FullReport extends Component {
             />
           </TouchableOpacity>
         </View>
+        <ScrollView
+          style={{flex:1, paddingHorizontal: 8}}
+          showsVerticalScrollIndicator={false}>
+            <HTML html={content} />
+        </ScrollView>
       </SafeAreaView> 
     )
   }

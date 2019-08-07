@@ -1,18 +1,20 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList, SafeAreaView, StatusBar, TouchableOpacity, Dimensions, StyleSheet,} from 'react-native';
-import {DisplayText, SubmitButton, SingleButtonAlert} from '../../components';
+import { View, FlatList, SafeAreaView, StatusBar, TouchableOpacity, Image, Dimensions, StyleSheet,} from 'react-native';
+import {DisplayText, SubmitButton, SingleButtonAlert, InputField,CustomToast} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
 import { getRoute, getRouteToken, getAllReport, getProfile, ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint } from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import HTML from 'react-native-render-html';
+import colors from '../../assets/colors';
+// import HTML from 'react-native-render-html';
 
 export default class AllReports extends Component {
   constructor(props) {
     super(props);
     this.state ={
-      data: '',
+      data: [],
+      filterData: [],
       token: '',
       showAlert: false,
       message: '',
@@ -160,9 +162,9 @@ export default class AllReports extends Component {
           return this.showNotification(res.message);
         }   
         else {          
-          // console.log({resSSs:res.data});
           this.setState({
             data: res.data,
+            filterData: res.data,
           });
           return this.handleGetProfile();
         }
@@ -206,16 +208,18 @@ export default class AllReports extends Component {
   }
 
   handleFullReport(item){
-    return this.props.navigation.navigate('FullReport');
+    return this.props.navigation.navigate('FullReport', {
+      id: item.id,
+      content: item.content,
+      excerpt: item.excerpt,  
+    });
   }
-  
 
   addFavorite = async(id) =>{
     const {token} = this.state;
     this.showLoadingDialogue();
     let endpoint = `${AddFavoriteEndPoint}${id}/favorite`;
 
-    console.log({request_token : token, endpointsssss: endpoint});
     fetch(endpoint, {
       method : "POST",
       body : JSON.stringify(''),
@@ -231,9 +235,9 @@ export default class AllReports extends Component {
         this.showNotification(message);
       }
       else {
-        console.log({success : res});
         this.hideLoadingDialogue()
-        return this.props.navigation.navigate('FavoriteList')
+        this.Toast('Report Added to Favorite Successful')
+
       }
     })
   } 
@@ -254,7 +258,6 @@ export default class AllReports extends Component {
     this.showLoadingDialogue();
     let endpoint = `${AddReadLaterEndPoint}${id}/future`;
 
-    console.log({request_token : token, endpointsssss: endpoint});
     fetch(endpoint, {
       method : "POST",
       body : JSON.stringify(''),
@@ -269,9 +272,9 @@ export default class AllReports extends Component {
         this.showNotification(res.message);
       }
       else {
-        console.log({success : res});
-        this.hideLoadingDialogue()
-        return this.props.navigation.navigate('ReadLaterList')
+        this.hideLoadingDialogue();
+        this.Toast('Report Added to Read Later Successful')
+
       }
     })
   } 
@@ -285,19 +288,48 @@ export default class AllReports extends Component {
       console.log({e})
     }
   }
+  // search filter 
+  searchFilterFunction = text => {
+    const {filterData} = this.state;
+    this.setState({
+      value: text,
+    });
+    const newData = filterData.filter(item => {
+      const itemData = `${item.title.toUpperCase()} ${item.citation.toUpperCase()}`;
+      const textData = text.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+    return this.setState({
+      data: newData,
+    });
+  }
+  Toast=(message)=>{
+    this.refs.defaultToastBottom.ShowToastFunction(message);
+  }
+
 
   renderHeader = () => {
     return <View style={styles.headerMessageView}>
-        <View style = {styles.FlatListHeader}>
-          <DisplayText
-            text={'PLATEAU YOUTH COUCIL'}
-            styles = {StyleSheet.flatten(styles.aircraftListTxt)}
+        <View style={styles.searchView}>
+          <Image
+            source = {require('../../assets/images/search.png')}
+            style = {StyleSheet.flatten(styles.searchIcon)}
+          />
+          <InputField
+            placeholder = {'Search Anything'}
+            placeholderTextColor = {theme.primaryTextColor}
+            textColor={colors.purple}
+            inputType={'name'}
+            keyboardType={'default'}
+            onChangeText={text => this.searchFilterFunction(text)}
+            autoCorrect={false}
+            value={this.state.value}
+            height = {30}
+            width = {'80%'}
+            borderBottomWidth = {0}
+            paddingLeft  = {8}
           /> 
-          {/* <Image
-            resizeMode= 'contain'
-            style = {styles.messageLogo}
-            source={require('../../assets/images/icon.png')}
-            /> */}
         </View>
       </View>
   
@@ -381,9 +413,13 @@ export default class AllReports extends Component {
         <FlatList          
           data={this.state.data}          
           renderItem={this.renderRow}          
+          ListHeaderComponent={this.renderHeader}     
           keyExtractor={ data=> data.id.toString()}   
           showsVerticalScrollIndicator={false}
         />
+        <View style = {styles.taostView}>
+          <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          
+        </View> 
       </View>  
       <ProgressDialog
         visible={showLoading}
@@ -396,9 +432,7 @@ export default class AllReports extends Component {
         handleCloseNotification = {this.handleCloseNotification}
         visible = {showAlert}
       />
-
     </SafeAreaView>
-    
     )
   }
 } 

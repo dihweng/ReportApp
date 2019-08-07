@@ -4,45 +4,63 @@ import { View, Text,  ScrollView, SafeAreaView, StatusBar, Image, KeyboardAvoidi
 import {DisplayText,InputField, SubmitButton, SingleButtonAlert } from '../../components';
 import { getUserDatials } from '../Utils/Utils'
 import styles from './styles';
-import theme from '../../assets/theme';
+import RadioGroup from 'react-native-radio-buttons-group';
 import data from '../Utils/Countries';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import colors from '../../assets/colors'
 import numeral from 'numeral';
-
+import theme from '../../assets/theme'
 export default class Subscribe extends Component {
   constructor(props) {
     super(props);
     this.state ={
       name: '',
+      planName: '',
       email: '',
       plan: '',
       phoneNumber: '',
       address: '',
       flag: '',
       planType: '',
-      amount: 0,
-      modalVisible: false,
+      paymentType: 'Online',
+      amount: '',
       showAlert: false,
       showLoading: false,
       visible: false,
       message: '',
       title: '',
-      modalPlanVisible: false,
       isValidPlan: false, 
+      token: '',
+      payment : [
+        {
+          label: 'Online',
+          value: 'Online',
+          selected: true,
+          color: theme.primaryColor,
+          disabled: false,
+          size: 14
+        },
+        {
+          label: 'Manual',
+          value: 'Manual',
+          selected: false,
+          color: theme.primaryColor,
+          disabled: false,
+          size: 14
+        },
+      ]
     }
     
   }
 
   async componentDidMount(){
-    const defaultFlag = data.filter(obj => obj.name === 'Nigeria')[0].flag;
     let userDetails = await getUserDatials();
     
     await this.setState({
       email: userDetails.data.email,
       phoneNumber: userDetails.data.phone,
       name: userDetails.data.name,
-      flag :defaultFlag,
+      token: userDetails.token,
     });
     await this.handleGetProduct();
   }
@@ -57,19 +75,19 @@ export default class Subscribe extends Component {
   }
 
   handleGetProduct = async() => {
-    const { navigation } = this.props;
-    const amount = navigation.getParam('amount', 'NO-ID');
-    const planType = navigation.getParam('planType', 'NO-ID');
-    console.log({plandddd: planType, amount: amount});
+    const { navigation } = this.props,
+      amount = navigation.getParam('amount', 'NO-ID'),
+      planType = navigation.getParam('planType', 'NO-ID'),
+      planName = navigation.getParam('name', 'NO-ID');
 
     await this.setState ({
       planType,
       amount,
+      planName,
     });
   }
-  toggleDrawer = () => {
-    //Props to open/close the drawer
-    this.props.navigation.toggleDrawer();
+  handleBack = () => {
+    this.props.navigation.navigate('AllReport');
   };
   handleFullName = (name) => {
     if(name.length > 0) {
@@ -111,41 +129,63 @@ export default class Subscribe extends Component {
   }
 
   handleConfirm = () => {
-    alert('confirm coming soon');
+    const {paymentType, amount, email, name, token} = this.state;
+    const firstname = name.split(" ")[0],
+      lastname = name.split(" ")[1];
+    (paymentType === 'Online') ? 
+      this.props.navigation.navigate('Payment', {
+        'amount': amount,
+        'email': email,
+        'firstname': firstname,
+        'lastname': lastname,
+        'token': token,
+      })
+    : 
+    this.handleBankPayment();
+  }
+  handleBankPayment=()=>{
+    alert('Pay in the bank');
   }
 
-  setPlanPicker = (newValue) => {
-    this.setState({
-      plan: newValue,
-      isValidPlan: true
+  onCheckPlan = async(plan) => {
+    this.setState({ 
+      plan,
     });
-    this.closePlanModal();
+    await this.radioStatePay();
   }
 
-  handlePlan = () => {
-    this.togglePlanModal(true);
-  };
+  radioStatePay = async() => {
+    const { payment } = this.state;
+    let selectedButtonPlan = payment.find(e => e.selected == true);
+    selectedButtonPlan = selectedButtonPlan ? selectedButtonPlan.value : payment[0].label;
 
-  togglePlanModal = (visible) => {
-    this.setState({ modalPlanVisible: visible });
-  };
-
-  closePlanModal = () => {
-    this.togglePlanModal(!this.state.modalPlanVisible);
-  };
+    if ( selectedButtonPlan === 'Online') {
+      console.log({selected: selectedButtonPlan})
+      return this.setState({
+        paymentType: selectedButtonPlan
+      });
+    }
+    else if ( selectedButtonPlan === 'Manual'){
+      console.log({selected2: selectedButtonPlan});
+      return this.setState({
+        paymentType: selectedButtonPlan
+      });
+      // await this.planFilterFunction(selectedButtonPlan);
+    }
+  }
 
   render () {
-    const { title, message, showAlert, showLoading, name, phoneNumber, email, amount, planType } = this.state
+    const { title, message, showAlert, showLoading, name, planName, phoneNumber, email, amount, planType } = this.state
 
     return(
       <SafeAreaView style={styles.container}> 
         <StatusBar barStyle="default" /> 
         <View style = {styles.navBar}>
           <TouchableOpacity
-            onPress={this.toggleDrawer.bind(this)} 
+            onPress={this.handleBack} 
             style = {styles.headerImage}>
             <Image
-              onPress={this.toggleDrawer.bind(this)} 
+              onPress={this.handleBack} 
               source = {require('../../assets/images/menu.png')}
               style = {StyleSheet.flatten(styles.headerIcon)}
             />
@@ -205,7 +245,7 @@ export default class Subscribe extends Component {
                     <View style={styles.innerView}></View>
                   </View>
                   <DisplayText
-                    text={planType}
+                    text={`${planType} ${'Plan'}`}
                     styles = {StyleSheet.flatten(styles.planName)}
                   />
                 </View>
@@ -267,10 +307,23 @@ export default class Subscribe extends Component {
                   style = {styles.textBoder}>
                   <View style = {styles.viewTxtPlan}>
                     <Text style = {styles.genderText}>
-                      {amount}
+                      {`${planName} ₦${numeral(amount).format('0,0.00').toString()}`}
                     </Text>
                   </View>
                 </TouchableOpacity>
+              </View>
+              {/* Payment type radio button */}
+              <View style = {styles.payTypeView}>
+                <DisplayText
+                  text={'Payment method'}
+                  styles = {StyleSheet.flatten(styles.radioTitle)}
+                />
+                {/* <View style = {styles.payCheckView}> */}
+                  <RadioGroup 
+                    radioButtons = {this.state.payment} 
+                    onPress = {this.onCheckPlan} 
+                    flexDirection = 'row'/>
+                {/* </View> */}
               </View>
             <View style = {styles.btnView}>
               <ProgressDialog

@@ -1,8 +1,8 @@
 'use strict';
 import React, {Component} from 'react';
-import {DisplayText, InputField, SingleButtonAlert, ErrorAlert,SubmitButton} from '../../components';
+import {DisplayText, InputField, SingleButtonAlert,CustomToast,ErrorAlert,SubmitButton} from '../../components';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL }  from './styles';
-import { isEmailValid,RegisterEndpoint, postRoute, isPhoneValid} from '../Utils/Utils';
+import { isEmailValid,RegisterEndpoint, postRoute, isPhoneValid,} from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import colors from '../../assets/colors';
 import CheckBox from 'react-native-check-box'
@@ -24,7 +24,7 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   TextInput,
-  Image,
+  Button,
   TouchableHighlight,
 } from 'react-native';
 import { Input, Icon } from 'native-base'
@@ -92,7 +92,6 @@ class Register extends Component {
 
   //set gterms and condtion
 
-
   handleTermsConditions = () => {
     this.toggleTermsModal(true);
   };
@@ -124,7 +123,6 @@ class Register extends Component {
     }).start();
   };
 
-
   keyboardDidShow = (event) => {
     Animated.timing(this.imageHeight, {
       toValue: IMAGE_HEIGHT_SMALL,
@@ -140,9 +138,7 @@ class Register extends Component {
   onBlur() {
     console.log('#####: onBlur');
   }
-  handleLogin = () => {
-    return this.props.navigation.navigate('Login');
-  }
+ 
   showLoadingDialogue =()=> {
     this.setState({
       showLoading: true,
@@ -195,7 +191,11 @@ checkPassword(password1, password2) {
         else if(res.data) {
           console.log({res: res.data});
           this.hideLoadingDialogue();
-          return this.props.navigation.navigate('Login');
+          this.Toast('User Registration Successful')
+          return setTimeout(() => {
+            this.props.navigation.navigate('Login');
+          }, 4000);
+         
         }
       else {
         let message = 'Check Your Network Connection';
@@ -364,8 +364,8 @@ checkPassword(password1, password2) {
     }
   }
 
-  handleRegistration = () => {
-    return this.props.navigation.navigate('Login');
+  handleLogin = () => {
+    this.props.navigation.navigate('Login');
   }
 
   onChangeText(key, value) {
@@ -412,9 +412,23 @@ checkPassword(password1, password2) {
     // Refocus on the Input field after selecting the country code
     this.refs.PhoneInput._root.focus()
   }
+  signup=()=>{
 
+  }
+  Toast=(message)=>{
+    this.refs.defaultToastBottom.ShowToastFunction(message);
+  }
+
+  // Default_Toast_Top = () => {
+  //   this.refs.defaultToastTop.ShowToastFunction('Default Toast Top Message.');
+  // }
+  // Default_Toast_Bottom_With_Different_Color=()=>{
+  //   this.refs.defaultToastBottomWithDifferentColor.ShowToastFunction('Default Toast Bottom Message With Different Color.');
+  // }
+  // Default_Toast_Top_With_Different_Color=()=> {
+  //   this.refs.defaultToastTopWithDifferentColor.ShowToastFunction('Default Toast Top Message With Different Color.');
+  // }
   render () {
-    
     const { title, message, showAlert, showLoading, flag } = this.state
     const countryData = data
 
@@ -655,7 +669,6 @@ checkPassword(password1, password2) {
               <DisplayText
                 text={'Confirm Password *'}
                 styles = {styles.formHeaderTxt}
-                onPress = {this.handleRegistration}
               /> 
               <View style = {[styles.textInputView,{ borderColor: this.state.isConformPwdFocused
                 ? theme.primaryColor
@@ -775,6 +788,9 @@ checkPassword(password1, password2) {
             
           </ScrollView>
         </KeyboardAvoidingView>
+        <View style = {styles.toastView}>
+          <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          
+        </View>    
         <View style = {styles.btnView}>
             <SubmitButton
               title={'Sign Up'}
@@ -783,11 +799,17 @@ checkPassword(password1, password2) {
               titleStyle={styles.btnText}
               btnStyle = {styles.btnStyle}
             />
+            <View style={{marginBottom: 12}}>
+              {/* <Button 
+                onPress={this.Toast} 
+                title="Toast Bottom"/> */}
+            </View>
             <View style = {StyleSheet.flatten(styles.signupLinkView)}>
               <DisplayText
                 text={'Already Registered? Sign In'}
                 styles = {styles.signupText}
                 onPress = {this.handleLogin}
+
               />
               {/* <DisplayText
                 text={'Sign In'}

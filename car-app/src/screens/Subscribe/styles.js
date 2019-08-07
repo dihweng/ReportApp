@@ -201,6 +201,11 @@ export default styles = StyleSheet.create({
     fontSize: theme.SmallFont,
     color: theme.textGray,
   },
+  radioTitle: {
+    fontFamily : theme.LightRoboto,
+    fontSize : theme.SmallFont,
+    color : theme.textGray,
+  },
   subPlanView: {
     width: '99%',
     shadowColor: theme.primaryTextColor,
@@ -220,6 +225,7 @@ export default styles = StyleSheet.create({
     fontSize: theme.SmallFont,
     color: theme.primaryTextColor,
     marginLeft: 8,
+    textTransform: 'capitalize'
   },
   planView: {
     marginLeft: 20,
@@ -334,5 +340,29 @@ export default styles = StyleSheet.create({
     color: colors.text_color,
     fontSize: 16,
 
+  },
+  payTypeView: {
+    width : '99%',
+    shadowColor: theme.primaryTextColor,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2.56,
+    elevation: 1,    
+    // height: 50,
+    backgroundColor : theme.colorAccent,
+    borderRadius : 2,
+    flexDirection : 'row',
+    paddingHorizontal: 8,
+    alignItems: 'center',
+    marginLeft: 2,
+    marginTop: 8,
+    borderRadius: 2
+  },
+  payCheckView: {
+    marginVertical : (Platform.OS === 'ios') ? 4 : 4,
+    flexDirection : 'row',
+    marginTop : 8,
+    justifyContent : 'space-between',
+    alignItems: 'center',
   },
 });
