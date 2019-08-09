@@ -117,6 +117,7 @@ export default class AllReports extends Component {
 ];
 
   async componentDidMount(){
+
     let profile = await getProfile();
     this.setState({
       token : profile.access_token,

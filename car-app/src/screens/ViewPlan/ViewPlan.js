@@ -147,7 +147,7 @@ export default class ViewPlan extends Component {
     }
   }
   planFilterFunction = async(plandtype) => {
-    const { planData,  } = this.state;
+    const { planData } = this.state;
     
     const newData = filter(planData, ['category',plandtype]);
     console.log({newdataPlan: newData });
@@ -174,7 +174,9 @@ export default class ViewPlan extends Component {
       'name' : item.name,
     });
   }
-  
+  handleBack = () => {
+    this.props.navigation.navigate('AllReports');
+  };
   renderRow = ({item}) => {
     return (
       <View
@@ -214,11 +216,11 @@ export default class ViewPlan extends Component {
       <StatusBar barStyle="default" /> 
       <View style = {styles.navBar}>
         <TouchableOpacity
-          onPress={this.toggleDrawer.bind(this)} 
-          style = {styles.headerImage}>
+            onPress={this.handleBack} 
+            style = {styles.headerImage}>
           <Image
-            onPress={this.toggleDrawer.bind(this)} 
-            source = {require('../../assets/images/menu.png')}
+            onPress={this.handleBack} 
+            source = {require('../../assets/images/back.png')}
             style = {StyleSheet.flatten(styles.headerIcon)}
           />
         </TouchableOpacity>

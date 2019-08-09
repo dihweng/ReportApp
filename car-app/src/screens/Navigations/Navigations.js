@@ -30,7 +30,7 @@ import Citation from '../../screens/Citation/Citation';
 import Category from '../../screens/Category/Category';
 import Division from '../Division/Division';
 import Subscribe from '../Subscribe/Subscribe';
-import ViewPlan from '../ViewPlan/ViewPlan';
+// import ViewPlan from '../ViewPlan/ViewPlan';
 import Ratios from '../Ratios/Ratios';
 import CitedAuthorities from '../CitedAuthorities/CitedAuthorities';
 import FullReport from '../FullReport/FullReport';
@@ -147,22 +147,22 @@ const SurpportDesk_StackNavigator = createStackNavigator({
 //     }
 //   },
 // });
-const ViewPlan_StackNavigator = createStackNavigator({
-  ViewPlan : {
-    screen : ViewPlan,
-    navigationOptions: {
-      header: null,
-    }
-  },
-});
-const Subscribe_StackNavigator = createStackNavigator({
-  Subscribe : {
-    screen : Subscribe,
-    navigationOptions: {
-      header: null,
-    }
-  },
-});
+// const ViewPlan_StackNavigator = createStackNavigator({
+//   ViewPlan : {
+//     screen : ViewPlan,
+//     navigationOptions: {
+//       header: null,
+//     }
+//   },
+// });
+// const Subscribe_StackNavigator = createStackNavigator({
+//   Subscribe : {
+//     screen : Subscribe,
+//     navigationOptions: {
+//       header: null,
+//     }
+//   },
+// });
 // const Full_Report_StackNavigator = createStackNavigator({
 //   FullReport : {
 //     screen : FullReport,

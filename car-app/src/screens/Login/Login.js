@@ -96,7 +96,7 @@ export default class Login extends Component {
     const { password, email,  } = this.state,
       grant_type = 'password',
       client_id = '2',
-      client_secret = 'roOmYqndUe3cQD2qyRP2ftRlsSE6CL7PypmET2xm';
+      client_secret = '5WMJx75gyQYVChKb5WHQNRycUDHaaIZXJYqpTcfp';
 
       this.showLoadingDialogue();
 

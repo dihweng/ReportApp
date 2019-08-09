@@ -117,6 +117,9 @@ async componentDidMount(){
     //   bankName: bank,
     // });
   }
+  handleBackPress = () => {
+    return this.props.navigation.popToTop()
+  }
   renderRow = ({item}) => {
     return (
       <View style = {styles.listViewItem}>    
@@ -188,6 +191,9 @@ async componentDidMount(){
     //Props to open/close the drawer
     this.props.navigation.toggleDrawer();
   };
+  handleBackPress = () => {
+    return this.props.navigation.popToTop()
+  }
 
  
   render () {
@@ -196,11 +202,11 @@ async componentDidMount(){
       <StatusBar barStyle="default" /> 
       <View style = {styles.navBar}>
         <TouchableOpacity
-          onPress={this.toggleDrawer.bind(this)} 
+          onPress={this.handleBackPress} 
           style = {styles.headerImage}>
           <Image
-            onPress={this.toggleDrawer.bind(this)} 
-            source = {require('../../assets/images/menu.png')}
+            onPress={this.handleBackPress} 
+            source = {require('../../assets/images/back.png')}
             style = {StyleSheet.flatten(styles.headerIcon)}
           />
         </TouchableOpacity>

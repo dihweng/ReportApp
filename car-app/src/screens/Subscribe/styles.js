@@ -41,8 +41,8 @@ export default styles = StyleSheet.create({
     paddingBottom: 4
   },
   headerIcon: {
-    height: 20,
-    width: 20,
+    height: 18,
+    width: 18,
     tintColor : colors.white,
   },
 

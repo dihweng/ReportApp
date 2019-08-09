@@ -73,7 +73,9 @@ export default class Subscribe extends Component {
   handleSubscribe = () => {
     return this.props.navigation.navigate('Subscribe');
   }
-
+  handleonBackPress = () =>{
+    return this.props.navigation.navigate('ViewPlan');
+  }
   handleGetProduct = async() => {
     const { navigation } = this.props,
       amount = navigation.getParam('amount', 'NO-ID'),
@@ -86,9 +88,7 @@ export default class Subscribe extends Component {
       planName,
     });
   }
-  handleBack = () => {
-    this.props.navigation.navigate('AllReport');
-  };
+  
   handleFullName = (name) => {
     if(name.length > 0) {
       this.setState({
@@ -182,11 +182,11 @@ export default class Subscribe extends Component {
         <StatusBar barStyle="default" /> 
         <View style = {styles.navBar}>
           <TouchableOpacity
-            onPress={this.handleBack} 
+            onPress={this.handleonBackPress} 
             style = {styles.headerImage}>
             <Image
-              onPress={this.handleBack} 
-              source = {require('../../assets/images/menu.png')}
+              onPress={this.handleonBackPress} 
+              source = {require('../../assets/images/back.png')}
               style = {StyleSheet.flatten(styles.headerIcon)}
             />
           </TouchableOpacity>

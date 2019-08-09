@@ -4,6 +4,8 @@ import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAr
 import {DisplayText, CustomToast,SubmitButton} from '../../components';
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
+import filter from 'lodash.filter';
+
 import { 
   DeleteFavoriteEndpoint, 
   DeleteReadLaterEndpoint, 
@@ -29,6 +31,7 @@ export default class Citation extends Component {
       expandalph : false,
       token: '',
       filterData: [],
+      secondFilter: [],
       numberCitatio: '',
       alphabetCitation: '',
     }
@@ -71,12 +74,26 @@ export default class Citation extends Component {
        showAlert : false,
      })
   }
-  allReport = async() =>{
+
+ //filter citation
+  handleDivisionPress = (citation) => {
+    const {filterData} = this.state;
+    const newData = filterData.filter(item => {
+      const itemData = `${item.citation.toUpperCase()}`;
+      const textData = citation;
+
+      return itemData.indexOf(textData) > -1;
+    });
+    return this.setState({
+      data: newData,
+    });
+  }
+
+  allReport = async() => {
     const {token} = this.state;
     this.showLoadingDialogue();
     await getRouteToken(getAllReport, token)
       .then((res) => {
-        console.log('resCitatio', res)
         if (typeof res.message !== 'undefined') {  
           return this.showNotification(res.message);
         }   
@@ -114,9 +131,6 @@ export default class Citation extends Component {
     this.setState({ expandalph: !this.state.expandalph });
   }
 
-  handleDivisionPress =(citation)=>{
-    return alert(citation)
-  }
   renderRow = ({item}) => {
     return (
        <View style = {styles.listViewItem}>    
