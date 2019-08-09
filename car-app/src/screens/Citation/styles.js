@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Platform,Dimensions } from 'react-native';
 const window = Dimensions.get('window');
 import { Constants } from 'expo';
 import colors from '../../assets/colors';
@@ -31,8 +31,8 @@ export default styles = StyleSheet.create({
     marginLeft: 16
   },
   wrapper : {
-    flex : 1,
-    justifyContent: 'center',
+    // flex : 1,
+    marginVertical: 16,
     alignItems: 'center',
   },
   citationView : {
@@ -132,5 +132,117 @@ export default styles = StyleSheet.create({
   citisionTp : {
     paddingHorizontal : 4,
     paddingVertical : 8,
-  }
+  },
+  headerMessageView: {
+    height: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 16,
+  },
+    // Flartlist Header Style
+    headerMessageView : {
+      paddingLeft: 16,
+      paddingRight: 16,
+      width: '100%',
+      height: 55,
+      backgroundColor: theme.primaryColor,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  
+    toastView: {
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: (Platform.OS == 'ios') ? 20 : 0,
+      marginBottom: 20
+    },
+    searchView : {
+      width: '100%',
+      // marginTop : 8,
+      backgroundColor: theme.colorAccent,
+      height : 35,
+      borderRadius: 2,
+      elevation: 1,
+      shadowColor: theme.primaryTextColor,
+      shadowOpacity: 0.25,
+      shadowRadius: 2.56,
+      shadowOffset: {height : 1, width : 0},
+      flexDirection: 'row',
+      paddingLeft: 16,
+      alignItems: 'center'
+    },
+    searchIcon : {
+      width: 20,
+      height: 20,
+      tintColor: theme.primaryColor
+    },
+  
+    // Render Row Styling
+    listViewItem : {
+      alignItems: 'center',
+      width: '100%',
+      justifyContent: 'center',
+      paddingLeft: 20,
+      paddingRight: 20,
+      marginTop: 8,
+    },
+    cardView:{
+      width: '99%',
+      height: 200,
+      backgroundColor: theme.colorAccent,
+      borderRadius : 2,
+      marginTop: 4,
+      marginBottom : 4,
+      shadowColor: theme.primaryTextColor,
+      shadowOffset: { 
+        width: 0, 
+        height: 1 
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 2,
+      elevation: 1,
+      paddingHorizontal: 8,
+      paddingVertical: 10,
+    },
+    reportHeader : {
+      flexDirection : 'column',
+    },
+    reportName : {
+      fontFamily : theme.secondaryFont,
+      fontSize : theme.MediumFont,
+      color : theme.primaryTextColor,
+    },
+    txtView : {
+      flexDirection : 'column',
+      height : '100%',
+      width : '100%',
+      marginTop : 8
+    },
+    headerText : {
+      fontFamily : theme.secondaryFont,
+      fontSize : theme.SmallerFont,
+      color : colors.red,
+      marginTop : 4,
+    },
+    subHeaderText : {
+      // marginTop : 4,
+      fontFamily : theme.subHeaderFont,
+      fontSize : theme.SmallFont,
+      color : theme.primaryColor,
+      // height : 40
+    },
+    reportInfo : {
+      fontFamily : theme.secondaryFont,
+      fontSize : theme.SmallerFont,
+      // color : theme.primaryTextColor,
+      color : "#333",
+      marginTop : 4
+    },
+    taostView: {
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }
+  
 });

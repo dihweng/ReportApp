@@ -20,7 +20,6 @@ export default class AllReports extends Component {
       message: '',
       showLoading: false,
       title: '',
-      token: '',
     }
   }
 
@@ -155,7 +154,7 @@ export default class AllReports extends Component {
      })
   }
 
-  AllReport = async() =>{
+  allReport = async() =>{
     const {token} = this.state;
     this.showLoadingDialogue();
     await getRouteToken(getAllReport, token)
@@ -171,7 +170,6 @@ export default class AllReports extends Component {
             filterData: res.data,
           });
           return this.hideLoadingDialogue();
-          // return this.handleGetProfile();
         }
       }
     );
@@ -181,12 +179,13 @@ export default class AllReports extends Component {
     this.showLoadingDialogue();
 
     try {
-      await this.AllReport()
+      await this.allReport()
     }
     catch(e) {
       console.log({e})
     }
   }
+  // Getting user details from server
   handleGetProfile = async() => {
     const{token} = this.state;
     this.showLoadingDialogue();
@@ -203,10 +202,9 @@ export default class AllReports extends Component {
         //   this.hideLoadingDialogue();
         // }
         else {
-          // this.hideLoadingDialogue();
-          this.setState({
-            token: token,
-          });
+          // this.setState({
+          //   token: token,
+          // });
           
           saveUserDetail(res.data, token);
           return this.handleGetAllReport();
@@ -244,6 +242,7 @@ export default class AllReports extends Component {
       }
     })
     .then((res) => {
+      console.log({addToFavoriteReponse: res});
       if (typeof res.message !== 'undefined' && status >= 400 ) {
         let message = 'Report Could Not be Added to Favorite'
         this.showNotification(message);
@@ -257,7 +256,6 @@ export default class AllReports extends Component {
   } 
   // Called onPress to add favorite to list of favorite 
   handleAddFavourite = async(id) =>{
-      console.log({'adddd id.... ':id})
     this.showLoadingDialogue();
     try {
       await this.addFavorite(id)
@@ -282,10 +280,12 @@ export default class AllReports extends Component {
       }
     })
     .then((res) => {
+      console.log({addToReadReponse: res});
       if (typeof res.message !== 'undefined' ) {
         this.showNotification(res.message);
       }
       else {
+        
         this.hideLoadingDialogue();
         this.Toast('Report Added to Read Later Successful')
 
@@ -322,40 +322,12 @@ export default class AllReports extends Component {
     this.refs.defaultToastBottom.ShowToastFunction(message);
   }
 
-
-  renderHeader = () => {
-    return <View style={styles.headerMessageView}>
-        <View style={styles.searchView}>
-          <Image
-            source = {require('../../assets/images/search.png')}
-            style = {StyleSheet.flatten(styles.searchIcon)}
-          />
-          <InputField
-            placeholder = {'Search Anything'}
-            placeholderTextColor = {theme.primaryTextColor}
-            textColor={colors.purple}
-            inputType={'name'}
-            keyboardType={'default'}
-            onChangeText={text => this.searchFilterFunction(text)}
-            autoCorrect={false}
-            value={this.state.value}
-            height = {30}
-            width = {'80%'}
-            borderBottomWidth = {0}
-            paddingLeft  = {8}
-          /> 
-        </View>
-      </View>
-  
-  }
-
   displayReadLaterBtn = (id, is_future_saved) => {
     if (is_future_saved === true ){
       return (
         <SubmitButton
           title={'Remove Read Later'}
           onPress={()=>this.deleteReadLater(id)}
-          // onPress={()=>this.handleAddFavourite(item.id)}
           titleStyle={styles.btnText}
           btnStyle = {styles.btnReadLate}
         />
@@ -430,9 +402,8 @@ export default class AllReports extends Component {
     }
 
   }
-  deleteReadLater=async()=> {
-    alert('You long-pressed the button!')
-    const { id, token } = this.state
+  deleteReadLater=async(id)=> {
+    const { token } = this.state
     let endpoint = `${DeleteReadLaterEndpoint}${id}/${'future'}`      
     this.showLoadingDialogue();
 
@@ -451,7 +422,7 @@ export default class AllReports extends Component {
       let res = await response.json();
       console.log({res})
       if(res.status >= 200 && res.status < 300) {
-        // this.handleGetReadLater();
+        return await this.showNotification('Successfully Removed Report from Read Later');   
       }
       return await this.showNotification(res.message.toString());   
     } 
@@ -459,7 +430,31 @@ export default class AllReports extends Component {
      return this.showNotification(error.toString()); 
     }
   }
-
+  renderHeader = () => {
+    return <View style={styles.headerMessageView}>
+        <View style={styles.searchView}>
+          <Image
+            source = {require('../../assets/images/search.png')}
+            style = {StyleSheet.flatten(styles.searchIcon)}
+          />
+          <InputField
+            placeholder = {'Search Anything'}
+            placeholderTextColor = {theme.primaryTextColor}
+            textColor={colors.purple}
+            inputType={'name'}
+            keyboardType={'default'}
+            onChangeText={text => this.searchFilterFunction(text)}
+            autoCorrect={false}
+            value={this.state.value}
+            height = {30}
+            width = {'80%'}
+            borderBottomWidth = {0}
+            paddingLeft  = {8}
+          /> 
+        </View>
+      </View>
+  
+  }
   renderRow = ({item}) => {
     return (
        <View style = {styles.listViewItem}>    
