@@ -441,6 +441,10 @@ checkPassword(password1, password2) {
             styles = {[StyleSheet.flatten(styles.welcomeText)]}
           />
         </View>
+
+        {/* <View style = {styles.toastView}> */}
+          <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "top"/>          
+        {/* </View>  */}
         <KeyboardAvoidingView
           style={styles.wrapper}
           behavior = 'padding'> 
@@ -785,12 +789,12 @@ checkPassword(password1, password2) {
                 handleCloseNotification = {this.handleCloseNotification}
                 visible = {showAlert}
               />
-            
+            <View style = {styles.toastView}>
+              <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "top"/>          
+            </View>      
           </ScrollView>
         </KeyboardAvoidingView>
-        <View style = {styles.toastView}>
-          <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          
-        </View>    
+            
         <View style = {styles.btnView}>
             <SubmitButton
               title={'Sign Up'}

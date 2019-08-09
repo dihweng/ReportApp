@@ -19,7 +19,12 @@ const LoginEndpoint = `${Baseurl}oauth/token`,
   ForgotPassword = `${Baseurl}api/users/password/forgot`,
   PlanEndpoint = `${Baseurl}api/plans`,
   AddFavoriteEndPoint = `${Baseurl}api/reports/`,
-  AddReadLaterEndPoint = `${Baseurl}api/reports/`;
+  AddReadLaterEndPoint = `${Baseurl}api/reports/`,
+  GetFavoriteEndpoint = `${Baseurl}api/reports/favorite`,
+  GetReadLaterEndpoint = `${Baseurl}api/reports/future`,
+  DeleteFavoriteEndpoint = `${Baseurl}/api/reports/`,
+  DeleteReadLaterEndpoint = `${Baseurl}/api/reports/`;
+
 export {
   LoginEndpoint,
   RegisterEndpoint,
@@ -40,6 +45,10 @@ export {
   PlanEndpoint,
   AddFavoriteEndPoint,
   AddReadLaterEndPoint,
+  GetFavoriteEndpoint,
+  GetReadLaterEndpoint,
+  DeleteFavoriteEndpoint,
+  DeleteReadLaterEndpoint,
 }
 
 

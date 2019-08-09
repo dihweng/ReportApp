@@ -95,14 +95,15 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: (Platform.OS == 'ios') ? 20 : 0,
+    marginTop: (Platform.OS == 'ios') ? 20 : 18,
     margin:10
   },
   animatedToastView: {
-    marginHorizontal: 30,
-    paddingHorizontal: 25,
+    width: '80%',
+    // marginHorizontal: 16,
+    paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 25,
+    borderRadius: 2,
     zIndex: 9999,
     position: 'absolute',
     justifyContent: 'center'

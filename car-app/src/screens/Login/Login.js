@@ -74,6 +74,7 @@ export default class Login extends Component {
     this.showLoadingDialogue();
     postRoute(LoginEndpoint, body)
       .then((res) => {
+        console.log({responseee1: res})
         if (typeof res.message !== 'undefined') {  
           return this.showNotification(res.message);
         }   
@@ -95,7 +96,7 @@ export default class Login extends Component {
     const { password, email,  } = this.state,
       grant_type = 'password',
       client_id = '2',
-      client_secret = '4o0bP2NvXRBV7V4lkTRnZid0EgH6DbfheoIjsSTd';
+      client_secret = 'roOmYqndUe3cQD2qyRP2ftRlsSE6CL7PypmET2xm';
 
       this.showLoadingDialogue();
 

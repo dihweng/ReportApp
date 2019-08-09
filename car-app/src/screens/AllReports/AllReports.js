@@ -1,10 +1,10 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList, SafeAreaView, StatusBar, TouchableOpacity, Image, Dimensions, StyleSheet,} from 'react-native';
+import { View, FlatList, SafeAreaView, StatusBar, TouchableOpacity, Image, StyleSheet,} from 'react-native';
 import {DisplayText, SubmitButton, SingleButtonAlert, InputField,CustomToast} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
-import { getRoute, getRouteToken, getAllReport, getProfile, ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint } from '../Utils/Utils';
+import { DeleteFavoriteEndpoint, DeleteReadLaterEndpoint, getRouteToken, getAllReport, getProfile, ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint } from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import colors from '../../assets/colors';
 // import HTML from 'react-native-render-html';
@@ -20,6 +20,7 @@ export default class AllReports extends Component {
       message: '',
       showLoading: false,
       title: '',
+      token: '',
     }
   }
 
@@ -124,7 +125,7 @@ export default class AllReports extends Component {
       showLoading:true,
       // data:this.reports
     });
-    await this.handleGetAllReport();
+    await this.handleGetProfile();
   }
 
   showLoadingDialogue =()=> {
@@ -155,18 +156,22 @@ export default class AllReports extends Component {
   }
 
   AllReport = async() =>{
+    const {token} = this.state;
     this.showLoadingDialogue();
-    await getRoute(getAllReport)
+    await getRouteToken(getAllReport, token)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
           return this.showNotification(res.message);
         }   
         else {          
+          // console.log('res', res.data)
+
           this.setState({
             data: res.data,
             filterData: res.data,
           });
-          return this.handleGetProfile();
+          return this.hideLoadingDialogue();
+          // return this.handleGetProfile();
         }
       }
     );
@@ -198,17 +203,26 @@ export default class AllReports extends Component {
         //   this.hideLoadingDialogue();
         // }
         else {
-          this.hideLoadingDialogue();
-          return saveUserDetail(res.data, token);
+          // this.hideLoadingDialogue();
+          this.setState({
+            token: token,
+          });
+          
+          saveUserDetail(res.data, token);
+          return this.handleGetAllReport();
+
         }
       })
     .catch((error) => {
       return this.showNotification(error.toString());
     });
   }
+// On pressing a report will navigate you to Full Report
+//With the Params id, content and except
+  handleFullReport=async(item)=>{
+    this.showLoadingDialogue();
 
-  handleFullReport(item){
-    return this.props.navigation.navigate('FullReport', {
+    this.props.navigation.navigate('FullReport', {
       id: item.id,
       content: item.content,
       excerpt: item.excerpt,  
@@ -222,7 +236,7 @@ export default class AllReports extends Component {
 
     fetch(endpoint, {
       method : "POST",
-      body : JSON.stringify(''),
+     // body : JSON.stringify(''),
       headers : {
         "Accept" : "application/json",
         'Content-Type': 'application/json',
@@ -243,7 +257,7 @@ export default class AllReports extends Component {
   } 
   // Called onPress to add favorite to list of favorite 
   handleAddFavourite = async(id) =>{
-      
+      console.log({'adddd id.... ':id})
     this.showLoadingDialogue();
     try {
       await this.addFavorite(id)
@@ -334,6 +348,118 @@ export default class AllReports extends Component {
       </View>
   
   }
+
+  displayReadLaterBtn = (id, is_future_saved) => {
+    if (is_future_saved === true ){
+      return (
+        <SubmitButton
+          title={'Remove Read Later'}
+          onPress={()=>this.deleteReadLater(id)}
+          // onPress={()=>this.handleAddFavourite(item.id)}
+          titleStyle={styles.btnText}
+          btnStyle = {styles.btnReadLate}
+        />
+
+      )
+    }
+    else{
+      return(
+        <SubmitButton
+          title={'Read Later'}
+          onPress={()=>this.handleAddReadLater(id)}
+          titleStyle={styles.btnText}
+          btnStyle = {styles.btnReadLate}
+        />
+      )
+    }
+  }
+  displayfavoriteBtn = (id, is_favorite) => {
+    if (is_favorite === true ){
+      return (
+        <SubmitButton
+          title={'Remove Favourite'}
+          onPress={()=>this.deleteFavorite(id)}
+          // onPress={()=>this.handleAddFavourite(item.id)}
+          titleStyle={styles.btnText}
+          btnStyle = {styles.btnStyle}
+        />
+
+      )
+    }
+    else{
+      return(
+        <SubmitButton
+          title={'Add Favourite'}
+          onPress={()=>this.handleAddFavourite(id)}
+          titleStyle={styles.btnText}
+          btnStyle = {styles.btnStyle}
+        />
+      )
+    }
+  }
+  deleteFavorite=async(id)=> {
+    console.log({deleteiddd: id})
+    const { token } = this.state
+    this.showLoadingDialogue();
+
+    let endpoint = `${DeleteFavoriteEndpoint}${id}/${'favorite'}`      
+
+    const settings = {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,   
+
+      },
+    };
+
+    try {
+      let response = await fetch(endpoint, settings);
+      let res = await response;
+      console.log({responssssss: res});
+      if(res.status >= 200 && res.status < 300) {
+        // this.handleGetReadLater();
+        return await this.showNotification('Successfully Removed Favorite');   
+
+      }
+      return await this.showNotification(res.message.toString());   
+    } 
+    catch(error){
+     return this.showNotification(error.toString()); 
+    }
+
+  }
+  deleteReadLater=async()=> {
+    alert('You long-pressed the button!')
+    const { id, token } = this.state
+    let endpoint = `${DeleteReadLaterEndpoint}${id}/${'future'}`      
+    this.showLoadingDialogue();
+
+    const settings = {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,   
+
+      },
+    };
+
+    try {
+      let response = await fetch(endpoint, settings);
+      let res = await response.json();
+      console.log({res})
+      if(res.status >= 200 && res.status < 300) {
+        // this.handleGetReadLater();
+      }
+      return await this.showNotification(res.message.toString());   
+    } 
+    catch(error){
+     return this.showNotification(error.toString()); 
+    }
+  }
+
   renderRow = ({item}) => {
     return (
        <View style = {styles.listViewItem}>    
@@ -349,7 +475,6 @@ export default class AllReports extends Component {
               styles = {StyleSheet.flatten(styles.reportName)}
             />
 
-          <View style = {styles.txtView}>
             <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
@@ -376,24 +501,16 @@ export default class AllReports extends Component {
 
             {/* <HTML html={item.excerpt} /> */}
 
+          <View style = {styles.txtView}>
+           
             <View style={styles.buttonView}>
-              <SubmitButton
-                title={'Add Favourite'}
-                onPress={()=>this.handleAddFavourite(item.id)}
-                titleStyle={styles.btnText}
-                btnStyle = {styles.btnStyle}
-              />
-              <SubmitButton
-                title={'Read Later'}
-                onPress={()=>this.handleReadLater(item.id)}
-                titleStyle={styles.btnText}
-                btnStyle = {styles.btnReadLate}
-              />
-            </View>
+              {this.displayfavoriteBtn(item.id, item.is_favorite)}
+              {this.displayReadLaterBtn(item.id, item.is_future_saved)}
+            </View> 
           </View>
           </View>
-            
         </TouchableOpacity>
+        
         </View>
       );
   }

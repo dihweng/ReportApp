@@ -122,7 +122,7 @@ export default styles = StyleSheet.create({
     width: '99%',
     height : 200 ,
     backgroundColor: theme.colorAccent,
-    // borderRadius : 8,
+    borderRadius : 2,
     marginTop: 4,
     marginBottom : 4,
     shadowColor: theme.primaryTextColor,
@@ -135,8 +135,6 @@ export default styles = StyleSheet.create({
     elevation: 1,
     paddingHorizontal: 8,
     paddingVertical: 8,
-    // flexDirection : 'row',
-    // alignItems : 'center'
   },
   // ImageView : {
   //   width : 40,
@@ -204,21 +202,21 @@ export default styles = StyleSheet.create({
   },
   btnStyle : {
     backgroundColor : theme.buttonBlue,
-    width : '45%',
+    width : '48%',
     justifyContent: 'center',
     alignItems : 'center',
     height : 40,
     // borderRadius : 4,
   },
   btnText : {
-    fontSize: 18,
+    fontSize: theme.SmallFont,
     color: theme.colorAccent,
-    fontFamily: theme.headerFont,
+    fontFamily: theme.secondaryFont,
     alignSelf: 'center',    
   },
   btnReadLate : {
     backgroundColor : theme.buttonRed,
-    width : '45%',
+    width : '48%',
     justifyContent: 'center',
     alignItems : 'center',
     height : 40,

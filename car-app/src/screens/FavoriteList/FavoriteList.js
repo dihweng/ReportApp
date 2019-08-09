@@ -1,9 +1,13 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, Text, ScrollView, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText } from '../../components';
+import { View, FlatList, ScrollView, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
+import {DisplayText, CustomToast,SingleButtonAlert, InputField } from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
+import colors from '../../assets/colors';
+import { ProgressDialog } from 'react-native-simple-dialogs';
+import {GetFavoriteEndpoint, getProfile,getRouteToken, DeleteFavoriteEndpoint} from '../Utils/Utils';
+
 
 
 export default class FavoriteList extends Component {
@@ -14,12 +18,27 @@ export default class FavoriteList extends Component {
       showLoading : false,
       message: '',
       title: '',
+      id : '',
+      data: [],
+      filterData: [],
+      token: '',
     }
   }
-
-  handlePlainReport = () => {
-    return this.props.navigation.navigate('PlainReport');
+  async componentDidMount(){
+    let profile = await getProfile();
+    this.setState({
+      token : profile.access_token,
+      expires : profile.expires,
+      showLoading:true,
+      // data:this.reports
+    });
+    await this.handleGetFavorite();
   }
+
+
+  // handlePlainReport = () => {
+  //   return this.props.navigation.navigate('PlainReport');
+  // }
   handleFavoriteList = () => {
     return this.props.navigation.navigate('FavoriteList');
   }
@@ -30,12 +49,202 @@ export default class FavoriteList extends Component {
   handleOnBackPress = () => {
     this.props.navigation.navigate('DashBoard');
   };
- 
-  handleConfirm = () => {
-    alert('confirm coming soon');
+
+  // Show Loading Spinner
+  showLoadingDialogue =()=> {
+    this.setState({
+      showLoading: true,
+    });
+  }
+// Hide Loading Spinner
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
+// Show Dialog message
+  showNotification = message => {
+    this.setState({ 
+      showLoading : false,
+      title : 'Error!',
+      message : message,
+      showAlert : true,
+    }); 
+  }
+// Hide Dialog message
+  handleCloseNotification = () => {
+    return this.setState({
+       showAlert : false,
+     })
   }
 
-  
+  AllFavorite = async() =>{
+    const { token } = this.state;
+    this.showLoadingDialogue();
+    await getRouteToken(GetFavoriteEndpoint, token)
+      .then((res) => {
+        if (typeof res.message !== 'undefined') {  
+          return this.showNotification(res.message);
+        }   
+        else {    
+          this.setState({
+            data: res.data,
+            filterData: res.data,
+            id: res.data.id
+          });
+          // this.Toast('Successful');
+          return this.hideLoadingDialogue();
+        }
+      }
+    );
+  }
+  //Call AllReadLater function
+  handleGetFavorite = async() => {
+    this.showLoadingDialogue();
+
+    try {
+      await this.AllFavorite()
+    }
+    catch(e) {
+      console.log({e})
+    }
+  }
+
+  //Handle Delete favorite reports from list
+  deleteFavorite=async(id)=> {
+    console.log({deleteiddd: id})
+    const { token } = this.state
+    this.showLoadingDialogue();
+
+    let endpoint = `${DeleteFavoriteEndpoint}${id}/${'favorite'}`      
+
+    const settings = {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,   
+
+      },
+    };
+
+    try {
+      let response = await fetch(endpoint, settings);
+      let res = await response;
+      console.log({responssssss: res});
+      if(res.status >= 200 && res.status < 300) {
+        // this.handleGetReadLater();
+        return await this.showNotification('Successfully Removed Favorite');   
+
+      }
+      return await this.showNotification(res.message.toString());   
+    } 
+    catch(error){
+     return this.showNotification(error.toString()); 
+    }
+
+  }
+  // search filter 
+  searchFilterFunction = text => {
+    const {filterData} = this.state;
+    this.setState({
+      value: text,
+    });
+    const newData = filterData.filter(item => {
+      const itemData = `${item.title.toUpperCase()} ${item.citation.toUpperCase()}`;
+      const textData = text.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+    return this.setState({
+      data: newData,
+    });
+  }
+
+  Toast=(message)=>{
+    this.refs.defaultToastBottom.ShowToastFunction(message);
+  }
+  // On pressing a report will navigate you to Full Report
+//With the Params id, content and except
+handleFullReport=async(item)=>{
+  this.props.navigation.navigate('FullReport', {
+    id: item.id,
+    content: item.content,
+    excerpt: item.excerpt,  
+  });
+}
+
+renderHeader = () => {
+  return <View style={styles.headerMessageView}>
+    <View style={styles.searchView}>
+        <Image
+          source = {require('../../assets/images/search.png')}
+          style = {StyleSheet.flatten(styles.searchIcon)}
+        />
+        <InputField
+          placeholder = {'Search Anything'}
+          placeholderTextColor = {theme.primaryTextColor}
+          textColor={colors.purple}
+          inputType={'name'}
+          keyboardType={'default'}
+          onChangeText={text => this.searchFilterFunction(text)}
+          autoCorrect={false}
+          value={this.state.value}
+          height = {30}
+          width = {'80%'}
+          borderBottomWidth = {0}
+          paddingLeft  = {8}
+        /> 
+      </View>
+    </View>
+}
+
+  renderRow = ({item}) => {
+    return (
+      <View style = {styles.listViewItem}>    
+        <TouchableOpacity 
+          onLongPress={()=>this.deleteFavorite(item.id)}
+          onPress = {()=>this.handleFullReport(item)}
+          style = {styles.cardView}>
+          <View style ={styles.reportHeader}>
+            <DisplayText
+              numberOfLines = { 2 } 
+              ellipsizeMode = 'middle'
+              text = {item.title}
+              onPress = {()=>this.handleFullReport(item)}
+              styles = {StyleSheet.flatten(styles.reportName)}
+            />
+
+          <View style = {styles.txtView}>
+            <DisplayText
+              numberOfLines = { 2 } 
+              ellipsizeMode = 'middle'
+              text = {item.citation}
+              onPress = {()=>this.handleFullReport(item)}
+              styles = {StyleSheet.flatten(styles.headerText)}
+            />
+
+            <DisplayText
+              numberOfLines = { 2 } 
+              // ellipsizeMode = 'middle'
+              text = {''}
+              onPress = {()=>this.handleFullReport(item)}
+              styles = {StyleSheet.flatten(styles.headerText)}
+            /> 
+
+             <DisplayText
+              numberOfLines = { 4 } 
+              ellipsizeMode = 'middle'
+              text = {'Little Description needed'}
+              onPress = {()=>this.handleFullReport(item)}
+              styles = {StyleSheet.flatten(styles.reportInfo)}
+              />
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   render () {
     const { title, message, showAlert, showLoading } = this.state
@@ -61,13 +270,22 @@ export default class FavoriteList extends Component {
           </View>
         </View> 
         <View style = {styles.cards}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress = {this.handlePlainReport}  
             style = {styles.customTabTp2}>
               <DisplayText
               text={'Plain Report'}
               onPress = {this.handlePlainReport}  
               styles = {StyleSheet.flatten(styles.txtTabHeader)}
+            />
+          </TouchableOpacity> */}
+          <TouchableOpacity
+            onPress = {this.handleFavoriteList}  
+            style = {styles.customTabTp}>
+              <DisplayText
+              text={'Favorite'}
+              onPress = {this.handleFavoriteList}  
+              styles = {StyleSheet.flatten(styles.txtTabHeaderWhite)}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -79,16 +297,30 @@ export default class FavoriteList extends Component {
               styles = {StyleSheet.flatten(styles.txtTabHeader)}
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress = {this.handleFavoriteList}  
-            style = {styles.customTabTp}>
-              <DisplayText
-              text={'Favorite'}
-              onPress = {this.handleFavoriteList}  
-              styles = {StyleSheet.flatten(styles.txtTabHeaderWhite)}
-            />
-          </TouchableOpacity>
         </View>
+        <View style = {styles.viewBody}>
+          <FlatList          
+            data={this.state.data}          
+            renderItem={this.renderRow}          
+            ListHeaderComponent={this.renderHeader}     
+            keyExtractor={ data=> data.id.toString()}   
+            showsVerticalScrollIndicator={false}
+          />
+          <View style = {styles.taostView}>
+            <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          
+          </View> 
+        </View>  
+        <ProgressDialog
+          visible={showLoading}
+          title="Processing"
+          message="Please wait..."
+        />
+        <SingleButtonAlert
+          title = {title} 
+          message = {message}
+          handleCloseNotification = {this.handleCloseNotification}
+          visible = {showAlert}
+        />
       </SafeAreaView> 
     )
   }

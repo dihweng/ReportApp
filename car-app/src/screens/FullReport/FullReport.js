@@ -1,10 +1,11 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, Text, ScrollView, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText } from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
 import HTML from 'react-native-render-html';
+import { ProgressDialog } from 'react-native-simple-dialogs';
+import {DisplayText, SubmitButton, SingleButtonAlert, InputField,CustomToast} from '../../components';
 
 
 export default class FullReport extends Component {
@@ -17,9 +18,37 @@ export default class FullReport extends Component {
       title: '',
       content: '',
     }
+
   }
   async componentDidMount(){
     await this.handleGetReport()
+  }
+
+  showLoadingDialogue =()=> {
+    this.setState({
+      showLoading: true,
+    });
+  }
+
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
+
+  showNotification = message => {
+    this.setState({ 
+      showLoading : false,
+      title : 'Error!',
+      message : message,
+      showAlert : true,
+    }); 
+  }
+
+  handleCloseNotification = () => {
+    return this.setState({
+       showAlert : false,
+     })
   }
   
   handleGetReport = async() => {
@@ -111,6 +140,17 @@ export default class FullReport extends Component {
           showsVerticalScrollIndicator={false}>
             <HTML html={content} />
         </ScrollView>
+        <ProgressDialog
+          visible={showLoading}
+          title="Processing"
+          message="Please wait..."
+          />
+        <SingleButtonAlert
+          title = {title} 
+          message = {message}
+          handleCloseNotification = {this.handleCloseNotification}
+          visible = {showAlert}
+        />
       </SafeAreaView> 
     )
   }
