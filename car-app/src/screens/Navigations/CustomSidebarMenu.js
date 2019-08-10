@@ -23,14 +23,15 @@ export default class CustomSidebarMenu extends Component {
   constructor() {
     super();
     this.state = {
-      token : '',
-      email : '',
-      name : '',
-      firstname : '',
-      lastname : '',
-      phone : '',
-      id : '',
-      message : '',
+      token: '',
+      email: '',
+      name: '',
+      firstname: '',
+      lastname: '',
+      phone: '',
+      id: '',
+      message: '',
+      username: '',
     },
     this.items = [
       {
@@ -77,75 +78,39 @@ export default class CustomSidebarMenu extends Component {
     ];
   }
 
-  //   async componentDidMount(){
-  //     const profile = await getUserDatials();
-  //     try {
-  //       if (profile !== 'undefined' || profile !== ''){
-
-  //         const lastname = profile.data.name.split(" ")[1],
-  //           firstname = profile.data.name.split(" ")[0], 
-  //           email = profile.data.email,
-  //           phone = profile.data.phone;
-  //           this.setState({
-  //             firstname,
-  //             lastname,
-  //             email,
-  //             phone,
-  //           });
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-      
-      
-  //     // await this.handleGetProfile();
-  // }
-  // handleGetProfile = () => {
-  //   const{token} = this.state;
-  //   console.log({tokien_check : token});
+  
+  async componentDidMount(){
+    const profile = await getUserDatials();
+    let firstname, lastname;
+    try {
+      if (profile !== 'undefined' || profile !== ''){
+        if(profile.data.name.split(' ').length > 1) {
+            firstname = profile.data.name.split(" ")[0];
+           lastname = profile.data.name.split(" ")[1];
+        }
+        else {
+          firstname = profile.data.name;
+        }
+        const 
+          email = profile.data.email,
+          phone = profile.data.phone,
+          username = profile.data.username;
+          this.setState({
+            firstname,
+            lastname,
+            email,
+            phone,
+            username
+          });
+      }
+    } catch (error) {
+    }
     
-  //   // this.setState({
-  //   //   showLoading: false
-  //   // });
-  //   let endPoint = `${ProfileEndpoint}`;
-
-  //     getRoute(endPoint, token)
-  //     .then((res) => {
-  //       console.log({responses: res})
-  //       if (typeof res.message !== 'undefined' || typeof res.message === '') {  
-  //         return  this.setState({ 
-  //           message : res.message,
-  //         }); 
-  //       }
-  //       else {
-  //         const firstname = res.data.name.split(" ")[0],
-  //           lastname = res.data.name.split(" ")[1],
-  //           id = res.data.id,
-  //           email = res.data.email,
-  //           phone = res.data.phone;
-  //           console.log({resSuccess: id})
-
-  //         this.setState({ 
-  //           id : id,
-  //           firstname : firstname, 
-  //           lastname : lastname,
-  //           email : email,
-  //           phone : phone,
-  //         }); 
-  //       }
-  //     })
-  //     .catch((res) => {
-  //       this.setState({
-  //         messageKey : 'Message',
-  //         message : res.message,
-  //       });
-
-  //     })
-  // }
+  }
 
   
   render() {
-    const { firstname,email, id} = this.state;
+    const { firstname,email, username,id} = this.state;
     return (
       <SafeAreaView style={styles.sideMenuContainer}>
         {/*Top Large Image */}
@@ -156,9 +121,9 @@ export default class CustomSidebarMenu extends Component {
 
           <View style = {styles.userDetailView}>
             {
-              (firstname) ? 
+              (username) ? 
               <Text style = {styles.txtuserName}>
-                Hi, {`${firstname}`} 
+                Hi, {`${username}`} 
               </Text> :
               <Text style = {styles.txtuserName}>
                 {''} 
@@ -173,7 +138,7 @@ export default class CustomSidebarMenu extends Component {
             :
               <DisplayText
                 // onPress = {this.handleGetProfile}
-                text = {''}
+                text = {'Nigeria Court of Appeal \n Report Nigeria'}
                 style = {styles.txtEmail}
               />
             }
@@ -198,6 +163,7 @@ export default class CustomSidebarMenu extends Component {
                 backgroundColor: global.currentScreenIndex === key ? colors.field_color : colors.white,
                 borderLeftWidth: global.currentScreenIndex === key ? 4 : 0,
                 borderColor : theme.primaryColor,
+                marginTop: 8,
               }}>
                 
               <View style={{ marginRight: 10, marginLeft: 20 }}>

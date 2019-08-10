@@ -75,7 +75,7 @@ export default class Category extends Component {
      })
   }
 
-  hadnleCategoryMain=(item)=>{
+  handleCategoryMain=(item)=>{
     return this.props.navigation.navigate('CategoryDetails',{
       'id': item.id,
       'name': item.name,
@@ -86,11 +86,11 @@ export default class Category extends Component {
     return (
       <View style = {styles.listViewItem}>    
         <TouchableOpacity 
-          onPress = {()=>this.hadnleCategoryMain(item)}
+          onPress = {()=>this.handleCategoryMain(item)}
           style = {styles.cardView}>
           <View style ={styles.reportHeader}>
             <DisplayText
-              onPress = {()=>this.hadnleCategoryMain(item)}
+              onPress = {()=>this.handleCategoryMain(item)}
               text = {item.name}
               styles = {StyleSheet.flatten(styles.categoryName)}
             />

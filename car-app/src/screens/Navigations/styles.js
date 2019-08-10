@@ -90,12 +90,13 @@ export default styles = StyleSheet.create({
     flexDirection : 'row',
     backgroundColor : theme.colorAccent,
     alignItems : 'center',
-    height : '20%',
+    height : '25%',
     elevation : 1,
     shadowColor : theme.primaryTextColor,
-    shadowOffset : {height : 1, width : 2},
+    shadowOffset : {height : 1, width : 0},
     shadowOpacity : 0.25,
-    shadowRadius : 2.56
+    shadowRadius : 2.56,
+    marginBottom: 8,
   },
   userDetailView : {
     flexDirection : 'column',
