@@ -83,15 +83,15 @@ export default class FullReport extends Component {
       let response = await fetch(endpoint, settings);
       let res = await response.json();
       if (res.data) {
-         this.setState({
+         await this.setState({
           content:res.data.content,
           id:res.data.id,
           excerpt:res.data.excerpt
         });
-        this.hideLoadingDialogue()
+        return await this.hideLoadingDialogue();
       }
       else {
-        return this.showNotification(res.message,  'Message');
+        return await this.showNotification(res.message,  'Message');
       }
 
     }

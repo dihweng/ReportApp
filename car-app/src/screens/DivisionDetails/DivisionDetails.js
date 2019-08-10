@@ -35,8 +35,8 @@ export default class DivisionDetails extends Component {
   async componentDidMount(){
     let profile = await getProfile();
     const {navigation} = this.props,
-      id = navigation.getParam('id', 'NO-ID'),
-      name = navigation.getParam('name', 'NO-ID');
+      id = navigation.getParam('id'),
+      name = navigation.getParam('name');
     await this.setState({
       token: profile.access_token,
       expires: profile.expires,
@@ -60,10 +60,10 @@ export default class DivisionDetails extends Component {
     });
   }
 
-  showNotification = message => {
+  showNotification = (message, title) => {
     this.setState({ 
       showLoading : false,
-      title : 'Error!',
+      title : title,
       message : message,
       showAlert : true,
     }); 
@@ -77,21 +77,30 @@ export default class DivisionDetails extends Component {
   allReport = async() =>{
     const {token, id} = this.state; 
     let endPoint = `${getAllReport}${'?'}${'division_id='}${id}`;
-    console.log({endpoint: endPoint})
     this.showLoadingDialogue();
     await getRouteToken(endPoint, token)
       .then((res) => {
-        if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message);
-        }   
-        else {   
-          this.setState({
-            data: res.data,
-          });
-          return this.hideLoadingDialogue();
+        if(typeof res.data !== 'undefined' ) {
+          if(res.data.length) {
+            this.setState({
+              data: res.data,
+            });
+            return this.hideLoadingDialogue();
+          }
+          else {
+            this.showNotification('No Record Found', 'Message');
+            return setTimeout(()=>{
+              this.handleCloseNotification();
+              return this.props.navigation.goBack();
+            }, 3000);
+          }
         }
-      }
-    );
+         this.showNotification(res.message, 'Message'); 
+         return setTimeout(()=>{
+          this.handleCloseNotification();
+          return this.props.navigation.goBack();
+        }, 3000);
+      }).catch(error => this.showNotification(error.toString(), 'Message'));
   }
   handleGetAllReport = async() => {
     this.showLoadingDialogue();
@@ -105,20 +114,178 @@ export default class DivisionDetails extends Component {
   }
 
   handleFullReport=async(item)=>{
-    this.showLoadingDialogue();
-
     this.props.navigation.navigate('FullReport', {
-      id: item.id,
-      content: item.content,
-      excerpt: item.excerpt,  
+      id: item.id, 
     });
   }
 
   handleGoBack = () => {
     return this.props.navigation.goBack();
   }
-  renderRow = ({item, index}) => {
 
+  addDeleteReadlater = (id, title, index) =>{
+    this.showLoadingDialogue();
+    if(title.includes('Remove')){
+      return this.deleteReadLater(id, index);
+    }
+    else {
+      return this.handleReadLater(id, index);
+    }
+  }
+
+  handleReadLater = async(id, index) =>{
+    try {
+      await this.readLater(id, index)
+    }
+    catch(error) {
+      return this.showNotification(error.toString());
+    }
+  }
+
+  readLater = async(id, index) =>{
+    const {token, data} = this.state;
+    let endpoint = `${AddReadLaterEndPoint}${id}/future`;
+    let settings = {
+      method : "POST",
+      headers : {
+        "Accept" : "application/json",
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      }
+    };
+
+    try {
+      let response  = await  fetch(endpoint, settings);
+      let res =  await response;
+      if(res.status >= 200 && res.status < 300) {
+        let targetPost = await data[index];
+        targetPost.is_future_saved =  await !targetPost.is_future_saved;
+        await this.setState({ data });
+        return await this.showNotification('Report Added to Read Later', 'Success');
+
+      }
+      else {
+        return this.showNotification('Failed to Add Report', 'Message');
+      }
+    }
+    catch(error) {
+      return this.showNotification(error.toString(), 'Message')
+    }
+  } 
+
+  deleteReadLater = async(id, index)=> {
+    const { token, data } = this.state
+    let endpoint = `${DeleteReadLaterEndpoint}${id}/${'future'}`      
+    const settings = {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,   
+
+      },
+    };
+
+    try {
+      let response = await fetch(endpoint, settings);
+      let res = await response;
+
+      if(res.status >= 200 && res.status < 300) {
+        let targetPost = await data[index];
+        targetPost.is_future_saved = await !targetPost.is_future_saved;
+        await this.setState({ data });
+        return await this.showNotification('Successfully Removed Report from Read Later', 'Success'); 
+
+      }
+      return await this.showNotification('Failed to Remove Report', 'Message');   
+    } 
+    catch(error){
+     return this.showNotification(error.toString(), 'Message'); 
+    }
+  }
+
+  addDeleteFavorite = (id, title, index) =>{
+    this.showLoadingDialogue();
+    if(title.includes('Remove')) {
+      return this.deleteFavorite(id, index);
+    }
+    else {
+      return this.handleAddFavorite(id, index);
+    }
+  }
+
+  handleAddFavorite = async(id, index) =>{
+    try {
+    return await this.addFavorite(id, index)
+    }
+    catch(error) {
+      return this.showNotification(error.toString());
+    }
+  }
+
+  addFavorite = async(id, index) =>{
+    const {token, data} = this.state;
+    let endpoint = `${AddFavoriteEndPoint}${id}/favorite`;
+     const  settings ={
+      method : "POST",
+      headers : {
+        "Accept" : "application/json",
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      }
+    }
+
+    try {
+      let response = fetch(endpoint, settings)
+      let res = await response;
+      if (res.status >= 200 && res.status < 300) {    
+        let targetPost = await data[index];
+        targetPost.is_favorite =  await !targetPost.is_favorite;
+        await this.setState({ data });
+        return await this.showNotification('Report Added To Favorite', 'Success');
+        
+      }
+      else {
+        return this.showNotification('Report Could Not be Added to Favorite',  'Message');
+      }
+
+    }
+    catch(error) {
+      return this.showNotification(error.toString(), 'Message');
+    }
+  } 
+
+  deleteFavorite = async(id, index)=> {
+    const { token, data} = this.state;
+    let endpoint = `${DeleteFavoriteEndpoint}${id}/${'favorite'}`      
+    const settings = {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,   
+
+      },
+    };
+
+    try {
+      let response = await fetch(endpoint, settings);
+      let res = await response;
+      if(res.status >= 200 && res.status < 300) {
+        let targetPost = await  data[index];
+        targetPost.is_favorite = await !targetPost.is_favorite;
+        await this.setState({ data });
+        return await this.showNotification('Successfully Removed Favorite', 'Success');   
+      }
+      return await this.showNotification('Failed to Removed Report', 'Message');   
+    } 
+    catch(error){
+     return this.showNotification(error.toString(), 'Message'); 
+    }
+  }
+
+
+  renderRow = ({item, index}) => {
     let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
     let favorite_button_text = item.is_favorite == true ? 'Remove Favorite' : 'Add Favorite';
     return (
@@ -230,7 +397,8 @@ export default class DivisionDetails extends Component {
         {/* <View style = {styles.viewBody}> */}
           <FlatList          
             data={this.state.data}      
-            renderItem={this.renderRow}          
+            renderItem={this.renderRow}   
+            extraData={this.state}       
             keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
           />

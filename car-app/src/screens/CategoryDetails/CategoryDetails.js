@@ -115,12 +115,8 @@ export default class CategoryDetails extends Component {
   }
 
   handleFullReport=async(item)=>{
-    this.showLoadingDialogue();
-
     this.props.navigation.navigate('FullReport', {
-      id: item.id,
-      content: item.content,
-      excerpt: item.excerpt,  
+      id: item.id, 
     });
   }
 
