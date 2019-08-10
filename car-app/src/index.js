@@ -2,10 +2,12 @@
 
 import React, {Component} from 'react';
 import { StyleSheet, View, TextInput } from 'react-native';
-import { Font } from 'expo';
+import * as Font  from 'expo-font';
 import Navigator from './routes';
 import colors from './assets/colors';
 TextInput.defaultProps.selectionColor = colors.text_color;
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 export default class App extends Component {
   constructor(props){
@@ -34,10 +36,13 @@ export default class App extends Component {
 
     return (
       <View style={styles.container}>
-      {fontsLoaded ?
-        <Navigator/>
-        :
-        null }
+      <Provider store={store}>
+        {fontsLoaded ?
+          <Navigator/>
+          :
+          null 
+        }
+      </Provider>
       </View>
     );
   }

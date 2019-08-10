@@ -26,7 +26,9 @@ const LoginEndpoint = `${Baseurl}oauth/token`,
   DeleteReadLaterEndpoint = `${Baseurl}api/reports/`,
   GetCategoryEndpoint = `${Baseurl}api/categories/`,
   GetDivisionEndpoint = `${Baseurl}api/divisions/`,
-  GetAllSubscription = `${Baseurl}api/users/userId/subscriptions`
+  GetAllSubscription = `${Baseurl}api/users/userId/subscriptions`,
+  GetReportEndpoint = `${Baseurl}api/reports/`;
+
 
 
 export {
@@ -56,6 +58,7 @@ export {
   GetCategoryEndpoint,
   GetDivisionEndpoint,
   GetAllSubscription,
+  GetReportEndpoint,
 }
 
 
@@ -117,9 +120,7 @@ export const postWithToken = (endpoint, body, token) => {
   });
 }
 export const postToken = (endpoint, token) => {
-  console.log({endpointsssss : endpoint,
-    tokensssss : token,
-  })
+  
   return fetch(endpoint, {
   method: 'POST',
   headers: {
@@ -155,12 +156,11 @@ export const getRoute = (endpoint) => {
       return res;
     })
     .catch((error) => {
-      return Alert.alert(error.toString())
+      return error
   });
 }
 
 export const getRouteToken = (endpoint, token) => {
-  console.log({endpoint: endpoint , token: token});
   return fetch(endpoint, {
     method: 'GET',
     headers: {
@@ -176,7 +176,7 @@ export const getRouteToken = (endpoint, token) => {
       return res;
     })
     .catch((error) => {
-      return Alert.alert(error.toString())
+      return error
   });
 }
 
