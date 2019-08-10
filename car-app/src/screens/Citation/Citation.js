@@ -75,8 +75,8 @@ export default class Citation extends Component {
      })
   }
 
- //filter citation
-  handleDivisionPress = (citation) => {
+ //filter citation numberts
+  handleCitationPress = (citation) => {
     const {filterData} = this.state;
     const newData = filterData.filter(item => {
       const itemData = `${item.citation.toUpperCase()}`;
@@ -86,9 +86,34 @@ export default class Citation extends Component {
     });
     return this.setState({
       data: newData,
+      secondFilter: newData,
     });
   }
+  // Filter by citation alphabets
+  handleCitationAlph = (citationAlph) => {
+    
+    const {filterData, secondFilter} = this.state;
+    if(secondFilter.length > 0 ){
+      const newData = secondFilter.filter(item => {
+        const itemData = `${item.citation.toUpperCase()}`;
+        const textData = citationAlph;
+  
+        return itemData.indexOf(textData) > -1;
+      });
+      return this.setState({
+        data: newData,
+      });  
+    }
+    const newData = filterData.filter(item => {
+      const itemData = `${item.citation.toUpperCase()}`;
+      const textData = citationAlph;
 
+      return itemData.indexOf(textData) > -1;
+    });
+    return this.setState({
+      data: newData,
+    });
+  }
   allReport = async() => {
     const {token} = this.state;
     this.showLoadingDialogue();
@@ -200,7 +225,7 @@ export default class Citation extends Component {
       return <TouchableOpacity 
                 key = {index}
                 style = {styles.citisionTp}
-                onPress={()=>this.handleDivisionPress(citation)}>
+                onPress={()=>this.handleCitationPress(citation)}>
               <Text 
                 style={styles.text}
                 key = {index}>
@@ -212,7 +237,7 @@ export default class Citation extends Component {
       return <TouchableOpacity 
                 key = {index}
                 style = {styles.citisionTp}
-                onPress={()=>this.handleDivisionPress(citationAlph)}>
+                onPress={()=>this.handleCitationAlph(citationAlph)}>
               <Text 
                 style={styles.text}
                 key = {index}>
@@ -295,11 +320,11 @@ export default class Citation extends Component {
           </View>
 
         {/* button */}
-        <SubmitButton
+        {/* <SubmitButton
           title={'Apply'}
           onPress={this.handleApply}
           titleStyle={styles.btnText}
-          btnStyle = {styles.btnStyle}/>
+          btnStyle = {styles.btnStyle}/> */}
 
         </View>
         <View style = {styles.viewBody}>
