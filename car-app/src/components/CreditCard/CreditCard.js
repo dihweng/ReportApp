@@ -42,7 +42,6 @@ export default class CreditCard extends Component {
   }
 
   onSuccess(data) {
-    console.log("success...", data);
     this.handlePayment(data)
   }
 
@@ -63,7 +62,6 @@ export default class CreditCard extends Component {
   // Post Payment to detail to api/investment
   handlePayment =  (data) => {
     const {token, period, } = this.state;
-    console.log({tokenssssss: token});
     this.setState({ 
       showLoading : true ,
     }); 
@@ -71,7 +69,6 @@ export default class CreditCard extends Component {
     trans_id = data.data.tx.flwRef,
     currency = data.data.tx.currency.toLowerCase();
 
-    console.log("data to name...", principal );
 
     //convert ref to an object
     let body = JSON.stringify({
@@ -91,11 +88,9 @@ export default class CreditCard extends Component {
           message : res.message,
           showAlert : true,
         }); 
-        console.log({errrrr: res.message})
         // return this.refs.toastError.show(res.message, 400);
        } 
        else {
-          console.log('hello...', res.message);
           this.setState({ 
             showLoading : false, 
           }); 

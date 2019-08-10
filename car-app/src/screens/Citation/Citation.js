@@ -1,7 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView, TouchableOpacity,StatusBar, Image, Text, StyleSheet,} from 'react-native';
-import {DisplayText, CustomToast,SubmitButton} from '../../components';
+import {DisplayText, CustomToast,SingleButtonAlert} from '../../components';
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import filter from 'lodash.filter';
@@ -140,13 +140,11 @@ export default class Citation extends Component {
     try {
       await this.allReport()
     }
-    catch(e) {
-      console.log({e})
+    catch(error) {
+      return this.showNotification(error.toString());
     }
   }
-  handleApply = () => {
-    alert('sorry cant apply citation now')
-  }
+  
   changeLayout = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     this.setState({ expanded: !this.state.expanded });
@@ -344,6 +342,12 @@ export default class Citation extends Component {
             visible={showLoading}
             title="Processing"
             message="Please wait..."
+          />
+          <SingleButtonAlert
+            title = {title} 
+            message = {message}
+            handleCloseNotification = {this.handleCloseNotification}
+            visible = {showAlert}
           />
       </SafeAreaView>
       )

@@ -6,7 +6,7 @@ import {DisplayText, SubmitButton, SingleButtonAlert, InputField} from '../../co
 import styles from './styles';
 import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import { getRoute, getUserDatials, AllListofSupport } from '../Utils/Utils';
+import { getRoute, getUserDetails, AllListofSupport } from '../Utils/Utils';
 import moment from 'moment';
 
 export default class SurpportDesk extends Component {
@@ -27,7 +27,7 @@ export default class SurpportDesk extends Component {
   }
 
   async componentDidMount(){
-    let userDetails = await getUserDatials();
+    let userDetails = await getUserDetails();
     const token =  userDetails.token,
     userId = userDetails.data.id;
     this.setState({
@@ -53,18 +53,14 @@ export default class SurpportDesk extends Component {
 
   handleGetAllTicket = () => {
     const{token, userId} = this.state;
-    console.log({tokien_check : userId, token : token});
     
     this.setState({
       showLoading: true
     });
     let endPoint = `${AllListofSupport}/${userId}/${"support"}`;
-    console.log({endpoint_check : endPoint});
-
       getRoute(endPoint, token)
       .then((res) => {
         if ( res.status >= 400 && res.status <= 500 ) { 
-          console.log({helloError: res})
           return  this.setState({ 
             showLoading : false,
             title : 'Alert',
@@ -74,8 +70,6 @@ export default class SurpportDesk extends Component {
         }
         else {
           const data = res.data;
-            console.log({resSuccessdata: data});
-
           this.setState({ 
             showLoading : false, 
             data : data,
@@ -88,7 +82,6 @@ export default class SurpportDesk extends Component {
   };
 
   handleFlatlist = (item) => {
-    console.log( {item: item});
     return this.props.navigation.navigate('Message', {
       "id" : item.id,
       "status" : item.status,

@@ -104,9 +104,8 @@ export default class ViewPlan extends Component {
     try {
       await this.AllPlan()
     }
-    catch(e) {
-      console.log({e})
-      this.hideLoadingDialogue();
+    catch(error) {
+      return this.showNotification(error.toString());
     }
   }
 
@@ -134,23 +133,16 @@ export default class ViewPlan extends Component {
     selectedButtonPlan = selectedButtonPlan ? selectedButtonPlan.value : this.state.plan[0].label;
 
     if ( selectedButtonPlan === 'individual') {
-      console.log({selected: selectedButtonPlan})
-
       await this.planFilterFunction(selectedButtonPlan);
     }
     else if ( selectedButtonPlan === 'corporate'){
-      console.log({selected2: selectedButtonPlan})
-
-
       await this.planFilterFunction(selectedButtonPlan);
-
     }
   }
   planFilterFunction = async(plandtype) => {
     const { planData } = this.state;
     
     const newData = filter(planData, ['category',plandtype]);
-    console.log({newdataPlan: newData });
     if(newData.length) {
       return await this.setState({
         data: newData,

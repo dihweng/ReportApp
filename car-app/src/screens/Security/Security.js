@@ -14,7 +14,7 @@ import {DisplayText, InputField, SubmitButton, SingleButtonAlert} from '../../co
 import styles from './styles';
 import colors from '../../assets/colors'
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import { getUserDatials, ChangePassword } from '../Utils/Utils';
+import { getUserDetails, ChangePassword } from '../Utils/Utils';
 
 
 export default class Security extends Component {
@@ -36,7 +36,7 @@ export default class Security extends Component {
     }
   }
   async componentDidMount(){
-    let userDetails = await getUserDatials();
+    let userDetails = await getUserDetails();
 
     const token = userDetails.token,
       id  = userDetails.data.id;
@@ -70,15 +70,7 @@ export default class Security extends Component {
       showLoading : true,
     });
     let endPoint = `${ChangePassword}${id}/${'password/reset'}`
-    console.log({endPoint: endPoint});
-
-    // const body = {
-    //   'password_old' : password,
-    //   'password' : newPassword,
-    //   'password_confirmation' : confirmPassword,
-    // };
-
-
+    
     fetch(endPoint, {
       method : "POST",
       body : JSON.stringify({
@@ -95,7 +87,6 @@ export default class Security extends Component {
     })
     .then((res) => {
       if ( res.status >= 400 && res.status <= 500 ) {
-        console.log('error', res)
         // alert(res._bodyText.errors)
         return this.setState({
           showLoading : false,
@@ -105,8 +96,6 @@ export default class Security extends Component {
         });
       }
       else {
-        console.log({success : res});
-        
         this.setState({
           showLoading : false,
           title : 'Alert',

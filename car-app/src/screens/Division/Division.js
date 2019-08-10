@@ -78,8 +78,6 @@ export default class Devision extends Component {
      })
   }
 
-
-
   handleDivisionPress =(item)=>{
     return this.props.navigation.navigate('DivisionDetails',{
       'id': item.id,
@@ -91,7 +89,6 @@ export default class Devision extends Component {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     this.setState({ expanded: !this.state.expanded });
   }
-  
 
   renderRow = ({item}) => {
     return (
@@ -108,7 +105,6 @@ export default class Devision extends Component {
       </View>
     );
   }
-
 
   render () {
     const {
@@ -151,7 +147,7 @@ export default class Devision extends Component {
           </View>
           <View 
             style={{ flexDirection : 'row',
-              height: this.state.expanded ? null : 0, 
+              height: this.state.expanded ? '75%' : 0, 
               overflow: 'scroll', 
               flexWrap : "wrap" }}>
             {/* {divisionList} */}
@@ -179,7 +175,6 @@ export default class Devision extends Component {
         visible = {showAlert}
       />
     </SafeAreaView>
-    
-   )
+    )
   }
 } 

@@ -24,7 +24,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import data from '../Register/Countries';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import { UpdateBankDetails, putRoute, getUserDatials } from '../Utils/Utils';
+import { UpdateBankDetails, putRoute, getUserDetails } from '../Utils/Utils';
 import theme from '../../assets/theme';
 
 const defaultFlag = data.filter(
@@ -70,12 +70,10 @@ export default class PersonalDetails extends Component {
 
   }
   async componentDidMount(){
-    let userDetails = await getUserDatials();
+    let userDetails = await getUserDetails();
 
     const id = userDetails.data.id,
       token = userDetails.token;
-      
-    console.log({toekennnnn: token, id : id});
     this.setState({
       id,
       token,
@@ -107,9 +105,6 @@ export default class PersonalDetails extends Component {
     } = this.state;
 
     let endpoint = `${UpdateBankDetails}/${id}`;
-
-    console.log({idddd : endpoint, startDate : startDate });
-
     let body = {
       name:name,
       dob:startDate,
@@ -119,7 +114,6 @@ export default class PersonalDetails extends Component {
       country:country,
       occupation:occupation,
     };
-    console.log({request_body : body});
     fetch(endpoint, {
       method : "PUT",
       body : JSON.stringify(body),
@@ -140,8 +134,6 @@ export default class PersonalDetails extends Component {
         });
       }
       else {
-        console.log({success : res});
-
         this.setState({
           showLoading : false,
         });

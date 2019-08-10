@@ -77,7 +77,6 @@ export default class CategoryDetails extends Component {
   allReport = async() =>{
     const {token, id} = this.state; 
     let endPoint = `${getAllReport}${'?'}${'category_id='}${id}`;
-    console.log({endpoint: endPoint})
     this.showLoadingDialogue();
     await getRouteToken(endPoint, token)
       .then((res) => {

@@ -45,8 +45,6 @@ export default class Verification extends Component {
   }
   handleGetProfile = () => {
     const{token} = this.state;
-    console.log({profile_tokenaaaaa : token});
-    
     this.setState({
       showLoading: true
     });
@@ -55,7 +53,6 @@ export default class Verification extends Component {
       getRoute(endPoint, token)
       .then((res) => {
         if (typeof res.message !== 'undefined' || typeof res.message === '') {  
-          console.log({responses: res})
           return  this.setState({ 
             showLoading : false,
             title : 'Alert',
@@ -65,8 +62,6 @@ export default class Verification extends Component {
         }
         else {
           const id = res.data.id;
-          console.log({resSuccess: id})
-
           this.setState({ 
             showLoading : false, 
             id : id,
@@ -97,11 +92,9 @@ export default class Verification extends Component {
     // let data = JSON.stringify({
     //   'otp' : otp,
     // });
-    // console.log({endPoint: endPoint});
     // postWithToken(endPoint, data, token)
     //   .then((res) => {
     //     if (typeof res.message !== 'undefined' ) {  
-    //       console.log({resppp : res})
     //       this.setState({ 
     //         showLoading : false,
     //         title : 'Alert',
@@ -112,7 +105,6 @@ export default class Verification extends Component {
 
     //     }
     //     else{
-    //       console.log({success : res})
     //       this.setState({ 
     //         showLoading : false, 
     //         title : 'Alert',

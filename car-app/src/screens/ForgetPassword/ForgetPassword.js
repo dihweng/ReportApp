@@ -40,7 +40,6 @@ export default class ForgetPassword extends Component {
     // });
     // postRoute(ForgotPassword, body)
     //   .then((res) => {
-    //     console.log({responses: res})
     //     if (typeof res.message !== 'undefined' || typeof res.message === 'The given data was invalid') {  
     //       return  this.setState({ 
     //         showLoading : false,
@@ -50,7 +49,6 @@ export default class ForgetPassword extends Component {
     //       }); 
     //     }
     //     else {
-    //       console.log({residdddd : res})
     //       this.setState({ 
     //         showLoading : false, 
     //       }); 

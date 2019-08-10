@@ -27,7 +27,7 @@ import colors from '../../assets/colors'
 import data from '../Register/Countries';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import {DisplayText, InputField, SingleButtonAlert, SubmitButton} from '../../components';
-import { UpdateBankDetails, putRoute, getUserDatials } from '../Utils/Utils';
+import { UpdateBankDetails, putRoute, getUserDetails } from '../Utils/Utils';
 import moment from 'moment';
 
 const defaultFlag = data.filter(
@@ -57,14 +57,13 @@ export default class ContactDetails extends Component {
   }
 
   async componentDidMount(){
-    let userDetails = await getUserDatials();
+    let userDetails = await getUserDetails();
 
     const id = userDetails.data.id,
       token = userDetails.token;
       
     // let newDate = moment(dob).format("YYYY/MM/DD");
 
-    console.log({toekennnnn: token, id: id});
       this.setState({
       id,
       token,
@@ -79,10 +78,7 @@ export default class ContactDetails extends Component {
       showLoading: true,
     });
 
-    let endpoint = `${UpdateBankDetails}/${id}`;
-
-    console.log({idddd : endpoint});
-    
+    let endpoint = `${UpdateBankDetails}/${id}`;    
 
     let body = {
       address:address,       
@@ -90,7 +86,6 @@ export default class ContactDetails extends Component {
       country:country,
       state : stateProReg,
     };
-    console.log({request_body : body});
     fetch(endpoint, {
       method : "PUT",
       body : JSON.stringify(body),
@@ -110,8 +105,6 @@ export default class ContactDetails extends Component {
         });
       }
       else {
-        console.log({success : res});
-
         this.setState({
           showLoading : false,
         });

@@ -151,4 +151,11 @@ export default styles = StyleSheet.create({
     backgroundColor: theme.primaryColor,
     marginRight: 4,
   },
+  txtEmail: {
+    fontFamily : theme.secondaryFont, 
+    fontSize : theme.MediumFont,
+    marginLeft : 15,
+    textAlign: 'center',
+  }
+
 });

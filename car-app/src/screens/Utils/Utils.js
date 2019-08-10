@@ -26,7 +26,7 @@ const LoginEndpoint = `${Baseurl}oauth/token`,
   DeleteReadLaterEndpoint = `${Baseurl}api/reports/`,
   GetCategoryEndpoint = `${Baseurl}api/categories/`,
   GetDivisionEndpoint = `${Baseurl}api/divisions/`,
-  GetAllSubscription = `${Baseurl}api/users/userId/subscriptions`,
+  GetAllSubscription = `${Baseurl}api/users/`,
   GetReportEndpoint = `${Baseurl}api/reports/`;
 
 
@@ -228,7 +228,7 @@ export const saveUserDetail = async( data, token,  ) => {
   };
   return await AsyncStorage.setItem('details', JSON.stringify(details))
 }
-export const getUserDatials = async() => {
+export const getUserDetails = async() => {
   return await AsyncStorage.getItem('details')
     .then((value) => {
       if (value) {
