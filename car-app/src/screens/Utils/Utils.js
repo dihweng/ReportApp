@@ -25,7 +25,8 @@ const LoginEndpoint = `${Baseurl}oauth/token`,
   DeleteFavoriteEndpoint = `${Baseurl}api/reports/`,
   DeleteReadLaterEndpoint = `${Baseurl}api/reports/`,
   GetCategoryEndpoint = `${Baseurl}api/categories/`,
-  GetDivisionEndpoint = `${Baseurl}api/divisions/`;
+  GetDivisionEndpoint = `${Baseurl}api/divisions/`,
+  GetAllSubscription = `${Baseurl}api/users/userId/subscriptions`
 
 
 export {
@@ -54,6 +55,7 @@ export {
   DeleteReadLaterEndpoint,
   GetCategoryEndpoint,
   GetDivisionEndpoint,
+  GetAllSubscription,
 }
 
 

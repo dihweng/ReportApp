@@ -1,7 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
-import { View,  LayoutAnimation, Platform, UIManager, Text, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, SubmitButton} from '../../components';
+import { View, FlatList, ScrollView, LayoutAnimation, Platform, UIManager, Text, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
+import {DisplayText, CustomToast, SubmitButton} from '../../components';
 import styles from './styles';
 import { Row } from 'native-base';
 
@@ -36,6 +36,7 @@ export default class Devision extends Component {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     this.setState({ expanded: !this.state.expanded });
   }
+
   render () {
     var divisions = ['1', '2', '3', '4', '6','7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
     var divisionList = divisions.map((division, index) => {
@@ -53,6 +54,7 @@ export default class Devision extends Component {
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
+      <ScrollView>
       <View style={styles.wrapper}>
         <View style = {styles.expandedView}>
           {/* Citation 0-9 */}
@@ -96,6 +98,19 @@ export default class Devision extends Component {
           btnStyle = {styles.btnStyle}/>
 
       </View>
+        <View style = {styles.viewBody}>
+          <FlatList          
+            data={this.state.data}          
+            renderItem={this.renderRow}          
+            // ListHeaderComponent={this.renderHeader}     
+            keyExtractor={ data=> data.id.toString()}   
+            showsVerticalScrollIndicator={false}
+          />
+          <View style = {styles.taostView}>
+            <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          
+          </View> 
+        </View> 
+      </ScrollView>
     </SafeAreaView>
     
    )
