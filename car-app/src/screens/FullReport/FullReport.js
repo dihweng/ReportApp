@@ -1,29 +1,33 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, Text, ScrollView, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
+import { View, ScrollView, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
 import styles from './styles';
-import theme from '../../assets/theme';
 import HTML from 'react-native-render-html';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import {DisplayText, SingleButtonAlert} from '../../components';
-import {connect} from 'react-redux';
-import { getReport} from '../../redux/actions/ReportActions';
-import { ProfileEndpoint } from '../Utils/Utils';
+import {  getProfile, GetReportEndpoint } from '../Utils/Utils';
 
-
- class FullReport extends Component {
+export default class FullReport extends Component {
   constructor(props) {
     super(props);
     this.state ={
-      showAlert : false,
-      showLoading : false,
+      token: '',
+      showAlert: false,
       message: '',
+      showLoading: false,
       title: '',
       content: '',
+      excerpt:'',
     }
 
   }
   async componentDidMount(){
+    let profile = await getProfile();
+    await this.setState({
+      token : profile.access_token,
+      expires : profile.expires,
+      showLoading:true,
+    });
     await this.handleGetReport();
   }
 
@@ -39,10 +43,10 @@ import { ProfileEndpoint } from '../Utils/Utils';
     });
   }
 
-  showNotification = message => {
+  showNotification = (message, title) => {
     this.setState({ 
       showLoading : false,
-      title : 'Error!',
+      title : title,
       message : message,
       showAlert : true,
     }); 
@@ -50,20 +54,71 @@ import { ProfileEndpoint } from '../Utils/Utils';
 
   handleCloseNotification = () => {
     return this.setState({
-       showAlert : false,
-     })
+      showAlert : false,
+    })
   }
   
   handleGetReport = async() => {
-    const{navigation, report} = this.props,
-       index = await navigation.getParam('index');
-       await this.props.getReport(index);
-      return await this.setState({
-        content: report.content,
-        id:report.id,
-        excerpt:report.excerpt
-      });
+    const{navigation} = this.props;
+    let reportId = await navigation.getParam('id');
+    return await this.getReportById(reportId);
+      
   }
+
+  getReportById = async(reportId)=> {
+
+    const {token} = this.state;
+    let endpoint = `${GetReportEndpoint}${reportId}`;
+     const  settings ={
+      method : "GET",
+      headers : {
+        "Accept" : "application/json",
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      }
+    }
+
+    try {
+
+      let response = await fetch(endpoint, settings);
+      let res = await response.json();
+      if (res.data) {
+         this.setState({
+          content:res.data.content,
+          id:res.data.id,
+          excerpt:res.data.excerpt
+        });
+        this.hideLoadingDialogue()
+      }
+      else {
+        return this.showNotification(res.message,  'Message');
+      }
+
+    }
+    catch(error) {
+      return this.showNotification(error.toString(), 'Message');
+    }
+  }
+
+  showLoadingDialogue =()=> {
+    this.setState({
+      showLoading: true,
+    });
+  }
+
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
+
+  handleCloseNotification = () => {
+    return this.setState({
+       showAlert : false,
+     })
+  }
+
+
   handleRatio = () => {
     return this.props.navigation.navigate('Ratios');
   }
@@ -139,7 +194,7 @@ import { ProfileEndpoint } from '../Utils/Utils';
         <ScrollView
           style={{flex:1, paddingHorizontal: 8}}
           showsVerticalScrollIndicator={false}>
-            <HTML html={content} />
+          { content !== '' ?  <HTML html={content} /> : null}
         </ScrollView>
         <ProgressDialog
           visible={showLoading}
@@ -156,16 +211,3 @@ import { ProfileEndpoint } from '../Utils/Utils';
     )
   }
 } 
-const mapStateToProps = (state, ownProps) =>{
-  return{
-    report: state.ReportReducer.report
-  }
-}
-
-const mapDispatchToProps = (dispatch) =>{
-  return{
-    getReport: (index) =>{dispatch(getReport(index))},
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(FullReport)

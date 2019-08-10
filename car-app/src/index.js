@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import { StyleSheet, View, TextInput } from 'react-native';
-import { Font } from 'expo';
+import * as Font  from 'expo-font';
 import Navigator from './routes';
 import colors from './assets/colors';
 TextInput.defaultProps.selectionColor = colors.text_color;

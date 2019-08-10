@@ -28,7 +28,7 @@ export default class Category extends Component {
     this.showLoadingDialogue();
     await getRoute(GetCategoryEndpoint)
       .then((res) => {
-        console.log({respomses: res})
+        //console.log({respomses: res})
         if (typeof res.message !== 'undefined') {  
           return this.showNotification(res.message);
         }   

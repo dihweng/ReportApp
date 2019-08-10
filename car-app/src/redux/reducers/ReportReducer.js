@@ -12,7 +12,7 @@ export default function ReportReducer(state = initialState, action) {
             });
         case types.FIND_REPORT: 
             return Object.assign({}, state, {
-                report: allReports[action.reportIndex],      
+                report:state.allReports[action.reportIndex],      
             });
          default:
             return state;

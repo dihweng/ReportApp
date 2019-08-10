@@ -33,7 +33,6 @@ export default class CreditCard extends Component {
 
   displayProfile = async() => {
     let profile = await getProfile();
-    console.log({profilesssssss : profile})
     if( profile) { 
       this.setState({
         token : profile.access_token,

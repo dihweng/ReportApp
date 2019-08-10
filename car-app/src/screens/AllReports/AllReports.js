@@ -8,8 +8,6 @@ import { DeleteFavoriteEndpoint, DeleteReadLaterEndpoint, getRouteToken, getAllR
   ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint } from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import colors from '../../assets/colors';
-import {connect} from 'react-redux';
-import { setReport} from '../../redux/actions/ReportActions';
 
  class AllReports extends Component {
   constructor(props) {
@@ -81,7 +79,6 @@ import { setReport} from '../../redux/actions/ReportActions';
             data: res.data,
             filterData: res.data,
           });
-          this.props.setReports(res.data);
           return this.hideLoadingDialogue();
         }
       }
@@ -94,7 +91,7 @@ import { setReport} from '../../redux/actions/ReportActions';
     try {
       return await this.allReport()
     }
-    catch(e) {
+    catch(error) {
       return this.showNotification(error.toString());
     }
   }
@@ -121,12 +118,10 @@ import { setReport} from '../../redux/actions/ReportActions';
   }
 
 
-  handleFullReport = async(id, content, excerpt)=>{
-    this.props.navigation.navigate('FullReport', {
-       id: id,
-       content:content,
-       excerpt:excerpt,  
-    });
+  handleFullReport = async(id)=>{
+  
+   this.props.navigation.navigate('FullReport', {id});
+   //return this.props.getReport(index);
   }
 
   addFavorite = async(id, index) =>{
@@ -341,14 +336,14 @@ import { setReport} from '../../redux/actions/ReportActions';
     return (
        <View style = {styles.listViewItem}>    
         <TouchableOpacity 
-          onPress = {()=>this.handleFullReport(index)}
+          onPress = {()=>this.handleFullReport(item.id)}
           style = {styles.cardView}>
           <View style ={styles.reportHeader}>
             <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
               text = {item.title}
-              onPress = {()=>this.handleFullReport(index)}
+              onPress = {()=>this.handleFullReport(item.id)}
               styles = {StyleSheet.flatten(styles.reportName)}
             />
 
@@ -356,7 +351,7 @@ import { setReport} from '../../redux/actions/ReportActions';
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
               text = {item.citation}
-              onPress = {()=>this.handleFullReport(index)}
+              onPress = {()=>this.handleFullReport(item.id)}
               styles = {StyleSheet.flatten(styles.headerText)}
             />
 
@@ -364,7 +359,7 @@ import { setReport} from '../../redux/actions/ReportActions';
               numberOfLines = { 2 } 
               // ellipsizeMode = 'middle'
               text = {''}
-              onPress = {()=>this.handleFullReport(index)}
+              onPress = {()=>this.handleFullReport(item.id)}
               styles = {StyleSheet.flatten(styles.headerText)}
             /> 
 
@@ -372,7 +367,7 @@ import { setReport} from '../../redux/actions/ReportActions';
               numberOfLines = { 4 } 
               ellipsizeMode = 'middle'
               text = {'Little Description needed'}
-              onPress = {()=>this.handleFullReport(index)}
+              onPress = {()=>this.handleFullReport(item.id)}
               styles = {StyleSheet.flatten(styles.reportInfo)}
             />
 
@@ -442,17 +437,5 @@ import { setReport} from '../../redux/actions/ReportActions';
   }
 } 
 
-const mapStateToProps = (state, ownProps) =>{
-  return{
-    //profile: state.ProfileReducer.profile
-  }
-}
-
-const mapDispatchToProps = (dispatch) =>{
-  return{
-    setReports: (data) =>{dispatch(setReport(data))},
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AllReports);
+export default AllReports;
 
