@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 const window = Dimensions.get('window');
 import Constants  from 'expo-constants';
 import colors from '../../assets/colors';
@@ -31,22 +31,23 @@ export default styles = StyleSheet.create({
     marginLeft: 16
   },
   wrapper : {
-    // flex : 1,
+    flex : 1,
     // justifyContent: 'center',
-    marginVertical: 16,
     alignItems: 'center',
   },
   citationView : {
     width: '100%',
-    height: 120,
+    height: (Platform.OS === 'ios') ? 120 : 100,
     flexDirection: 'row',
-    elevation : 1,
-    shadowColor : theme.primaryTextColor,
+    elevation: 1,
+    shadowColor: theme.primaryTextColor,
     shadowOffset: { height : 1, width : 0},
-    shadowRadius : 2.25,
-    shadowOpacity : 0.25,
-    backgroundColor : theme.colorAccent,
-    borderRadius : 2,
+    shadowRadius: 2.25,
+    shadowOpacity: 0.25,
+    backgroundColor: theme.colorAccent,
+    borderRadius: 2,
+    paddingRight: 4,
+    marginTop: 8,
 
   },
   sorting : {
@@ -92,6 +93,8 @@ export default styles = StyleSheet.create({
     marginBottom : 4,
     fontSize : theme.SmallFont,
     color : theme.textGray,
+    fontWeight: "bold"
+
   },
   citationBody : {
     marginBottom : 4,
@@ -106,8 +109,8 @@ export default styles = StyleSheet.create({
 
   expandedView : {
     width : '90%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     elevation : 1,
     shadowColor : theme.primaryTextColor,
     shadowOffset: { height : 1, width : 0},
@@ -119,5 +122,39 @@ export default styles = StyleSheet.create({
   divisionTp : {
     paddingHorizontal : 4,
     paddingVertical : 8,
-  }
+  },
+  categoryName: {
+    fontFamily : theme.primaryFont,
+    fontSize : theme.MediumFont,
+    color : theme.textGray,
+  },
+  reportHeader: {
+    marginVertical: 15,
+  },  
+  cardView: {
+    width: '99%',
+    // height: 30,
+    backgroundColor: theme.colorAccent,
+    borderRadius : 2,
+    marginTop: 4,
+    marginBottom : 4,
+    shadowColor: theme.primaryTextColor,
+    shadowOffset: { 
+      width: 0, 
+      height: 1 
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
+    elevation: 1,
+    paddingVertical: 8,
+    marginHorizontal: 1,
+    alignItems: 'center'
+  },
+  listViewItem : {
+    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'center',
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
 });

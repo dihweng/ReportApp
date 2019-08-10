@@ -32,6 +32,7 @@ import PlainReport from '../screens/PlainReport/PlainReport';
 import FavoriteList from '../screens/FavoriteList/FavoriteList';
 import ReadLaterList from '../screens/ReadLaterList/ReadLaterList';
 import Payment from '../screens/Payment/Payment';
+import DivisionDetails from '../screens/DivisionDetails/DivisionDetails';
 
  const AuthStack = createStackNavigator({ 
   Login: {
@@ -228,6 +229,12 @@ const MenuStack = createStackNavigator({
       header: null,
     }
   },
+  DivisionDetails: {
+    screen: DivisionDetails,
+    navigationOptions: {
+      header: null,
+    }
+  }
 },
   {
     mode: 'modal',

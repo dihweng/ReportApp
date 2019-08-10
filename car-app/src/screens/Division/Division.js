@@ -1,116 +1,183 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList, ScrollView, LayoutAnimation, Platform, UIManager, Text, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, CustomToast, SubmitButton} from '../../components';
+import { View, FlatList, LayoutAnimation, Platform, UIManager, Text, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
+import {DisplayText, SingleButtonAlert} from '../../components';
 import styles from './styles';
-import { Row } from 'native-base';
-
+import { ProgressDialog } from 'react-native-simple-dialogs';
+import { getRoute, GetDivisionEndpoint } from '../Utils/Utils';
 
 export default class Devision extends Component {
   constructor(props) {
     super(props);
     this.state ={
-      data : '',
-      profile_id : '',
-      showAlert : false,
-      message : '',
+      data: [],
+      token: '',
+      showAlert: false,
+      message: '',
+      title: '',
       expanded: false,
-
-    }
-    
-  }
-  componentWillMount () {
-    if (Platform.OS === 'android') {
-      UIManager.setLayoutAnimationEnabledExperimental(true);
     }
   }
 
-  handleApply = () => {
-    alert('hello');
+  async componentDidMount(){
+    (Platform.OS === 'android') ? UIManager.setLayoutAnimationEnabledExperimental(true) : null
+    await this.handleGetDivisions();
   }
-  handleDivisionPress =(division)=>{
-    return alert(division)
+
+  allDivisions=async()=>{
+    this.showLoadingDialogue();
+    await getRoute(GetDivisionEndpoint)
+      .then((res) => {
+        if (typeof res.message !== 'undefined') {  
+          return this.showNotification(res.message);
+        }   
+        else {          
+          this.setState({
+            data: res.data,
+          });
+          return this.hideLoadingDialogue();
+        }
+      }
+    );
+  }
+  handleGetDivisions=async()=>{
+    this.showLoadingDialogue();
+
+    try {
+      await this.allDivisions()
+    }
+    catch(error) {
+      return this.showNotification(error.toString());
+    }
+  }
+
+  showLoadingDialogue =()=> {
+    this.setState({
+      showLoading: true,
+    });
+  }
+
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
+
+  showNotification = message => {
+    this.setState({ 
+      showLoading : false,
+      title : 'Error!',
+      message : message,
+      showAlert : true,
+    }); 
+  }
+
+  handleCloseNotification = () => {
+    return this.setState({
+       showAlert : false,
+     })
+  }
+
+
+
+  handleDivisionPress =(item)=>{
+    return this.props.navigation.navigate('DivisionDetails',{
+      'id': item.id,
+      'name': item.name,
+    });
   }
 
   changeLayout = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     this.setState({ expanded: !this.state.expanded });
   }
+  
+
+  renderRow = ({item}) => {
+    return (
+      <View style = {styles.listViewItem}>    
+        <TouchableOpacity 
+          onPress = {()=>this.handleDivisionPress(item)}
+          style = {styles.cardView}>
+            <DisplayText
+              onPress = {()=>this.handleDivisionPress(item)}
+              text = {item.name}
+              styles = {StyleSheet.flatten(styles.categoryName)}
+            />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
 
   render () {
-    var divisions = ['1', '2', '3', '4', '6','7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
-    var divisionList = divisions.map((division, index) => {
-      return <TouchableOpacity 
-                key = {index}
-                style = {styles.divisionTp}
-                onPress={()=>this.handleDivisionPress(division)}>
-              <Text 
-                style={styles.text}
-                key = {index}>
-                {division}
-              </Text> 
-              </TouchableOpacity>
-    })
-   return(
-    <SafeAreaView style={styles.container}> 
-      <StatusBar barStyle="default" /> 
-      <ScrollView>
-      <View style={styles.wrapper}>
-        <View style = {styles.expandedView}>
-          {/* Citation 0-9 */}
-        <View style = {styles.citationView}>
-          <View style = {styles.sorting}>
-            <TouchableOpacity 
-              onPress={this.changeLayout}
-              style = {styles.sorting}>
-              <Image
+    const {
+      showLoading, 
+      title, 
+      message, 
+      showAlert, } = this.state;
+    return(
+      <SafeAreaView style={styles.container}> 
+        <StatusBar barStyle="default" /> 
+        <View style={styles.wrapper}>
+          <View style = {styles.expandedView}>
+          {/* Divisio 0-16 */}
+          <View style = {styles.citationView}>
+            {/* <View> */}
+              <TouchableOpacity 
                 onPress={this.changeLayout}
-                source = {require('../../assets/images/sort_up.png')}
-                style = {StyleSheet.flatten(styles.sortIcon)}
+                style = {styles.sorting}>
+                <Image
+                  onPress={this.changeLayout}
+                  source = {require('../../assets/images/sort_up.png')}
+                  style = {StyleSheet.flatten(styles.sortIcon)}
+                />
+              </TouchableOpacity>
+            {/* </View> */}
+            <View style = {styles.citationRange}>
+              <DisplayText
+                numberOfLines = { 1 } 
+                ellipsizeMode = 'middle'
+                text = {'Division 1 - 16'}
+                styles = {StyleSheet.flatten(styles.citationNumber)}
               />
-            </TouchableOpacity>
+              <DisplayText
+                numberOfLines = { 3 } 
+                ellipsizeMode = 'middle'
+                text = {'An inhibitory postsynaptic potential is a kind of synaptic potential that makes a postsynaptic neuron less likely to generate an action potential'}
+                styles = {StyleSheet.flatten(styles.citationBody)}
+              />
+            </View>
           </View>
-          <View style = {styles.citationRange}>
-            <DisplayText
-              numberOfLines = { 2 } 
-              ellipsizeMode = 'middle'
-              text = {'Division 1 - 16'}
-              styles = {StyleSheet.flatten(styles.citationNumber)}
-            />
-            <DisplayText
-              numberOfLines = { 2 } 
-              ellipsizeMode = 'middle'
-              text = {'An inhibitory postsynaptic potential is a kind of synaptic potential that makes a postsynaptic neuron less likely to generate an action potential'}
-              styles = {StyleSheet.flatten(styles.citationBody)}
-            />
-          </View>
-        </View>
-        <View style={{ flexDirection : 'row',height: this.state.expanded ? null : 0, overflow: 'hidden', flexWrap : "wrap" }}>
-            {divisionList}
+          <View 
+            style={{ flexDirection : 'row',
+              height: this.state.expanded ? null : 0, 
+              overflow: 'scroll', 
+              flexWrap : "wrap" }}>
+            {/* {divisionList} */}
+          {/* <View style = {styles.viewBody}> */}
+            <FlatList          
+              data={this.state.data}          
+              renderItem={this.renderRow}          
+              keyExtractor={ data=> data.id.toString()}   
+              showsVerticalScrollIndicator={false}
+            /> 
+          {/* </View>  */}
         </View>
         </View>
         
-        {/* button */}
-        <SubmitButton
-          title={'Apply'}
-          onPress={this.handleApply}
-          titleStyle={styles.btnText}
-          btnStyle = {styles.btnStyle}/>
-
       </View>
-        <View style = {styles.viewBody}>
-          <FlatList          
-            data={this.state.data}          
-            renderItem={this.renderRow}          
-            // ListHeaderComponent={this.renderHeader}     
-            keyExtractor={ data=> data.id.toString()}   
-            showsVerticalScrollIndicator={false}
-          />
-          <View style = {styles.taostView}>
-            <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          
-          </View> 
-        </View> 
-      </ScrollView>
+      <ProgressDialog
+        visible={showLoading}
+        title="Processing"
+        message="Please wait..."
+      />
+      <SingleButtonAlert
+        title = {title} 
+        message = {message}
+        handleCloseNotification = {this.handleCloseNotification}
+        visible = {showAlert}
+      />
     </SafeAreaView>
     
    )

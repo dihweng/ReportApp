@@ -28,12 +28,10 @@ export default class Category extends Component {
     this.showLoadingDialogue();
     await getRoute(GetCategoryEndpoint)
       .then((res) => {
-        console.log({respomses: res})
         if (typeof res.message !== 'undefined') {  
           return this.showNotification(res.message);
         }   
         else {          
-          // console.log('res', res.data)
           this.setState({
             data: res.data,
           });
@@ -80,7 +78,7 @@ export default class Category extends Component {
      })
   }
 
-  hadnleCategoryMain=(item)=>{
+  handleCategoryMain=(item)=>{
     return this.props.navigation.navigate('CategoryDetails',{
       'id': item.id,
       'name': item.name,
@@ -91,11 +89,11 @@ export default class Category extends Component {
     return (
       <View style = {styles.listViewItem}>    
         <TouchableOpacity 
-          onPress = {()=>this.hadnleCategoryMain(item)}
+          onPress = {()=>this.handleCategoryMain(item)}
           style = {styles.cardView}>
           <View style ={styles.reportHeader}>
             <DisplayText
-              onPress = {()=>this.hadnleCategoryMain(item)}
+              onPress = {()=>this.handleCategoryMain(item)}
               text = {item.name}
               styles = {StyleSheet.flatten(styles.categoryName)}
             />
