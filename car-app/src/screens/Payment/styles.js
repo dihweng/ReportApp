@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import colors from '../../assets/colors';
-import { Constants } from 'expo';
+import  Constants  from 'expo-constants';
 
 
 export default styles =StyleSheet.create({

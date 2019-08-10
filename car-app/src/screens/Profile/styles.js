@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 const window = Dimensions.get('window');
-import { Constants } from 'expo';
+import  Constants from 'expo-constants';
 import colors from '../../assets/colors';
 
 export default styles = StyleSheet.create({

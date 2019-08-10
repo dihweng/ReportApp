@@ -111,8 +111,9 @@ export default class Login extends Component {
     try {
       await this.login(body)
     }
-    catch(e) {
-      console.log({e})
+    catch(error) {
+      this.hideLoadingDialogue();
+      this.showNotification(error.toString());
     }
   }
   handleEmailChange = (email) => {

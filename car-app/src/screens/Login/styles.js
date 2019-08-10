@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 const window = Dimensions.get('window');
-import { Constants } from 'expo';
+import  Constants  from 'expo-constants';
 export const IMAGE_HEIGHT = window.width / 2;
 export const IMAGE_HEIGHT_SMALL = window.width /7;
 import colors from '../../assets/colors';

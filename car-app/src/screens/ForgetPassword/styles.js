@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 const window = Dimensions.get('window');
-import { Constants } from 'expo';
+import Constants from 'expo-constants';
 import colors from '../../assets/colors';
 import theme from '../../assets/theme';
 
@@ -10,7 +10,7 @@ export default styles = StyleSheet.create({
   },
   navbarStyle: {
     paddingTop: Constants.statusBarHeight,
-    height: Constants.startHeaderHeight,
+    height: Constants.startHeaderHeight,  
     backgroundColor: colors.green,
     borderBottomWidth: 1,
     borderBottomColor: colors.green

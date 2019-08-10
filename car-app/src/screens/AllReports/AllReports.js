@@ -20,10 +20,18 @@ export default class AllReports extends Component {
       message: '',
       showLoading: false,
       title: '',
+      favorite_status:false,
+      read_later_status:false,
+      favorite_button_text:'',
+      read_later_button_text:'',
+      
     }
   }
 
+<<<<<<< HEAD
  
+=======
+>>>>>>> f27d6483be378ed7b33495a47876bf0ae2663860
   async componentDidMount(){
 
     let profile = await getProfile();
@@ -48,10 +56,10 @@ export default class AllReports extends Component {
     });
   }
 
-  showNotification = message => {
+  showNotification = (message, title) => {
     this.setState({ 
       showLoading : false,
-      title : 'Error!',
+      title : title,
       message : message,
       showAlert : true,
     }); 
@@ -72,8 +80,6 @@ export default class AllReports extends Component {
           return this.showNotification(res.message);
         }   
         else {          
-          // console.log('res', res.data)
-
           this.setState({
             data: res.data,
             filterData: res.data,
@@ -88,13 +94,13 @@ export default class AllReports extends Component {
     this.showLoadingDialogue();
 
     try {
-      await this.allReport()
+      return await this.allReport()
     }
     catch(e) {
-      console.log({e})
+      return this.showNotification(error.toString());
     }
   }
-  // Getting user details from server
+
   handleGetProfile = async() => {
     const{token} = this.state;
     this.showLoadingDialogue();
@@ -105,28 +111,19 @@ export default class AllReports extends Component {
         if (typeof res.message !== 'undefined') {  
           return this.showNotification(res.message);
         }
-        // else if( !res.data.email_verified_at ) {
-        //   let message = 'Check your email to verify account';
-        //   this.showNotification(message);
-        //   this.hideLoadingDialogue();
-        // }
+  
         else {
-          // this.setState({
-          //   token: token,
-          // });
-          
           saveUserDetail(res.data, token);
           return this.handleGetAllReport();
-
         }
       })
     .catch((error) => {
       return this.showNotification(error.toString());
     });
   }
-// On pressing a report will navigate you to Full Report
-//With the Params id, content and except
-  handleFullReport=async(item)=>{
+
+
+  handleFullReport = async(item)=>{
     this.showLoadingDialogue();
 
     this.props.navigation.navigate('FullReport', {
@@ -136,79 +133,87 @@ export default class AllReports extends Component {
     });
   }
 
-  addFavorite = async(id) =>{
-    const {token} = this.state;
-    this.showLoadingDialogue();
+  addFavorite = async(id, index) =>{
+    const {token, data} = this.state;
     let endpoint = `${AddFavoriteEndPoint}${id}/favorite`;
-
-    fetch(endpoint, {
+     const  settings ={
       method : "POST",
-     // body : JSON.stringify(''),
       headers : {
         "Accept" : "application/json",
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       }
-    })
-    .then((res) => {
-      console.log({addToFavoriteReponse: res});
-      if (typeof res.message !== 'undefined' && status >= 400 ) {
-        let message = 'Report Could Not be Added to Favorite'
-        this.showNotification(message);
+    }
+
+    try {
+
+      let response = fetch(endpoint, settings)
+      let res = await response;
+      if (res.status >= 200 && res.status < 300) {
+       
+        let targetPost = await data[index];
+        targetPost.is_favorite =  await !targetPost.is_favorite;
+        await this.setState({ data });
+        return await this.showNotification('Report Added To Favorite', 'Success');
+        
       }
       else {
-        this.hideLoadingDialogue()
-        this.Toast('Report Added to Favorite Successful')
-
+        return this.showNotification('Report Could Not be Added to Favorite',  'Message');
       }
-    })
+
+    }
+    catch(error) {
+      return this.showNotification(error.toString(), 'Message');
+    }
   } 
   // Called onPress to add favorite to list of favorite 
-  handleAddFavourite = async(id) =>{
-    this.showLoadingDialogue();
+  handleAddFavorite = async(id, index) =>{
     try {
-      await this.addFavorite(id)
+    return await this.addFavorite(id, index)
     }
-    catch(e) {
-      console.log({e})
+    catch(error) {
+    return this.showNotification(error.toString());
     }
   }
 
-  readLater = async(id) =>{
-    const {token} = this.state;
-    this.showLoadingDialogue();
+  readLater = async(id, index) =>{
+    const {token, data} = this.state;
     let endpoint = `${AddReadLaterEndPoint}${id}/future`;
-
-    fetch(endpoint, {
+    let settings = {
       method : "POST",
-      body : JSON.stringify(''),
       headers : {
         "Accept" : "application/json",
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       }
-    })
-    .then((res) => {
-      console.log({addToReadReponse: res});
-      if (typeof res.message !== 'undefined' ) {
-        this.showNotification(res.message);
-      }
-      else {
-        
-        this.hideLoadingDialogue();
-        this.Toast('Report Added to Read Later Successful')
+    };
+
+    try {
+      let response  = await  fetch(endpoint, settings);
+      let res =  await response;
+      if(res.status >= 200 && res.status < 300) {
+        let targetPost = await data[index];
+        targetPost.is_future_saved =  await !targetPost.is_future_saved;
+        await this.setState({ data });
+        return await this.showNotification('Report Added to Read Later', 'Success');
 
       }
-    })
-  } 
-  handleReadLater = async(id) =>{
-      
-    this.showLoadingDialogue();
-    try {
-      await this.readLater(id)
+      else {
+        return this.showNotification('Failed to Add Report', 'Message');
+      }
     }
-    catch(e) {
-      console.log({e})
+    catch(error) {
+      return this.showNotification(error.toString(), 'Message')
+    }
+  } 
+
+
+  handleReadLater = async(id, index) =>{
+    try {
+      await this.readLater(id, index)
+    }
+    catch(error) {
+      return this.showNotification(error.toString());
     }
   }
   // search filter 
@@ -227,64 +232,10 @@ export default class AllReports extends Component {
       data: newData,
     });
   }
-  Toast=(message)=>{
-    this.refs.defaultToastBottom.ShowToastFunction(message);
-  }
 
-  displayReadLaterBtn = (id, is_future_saved) => {
-    if (is_future_saved === true ){
-      return (
-        <SubmitButton
-          title={'Remove Read Later'}
-          onPress={()=>this.deleteReadLater(id)}
-          titleStyle={styles.btnText}
-          btnStyle = {styles.btnReadLate}
-        />
-
-      )
-    }
-    else{
-      return(
-        <SubmitButton
-          title={'Read Later'}
-          onPress={()=>this.handleAddReadLater(id)}
-          titleStyle={styles.btnText}
-          btnStyle = {styles.btnReadLate}
-        />
-      )
-    }
-  }
-  displayfavoriteBtn = (id, is_favorite) => {
-    if (is_favorite === true ){
-      return (
-        <SubmitButton
-          title={'Remove Favourite'}
-          onPress={()=>this.deleteFavorite(id)}
-          // onPress={()=>this.handleAddFavourite(item.id)}
-          titleStyle={styles.btnText}
-          btnStyle = {styles.btnStyle}
-        />
-
-      )
-    }
-    else{
-      return(
-        <SubmitButton
-          title={'Add Favourite'}
-          onPress={()=>this.handleAddFavourite(id)}
-          titleStyle={styles.btnText}
-          btnStyle = {styles.btnStyle}
-        />
-      )
-    }
-  }
-  deleteFavorite=async(id)=> {
-    console.log({deleteiddd: id})
-    const { token } = this.state
-    this.showLoadingDialogue();
-
+  deleteFavorite = async(id, index)=> {
+    const { token, data} = this.state;
     let endpoint = `${DeleteFavoriteEndpoint}${id}/${'favorite'}`      
-
     const settings = {
       method: 'DELETE',
       headers: {
@@ -298,24 +249,22 @@ export default class AllReports extends Component {
     try {
       let response = await fetch(endpoint, settings);
       let res = await response;
-      console.log({responssssss: res});
       if(res.status >= 200 && res.status < 300) {
-        // this.handleGetReadLater();
-        return await this.showNotification('Successfully Removed Favorite');   
-
+        let targetPost = await  data[index];
+        targetPost.is_favorite = await !targetPost.is_favorite;
+        await this.setState({ data });
+        return await this.showNotification('Successfully Removed Favorite', 'Success');   
       }
-      return await this.showNotification(res.message.toString());   
+      return await this.showNotification('Failed to Removed Report', 'Message');   
     } 
     catch(error){
-     return this.showNotification(error.toString()); 
+     return this.showNotification(error.toString(), 'Message'); 
     }
-
   }
-  deleteReadLater=async(id)=> {
-    const { token } = this.state
-    let endpoint = `${DeleteReadLaterEndpoint}${id}/${'future'}`      
-    this.showLoadingDialogue();
 
+  deleteReadLater = async(id, index)=> {
+    const { token, data } = this.state
+    let endpoint = `${DeleteReadLaterEndpoint}${id}/${'future'}`      
     const settings = {
       method: 'DELETE',
       headers: {
@@ -328,17 +277,44 @@ export default class AllReports extends Component {
 
     try {
       let response = await fetch(endpoint, settings);
-      let res = await response.json();
-      console.log({res})
+      let res = await response;
+
       if(res.status >= 200 && res.status < 300) {
-        return await this.showNotification('Successfully Removed Report from Read Later');   
+        let targetPost = await data[index];
+        targetPost.is_future_saved = await !targetPost.is_future_saved;
+        await this.setState({ data });
+        return await this.showNotification('Successfully Removed Report from Read Later', 'Success'); 
+
       }
-      return await this.showNotification(res.message.toString());   
+      return await this.showNotification('Failed to Remove Report', 'Message');   
     } 
     catch(error){
-     return this.showNotification(error.toString()); 
+     return this.showNotification(error.toString(), 'Message'); 
     }
   }
+
+
+  addDeleteReadlater = (id, title, index) =>{
+    this.showLoadingDialogue();
+    if(title.includes('Remove')){
+      return this.deleteReadLater(id, index);
+    }
+    else {
+      return this.handleReadLater(id, index);
+    }
+  }
+
+
+  addDeleteFavorite = (id, title, index) =>{
+    this.showLoadingDialogue();
+    if(title.includes('Remove')) {
+      return this.deleteFavorite(id, index);
+    }
+    else {
+      return this.handleAddFavorite(id, index);
+    }
+  }
+
   renderHeader = () => {
     return <View style={styles.headerMessageView}>
         <View style={styles.searchView}>
@@ -364,7 +340,14 @@ export default class AllReports extends Component {
       </View>
   
   }
-  renderRow = ({item}) => {
+
+
+  renderRow = ({item, index}) => {
+
+
+
+    let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
+    let favorite_button_text = item.is_favorite == true ? 'Remove Favorite' : 'Add Favorite';
     return (
        <View style = {styles.listViewItem}>    
         <TouchableOpacity 
@@ -408,8 +391,18 @@ export default class AllReports extends Component {
           <View style = {styles.txtView}>
            
             <View style={styles.buttonView}>
-              {this.displayfavoriteBtn(item.id, item.is_favorite)}
-              {this.displayReadLaterBtn(item.id, item.is_future_saved)}
+              <SubmitButton
+                title={favorite_button_text}
+                onPress={()=>this.addDeleteFavorite(item.id, favorite_button_text, index)}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnStyle}
+              />
+              <SubmitButton
+                title={read_later_button_text}
+                onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnReadLate}
+              />
             </View> 
           </View>
           </View>
@@ -432,7 +425,8 @@ export default class AllReports extends Component {
        
        <View style = {styles.viewBody}>
         <FlatList          
-          data={this.state.data}          
+          data={this.state.data}      
+          extraData={this.state}    
           renderItem={this.renderRow}          
           ListHeaderComponent={this.renderHeader}     
           keyExtractor={ data=> data.id.toString()}   
