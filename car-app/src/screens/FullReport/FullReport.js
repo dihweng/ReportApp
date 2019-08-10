@@ -5,10 +5,13 @@ import styles from './styles';
 import theme from '../../assets/theme';
 import HTML from 'react-native-render-html';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import {DisplayText, SubmitButton, SingleButtonAlert, InputField,CustomToast} from '../../components';
+import {DisplayText, SingleButtonAlert} from '../../components';
+import {connect} from 'react-redux';
+import { getReport} from '../../redux/actions/ReportActions';
+import { ProfileEndpoint } from '../Utils/Utils';
 
 
-export default class FullReport extends Component {
+ class FullReport extends Component {
   constructor(props) {
     super(props);
     this.state ={
@@ -21,7 +24,7 @@ export default class FullReport extends Component {
 
   }
   async componentDidMount(){
-    await this.handleGetReport()
+    await this.handleGetReport();
   }
 
   showLoadingDialogue =()=> {
@@ -52,16 +55,14 @@ export default class FullReport extends Component {
   }
   
   handleGetReport = async() => {
-    const{navigation} = this.props;
-
-    const id = navigation.getParam('id', 'NO-ID'),
-      content = navigation.getParam('content', 'NO-ID'),
-      excerpt = navigation.getParam('excerpt', 'NO-ID');
-      
+    const{navigation, report} = this.props,
+       index = await navigation.getParam('index');
+       await this.props.getReport(index);
       return await this.setState({
-        content: content,
+        content: report.content,
+        id:report.id,
+        excerpt:report.excerpt
       });
-    // console.log({id: id, content: content, exerpt: excerpt});
   }
   handleRatio = () => {
     return this.props.navigation.navigate('Ratios');
@@ -155,3 +156,16 @@ export default class FullReport extends Component {
     )
   }
 } 
+const mapStateToProps = (state, ownProps) =>{
+  return{
+    report: state.ReportReducer.report
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+  return{
+    getReport: (index) =>{dispatch(getReport(index))},
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FullReport)

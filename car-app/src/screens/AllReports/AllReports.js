@@ -4,12 +4,14 @@ import { View, FlatList, SafeAreaView, StatusBar, TouchableOpacity, Image, Style
 import {DisplayText, SubmitButton, SingleButtonAlert, InputField,CustomToast} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
-import { DeleteFavoriteEndpoint, DeleteReadLaterEndpoint, getRouteToken, getAllReport, getProfile, ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint } from '../Utils/Utils';
+import { DeleteFavoriteEndpoint, DeleteReadLaterEndpoint, getRouteToken, getAllReport, getProfile, 
+  ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint } from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import colors from '../../assets/colors';
-// import HTML from 'react-native-render-html';
+import {connect} from 'react-redux';
+import { setReport} from '../../redux/actions/ReportActions';
 
-export default class AllReports extends Component {
+ class AllReports extends Component {
   constructor(props) {
     super(props);
     this.state ={
@@ -35,7 +37,6 @@ export default class AllReports extends Component {
       token : profile.access_token,
       expires : profile.expires,
       showLoading:true,
-      // data:this.reports
     });
     await this.handleGetProfile();
   }
@@ -80,6 +81,7 @@ export default class AllReports extends Component {
             data: res.data,
             filterData: res.data,
           });
+          this.props.setReports(res.data);
           return this.hideLoadingDialogue();
         }
       }
@@ -119,13 +121,11 @@ export default class AllReports extends Component {
   }
 
 
-  handleFullReport = async(item)=>{
-    this.showLoadingDialogue();
-
+  handleFullReport = async(id, content, excerpt)=>{
     this.props.navigation.navigate('FullReport', {
-      id: item.id,
-      content: item.content,
-      excerpt: item.excerpt,  
+       id: id,
+       content:content,
+       excerpt:excerpt,  
     });
   }
 
@@ -339,22 +339,19 @@ export default class AllReports extends Component {
 
 
   renderRow = ({item, index}) => {
-
-
-
     let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
     let favorite_button_text = item.is_favorite == true ? 'Remove Favorite' : 'Add Favorite';
     return (
        <View style = {styles.listViewItem}>    
         <TouchableOpacity 
-          onPress = {()=>this.handleFullReport(item)}
+          onPress = {()=>this.handleFullReport(index)}
           style = {styles.cardView}>
           <View style ={styles.reportHeader}>
             <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
               text = {item.title}
-              onPress = {()=>this.handleFullReport(item)}
+              onPress = {()=>this.handleFullReport(index)}
               styles = {StyleSheet.flatten(styles.reportName)}
             />
 
@@ -362,7 +359,7 @@ export default class AllReports extends Component {
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
               text = {item.citation}
-              onPress = {()=>this.handleFullReport(item)}
+              onPress = {()=>this.handleFullReport(index)}
               styles = {StyleSheet.flatten(styles.headerText)}
             />
 
@@ -370,7 +367,7 @@ export default class AllReports extends Component {
               numberOfLines = { 2 } 
               // ellipsizeMode = 'middle'
               text = {''}
-              onPress = {()=>this.handleFullReport(item)}
+              onPress = {()=>this.handleFullReport(index)}
               styles = {StyleSheet.flatten(styles.headerText)}
             /> 
 
@@ -378,7 +375,7 @@ export default class AllReports extends Component {
               numberOfLines = { 4 } 
               ellipsizeMode = 'middle'
               text = {'Little Description needed'}
-              onPress = {()=>this.handleFullReport(item)}
+              onPress = {()=>this.handleFullReport(index)}
               styles = {StyleSheet.flatten(styles.reportInfo)}
             />
 
@@ -447,3 +444,18 @@ export default class AllReports extends Component {
     )
   }
 } 
+
+const mapStateToProps = (state, ownProps) =>{
+  return{
+    //profile: state.ProfileReducer.profile
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+  return{
+    setReports: (data) =>{dispatch(setReport(data))},
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllReports);
+
