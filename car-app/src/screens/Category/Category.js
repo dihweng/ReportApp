@@ -1,13 +1,10 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, ScrollView, SafeAreaView, StatusBar, FlatList, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, SingleButtonAlert, CustomToast} from '../../components';
+import { View, SafeAreaView, StatusBar, FlatList, TouchableOpacity, StyleSheet,} from 'react-native';
+import {DisplayText, SingleButtonAlert} from '../../components';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import { getRoute, GetCategoryEndpoint } from '../Utils/Utils';
-import theme from '../../assets/theme';
-
 import styles from './styles';
-
 
 export default class Category extends Component {
   constructor(props) {
@@ -28,19 +25,17 @@ export default class Category extends Component {
     this.showLoadingDialogue();
     await getRoute(GetCategoryEndpoint)
       .then((res) => {
-        //console.log({respomses: res})
         if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message);
+          return this.showNotification(res.message, 'Message');
         }   
         else {          
-          // console.log('res', res.data)
           this.setState({
             data: res.data,
           });
           return this.hideLoadingDialogue();
         }
       }
-    );
+    ).catch(error=>this.showNotification(error.toString(), 'Message'))
   }
   handleGetCatefories=async()=>{
     this.showLoadingDialogue();
@@ -65,10 +60,10 @@ export default class Category extends Component {
     });
   }
 
-  showNotification = message => {
+  showNotification = (message, title) => {
     this.setState({ 
       showLoading : false,
-      title : 'Error!',
+      title : title,
       message : message,
       showAlert : true,
     }); 

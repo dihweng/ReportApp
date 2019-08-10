@@ -137,11 +137,9 @@ import colors from '../../assets/colors';
     }
 
     try {
-
       let response = fetch(endpoint, settings)
       let res = await response;
-      if (res.status >= 200 && res.status < 300) {
-       
+      if (res.status >= 200 && res.status < 300) {    
         let targetPost = await data[index];
         targetPost.is_favorite =  await !targetPost.is_favorite;
         await this.setState({ data });
@@ -163,7 +161,7 @@ import colors from '../../assets/colors';
     return await this.addFavorite(id, index)
     }
     catch(error) {
-    return this.showNotification(error.toString());
+      return this.showNotification(error.toString());
     }
   }
 
@@ -399,13 +397,9 @@ import colors from '../../assets/colors';
 
 
   render () {
-    const {
-      showLoading, 
-      title, 
-      message, 
-      showAlert, } = this.state;
-   return(
-    <SafeAreaView style={styles.container}> 
+    const { showLoading, title,  message, showAlert, } = this.state;
+    return(
+      <SafeAreaView style={styles.container}> 
        <StatusBar barStyle="default"/>
        
        <View style = {styles.viewBody}>
