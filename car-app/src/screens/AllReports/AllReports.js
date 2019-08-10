@@ -289,7 +289,6 @@ import { setReport} from '../../redux/actions/ReportActions';
     }
   }
 
-
   addDeleteReadlater = (id, title, index) =>{
     this.showLoadingDialogue();
     if(title.includes('Remove')){
@@ -299,7 +298,6 @@ import { setReport} from '../../redux/actions/ReportActions';
       return this.handleReadLater(id, index);
     }
   }
-
 
   addDeleteFavorite = (id, title, index) =>{
     this.showLoadingDialogue();
@@ -336,7 +334,6 @@ import { setReport} from '../../redux/actions/ReportActions';
       </View>
   
   }
-
 
   renderRow = ({item, index}) => {
     let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';

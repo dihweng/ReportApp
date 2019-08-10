@@ -1,196 +1,199 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, ScrollView, SafeAreaView, StatusBar, FlatList, Image,TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, SubmitButton } from '../../components';
+import { View, SafeAreaView, StatusBar, FlatList, Image,TouchableOpacity, StyleSheet,} from 'react-native';
+import {DisplayText, SingleButtonAlert, SubmitButton } from '../../components';
 import styles from './styles';
+import colors from '../../assets/colors';
+import { ProgressDialog } from 'react-native-simple-dialogs';
+import theme from '../../assets/theme';
+
+import { 
+  DeleteFavoriteEndpoint, 
+  DeleteReadLaterEndpoint, 
+  getRouteToken, 
+  getAllReport,
+  getProfile, 
+  AddReadLaterEndPoint, 
+  AddFavoriteEndPoint } from '../Utils/Utils';
+
 
 
 export default class CategoryDetails extends Component {
   constructor(props) {
     super(props);
     this.state ={
-      data : [],
-      showAlert : false,
-      showLoading : false,
-      message : '',
+      data: [],
+      showAlert: false,
+      showLoading: false,
+      message: '',
+      title: '',
+      id: '',
+      token: '',
+      name: '',
     }
   }
-  reports = [
-    {    
-      "_id": "5d1c92249b0b080017036e53",
-      "reportName": "Alh. Abubakar V Mr Prakash",
-      "Citation": "Citation (2018) Electronic - court of appeal",
-      "name": "Tunde Anwo",
-      "Reports": "Report(E-C.A.R) - 516",
-      "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
-      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
+  async componentDidMount(){
+    let profile = await getProfile();
+    const {navigation} = this.props,
+      id = navigation.getParam('id', 'NO-ID'),
+      name = navigation.getParam('name', 'NO-ID');
+    await this.setState({
+      token: profile.access_token,
+      expires: profile.expires,
+      showLoading: true,
+      id,
+      name,
+    });
+    
+    await this.handleGetAllReport();
+  
+  }
+  showLoadingDialogue =()=> {
+    this.setState({
+      showLoading: true,
+    });
+  }
 
-  },
-  {
-    "_id": "5d1c92249b0b080017036e59",
-    "reportName": "Chief Chukwuka V Mallam Sanni ",
-    "Citation": "Citation (2018) Electronic - court of appeal",
-      "name": "Tunde Anwo",
-      "Reports": "Report(E-C.A.R) - 516",
-      "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
-      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
 
-  },
-  {
-    "_id": "5d1c92249b0b080017036e93",
-    "reportName": "Dr Edima SamSon V Mr Dihweng Che",
-    "Citation": "Citation (2018) Electronic - court of appeal",
-    "name": "Tunde Anwo",
-    "Reports": "Report(E-C.A.R) - 516",
-    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
+  showNotification = message => {
+    this.setState({ 
+      showLoading : false,
+      title : 'Error!',
+      message : message,
+      showAlert : true,
+    }); 
+  }
 
-  },
-  {
-    "_id": "5d1c92249b0b080017037e53",
-    "reportName": "Alh. Abubakar V Mr Prakash",
-    "Citation": "Citation (2018) Electronic - court of appeal",
-    "name": "Tunde Anwo",
-    "Reports": "Report(E-C.A.R) - 516",
-    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
-
-  },
-  {
-    "_id": "5d1c92249b0b080017636e53",
-    "reportName": "Mrs Johnson V Miss Mary",
-    "Citation": "Citation (2018) Electronic - court of appeal",
-    "name": "Tunde Anwo",
-    "Reports": "Report(E-C.A.R) - 516",
-    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
-
-  },
-  {
-    "_id": "5d1c92249b0b080017236e53",
-    "reportName": "Alh. Abubakar V Mr Prakash",
-    "Citation": "Citation (2018) Electronic - court of appeal",
-    "name": "Tunde Anwo",
-    "Reports": "Report(E-C.A.R) - 516",
-    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
-
-  },
-  {
-    "_id": "5d1c92249b0b08001703me53",
-    "reportName": "Alh. Abubakar V Mr Prakash",
-    "Citation": "Citation (2018) Electronic - court of appeal",
-    "name": "Tunde Anwo",
-    "Reports": "Report(E-C.A.R) - 516",
-    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
-
-  },
-  {
-    "_id": "5d1c92249b0b080017036e23",
-    "reportName": "Alh. Abubakar V Mr Prakash",
-    "Citation": "Citation (2018) Electronic - court of appeal",
-    "name": "Tunde Anwo",
-    "Reports": "Report(E-C.A.R) - 516",
-    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
-
-  },
-  {
-    "_id": "5d1c92249b0b08001707a6e53",
-    "reportName": "Alh. Abubakar V Mr Prakash",
-    "Citation": "Citation (2018) Electronic - court of appeal",
-    "name": "Tunde Anwo",
-    "Reports": "(E-C.A.R) - 516",
-    "short_details": "Love life  If you have been developing Aug 18, 2018 - If you have been developing mobile people have thought about and already!!",
-    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/1200px-MTN_Logo.svg.png",
-
-  },
-];
-
-
-componentWillMount(){
-  // logout();
-  this.setState({
-    data:this.reports
-  })
-}
-handleAddFavourite = () => {
-  alert('hello add me to favourite')
-}
-handleReadLater = () => {
-  alert('hello read me later')
-}
-handleGoBack = () => {
-  return this.props.navigation.goBack();
-}
-renderRow = ({item}) => {
-  return (
-     <View style = {styles.listViewItem}>    
-      <TouchableOpacity 
-        onPress = {()=>this.handlePeopleMain(item)}
-        style = {styles.cardView}>
-        <View style ={styles.reportHeader}>
-          <DisplayText
-            numberOfLines = { 2 } 
-            ellipsizeMode = 'middle'
-            text = {item.reportName}
-            styles = {StyleSheet.flatten(styles.reportName)}
-          />
-
-        <View style = {styles.txtView}>
-          <DisplayText
-            numberOfLines = { 2 } 
-            // ellipsizeMode = 'middle'
-            text = {item.Citation}
-            styles = {StyleSheet.flatten(styles.headerText)}
-          />
-
-          <DisplayText
-            numberOfLines = { 2 } 
-            // ellipsizeMode = 'middle'
-            text = {item.Reports}
-            styles = {StyleSheet.flatten(styles.headerText)}
-          />
-          <DisplayText
-            numberOfLines = { 4 } 
-            ellipsizeMode = 'middle'
-            text = {item.short_details}
-            styles = {StyleSheet.flatten(styles.reportInfo)}
-          />
-          <View style={styles.buttonView}>
-            <SubmitButton
-              title={'Add Favourite'}
-              onPress={this.handleAddFavourite}
-              titleStyle={styles.btnText}
-              btnStyle = {styles.btnStyle}
-            />
-            <SubmitButton
-              title={'Read Later'}
-              onPress={this.handleReadLater}
-              titleStyle={styles.btnText}
-              btnStyle = {styles.btnReadLate}
-            />
-          </View>
-        </View>
-        </View>
-          
-      </TouchableOpacity>
-      </View>
+  handleCloseNotification = () => {
+    return this.setState({
+       showAlert : false,
+     })
+  }
+  allReport = async() =>{
+    const {token, id} = this.state; 
+    let endPoint = `${getAllReport}${'?'}${'category_id='}${id}`;
+    console.log({endpoint: endPoint})
+    this.showLoadingDialogue();
+    await getRouteToken(endPoint, token)
+      .then((res) => {
+        if (typeof res.message !== 'undefined') {  
+          return this.showNotification(res.message);
+        }   
+        else {   
+          this.setState({
+            data: res.data,
+          });
+          return this.hideLoadingDialogue();
+        }
+      }
     );
-}
+  }
+  handleGetAllReport = async() => {
+    this.showLoadingDialogue();
+
+    try {
+      await this.allReport()
+    }
+    catch(error) {
+     return this.showNotification(error.toString());
+    }
+  }
+
+  handleFullReport=async(item)=>{
+    this.showLoadingDialogue();
+
+    this.props.navigation.navigate('FullReport', {
+      id: item.id,
+      content: item.content,
+      excerpt: item.excerpt,  
+    });
+  }
+
+  handleGoBack = () => {
+    return this.props.navigation.goBack();
+  }
+  renderRow = ({item, index}) => {
+
+    let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
+    let favorite_button_text = item.is_favorite == true ? 'Remove Favorite' : 'Add Favorite';
+    return (
+       <View style = {styles.listViewItem}>    
+        <TouchableOpacity 
+          onPress = {()=>this.handleFullReport(item)}
+          style = {styles.cardView}>
+          <View style ={styles.reportHeader}>
+            <DisplayText
+              numberOfLines = { 2 } 
+              ellipsizeMode = 'middle'
+              text = {item.title}
+              onPress = {()=>this.handleFullReport(item)}
+              styles = {StyleSheet.flatten(styles.reportName)}
+            />
+
+            <DisplayText
+              numberOfLines = { 2 } 
+              ellipsizeMode = 'middle'
+              text = {item.citation}
+              onPress = {()=>this.handleFullReport(item)}
+              styles = {StyleSheet.flatten(styles.headerText)}
+            />
+
+            <DisplayText
+              numberOfLines = { 2 } 
+              // ellipsizeMode = 'middle'
+              text = {''}
+              onPress = {()=>this.handleFullReport(item)}
+              styles = {StyleSheet.flatten(styles.headerText)}
+            /> 
+
+             <DisplayText
+              numberOfLines = { 4 } 
+              ellipsizeMode = 'middle'
+              text = {'Little Description needed'}
+              onPress = {()=>this.handleFullReport(item)}
+              styles = {StyleSheet.flatten(styles.reportInfo)}
+            />
+
+            {/* <HTML html={item.excerpt} /> */}
+
+          <View style = {styles.txtView}>
+           
+            <View style={styles.buttonView}>
+              <SubmitButton
+                title={favorite_button_text}
+                onPress={()=>this.addDeleteFavorite(item.id, favorite_button_text, index)}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnStyle}
+              />
+              <SubmitButton
+                title={read_later_button_text}
+                onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnReadLate}
+              />
+            </View> 
+          </View>
+          </View>
+        </TouchableOpacity>
+        
+        </View>
+      );
+  }
 
 
   render () {
-    const {navigation} = this.props,
-      name = navigation.getParam('name');
+    const { showLoading, title, message, showAlert, name} = this.state;
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
-
         <View style = {styles.navBar}>
           <TouchableOpacity 
-            onPress = {this.handdleBackPress}
+            onPress = {this.handleGoBack}
             style = {styles.headerImage}>
             <Image
               onPress = {this.handleG0Back}
@@ -223,18 +226,30 @@ renderRow = ({item}) => {
               styles = {StyleSheet.flatten(styles.categoryName)}
             />
           </View>
-          
         </View>
-        <FlatList          
-          data={this.state.data}          
-          renderItem={this.renderRow}          
-          keyExtractor={ data=> data._id}   
-          showsVerticalScrollIndicator={false}
-        />
+        {/* <View style = {styles.viewBody}> */}
+          <FlatList          
+            data={this.state.data}      
+            renderItem={this.renderRow}          
+            keyExtractor={ data=> data.id.toString()}   
+            showsVerticalScrollIndicator={false}
+          />
+        {/* </View>   */}
       </View>  
-        
+       
+      <ProgressDialog
+        visible={showLoading}
+        title="Processing"
+        message="Please wait..."
+      />
+      <SingleButtonAlert
+        title = {title} 
+        message = {message}
+        handleCloseNotification = {this.handleCloseNotification}
+        visible = {showAlert}
+      />
     </SafeAreaView>
     
-   )
+    )
   }
 } 
