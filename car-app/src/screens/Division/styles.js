@@ -31,8 +31,9 @@ export default styles = StyleSheet.create({
     marginLeft: 16
   },
   wrapper : {
-    flex : 1,
-    justifyContent: 'center',
+    // flex : 1,
+    // justifyContent: 'center',
+    marginVertical: 16,
     alignItems: 'center',
   },
   citationView : {
