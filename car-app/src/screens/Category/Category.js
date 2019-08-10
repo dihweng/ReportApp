@@ -82,7 +82,8 @@ export default class Category extends Component {
 
   hadnleCategoryMain=(item)=>{
     return this.props.navigation.navigate('CategoryDetails',{
-      'category_id' : item.id,
+      'id': item.id,
+      'name': item.name,
     });
   }
 

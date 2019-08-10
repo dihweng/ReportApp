@@ -45,6 +45,12 @@ export default styles = StyleSheet.create({
     backgroundColor : theme.inputTxtColor,
     
   },
+  viewBody : {
+    // alignItems : 'center',
+    flex : 1,
+    justifyContent: 'center',
+    padding : 20
+  },
   navBar: {
     flexDirection : 'row',
     // paddingTop : (Platform.OS === "ios") ? 16 : 14,
@@ -83,34 +89,19 @@ export default styles = StyleSheet.create({
     alignSelf: 'center',
     fontFamily : 'Roboto-Regular'
   },
-  viewBody : {
-    // alignItems : 'center',
-    flex : 1,
-    padding : 20
-  },
   searchIcon : {
     width : 20,
     height : 20,
   },
-  // listItems : {
-  //   marginTop : 8,
-  //   width : '90%',
-  //   elevation : 1,
-  //   borderRadius : 8,
-  //   height : 100,
-  // },
   listViewItem : {
     alignItems : 'center',
     width : '100%',
     justifyContent: 'center',
-    // paddingLeft : 20,
-    // paddingRight : 20,
   },
   cardView:{
     width: '99%',
     height : 200 ,
     backgroundColor: theme.colorAccent,
-    // borderRadius : 8,
     marginTop: 4,
     marginBottom : 4,
     shadowColor: theme.primaryTextColor,
@@ -227,6 +218,8 @@ export default styles = StyleSheet.create({
     backgroundColor : theme.colorAccent,
     borderRadius : 4,
     flexDirection : 'row',
+    borderColor: theme.whiteShade,
+    borderWidth: 0.5
 
   },
   cardIcon : {

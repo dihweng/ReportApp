@@ -28,10 +28,6 @@ export default class AllReports extends Component {
     }
   }
 
-<<<<<<< HEAD
- 
-=======
->>>>>>> f27d6483be378ed7b33495a47876bf0ae2663860
   async componentDidMount(){
 
     let profile = await getProfile();
@@ -39,7 +35,6 @@ export default class AllReports extends Component {
       token : profile.access_token,
       expires : profile.expires,
       showLoading:true,
-      // data:this.reports
     });
     await this.handleGetProfile();
   }
@@ -293,7 +288,6 @@ export default class AllReports extends Component {
     }
   }
 
-
   addDeleteReadlater = (id, title, index) =>{
     this.showLoadingDialogue();
     if(title.includes('Remove')){
@@ -303,7 +297,6 @@ export default class AllReports extends Component {
       return this.handleReadLater(id, index);
     }
   }
-
 
   addDeleteFavorite = (id, title, index) =>{
     this.showLoadingDialogue();
@@ -340,7 +333,6 @@ export default class AllReports extends Component {
       </View>
   
   }
-
 
   renderRow = ({item, index}) => {
 

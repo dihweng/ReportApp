@@ -1,7 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, ScrollView, SafeAreaView, StatusBar, FlatList, Image,TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, SingleButtonAlert } from '../../components';
+import { View, SafeAreaView, StatusBar, FlatList, Image,TouchableOpacity, StyleSheet,} from 'react-native';
+import {DisplayText, SingleButtonAlert, SubmitButton } from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
@@ -29,20 +29,23 @@ export default class CategoryDetails extends Component {
       title: '',
       id: '',
       token: '',
+      name: '',
     }
   }
   async componentDidMount(){
     let profile = await getProfile();
     const {navigation} = this.props,
-      id = navigation.getParam('id', 'NO-ID');
+      id = navigation.getParam('id', 'NO-ID'),
+      name = navigation.getParam('name', 'NO-ID');
     await this.setState({
       token: profile.access_token,
       expires: profile.expires,
       showLoading: true,
-      id: id,
+      id,
+      name,
     });
     
-    await this.handleGetProfile();
+    await this.handleGetAllReport();
   
   }
   showLoadingDialogue =()=> {
@@ -73,20 +76,17 @@ export default class CategoryDetails extends Component {
   }
   allReport = async() =>{
     const {token, id} = this.state; 
-    let endPoint = `${getAllReport}${id}`;
-
-    console.log({cateforuidddd: id, endpoint: endPoint})
+    let endPoint = `${getAllReport}${'?'}${'category_id='}${id}`;
+    console.log({endpoint: endPoint})
     this.showLoadingDialogue();
     await getRouteToken(endPoint, token)
       .then((res) => {
-        console.log('res', res.data)
         if (typeof res.message !== 'undefined') {  
           return this.showNotification(res.message);
         }   
-        else {          
+        else {   
           this.setState({
             data: res.data,
-            filterData: res.data,
           });
           return this.hideLoadingDialogue();
         }
@@ -100,7 +100,7 @@ export default class CategoryDetails extends Component {
       await this.allReport()
     }
     catch(error) {
-      this.showNotification(error.toString());
+     return this.showNotification(error.toString());
     }
   }
 
@@ -117,7 +117,10 @@ export default class CategoryDetails extends Component {
   handleGoBack = () => {
     return this.props.navigation.goBack();
   }
-  renderRow = ({item}) => {
+  renderRow = ({item, index}) => {
+
+    let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
+    let favorite_button_text = item.is_favorite == true ? 'Remove Favorite' : 'Add Favorite';
     return (
        <View style = {styles.listViewItem}>    
         <TouchableOpacity 
@@ -155,11 +158,24 @@ export default class CategoryDetails extends Component {
               onPress = {()=>this.handleFullReport(item)}
               styles = {StyleSheet.flatten(styles.reportInfo)}
             />
+
+            {/* <HTML html={item.excerpt} /> */}
+
           <View style = {styles.txtView}>
            
             <View style={styles.buttonView}>
-              {/* {this.displayfavoriteBtn(item.id, item.is_favorite)}
-              {this.displayReadLaterBtn(item.id, item.is_future_saved)} */}
+              <SubmitButton
+                title={favorite_button_text}
+                onPress={()=>this.addDeleteFavorite(item.id, favorite_button_text, index)}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnStyle}
+              />
+              <SubmitButton
+                title={read_later_button_text}
+                onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnReadLate}
+              />
             </View> 
           </View>
           </View>
@@ -171,18 +187,13 @@ export default class CategoryDetails extends Component {
 
 
   render () {
-    const {
-      showLoading, 
-      title, 
-      message, 
-      showAlert, } = this.state;
+    const { showLoading, title, message, showAlert, name} = this.state;
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
-
         <View style = {styles.navBar}>
           <TouchableOpacity 
-            onPress = {this.handdleBackPress}
+            onPress = {this.handleGoBack}
             style = {styles.headerImage}>
             <Image
               onPress = {this.handleG0Back}
@@ -215,16 +226,17 @@ export default class CategoryDetails extends Component {
               styles = {StyleSheet.flatten(styles.categoryName)}
             />
           </View>
-          
         </View>
-        <FlatList          
-          data={this.state.data}          
-          renderItem={this.renderRow}          
-          // ListHeaderComponent={this.renderHeader}     
-          keyExtractor={ data=> data.id.toString()}   
-          showsVerticalScrollIndicator={false}
-        />
+        {/* <View style = {styles.viewBody}> */}
+          <FlatList          
+            data={this.state.data}      
+            renderItem={this.renderRow}          
+            keyExtractor={ data=> data.id.toString()}   
+            showsVerticalScrollIndicator={false}
+          />
+        {/* </View>   */}
       </View>  
+       
       <ProgressDialog
         visible={showLoading}
         title="Processing"
