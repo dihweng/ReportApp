@@ -22,8 +22,11 @@ const LoginEndpoint = `${Baseurl}oauth/token`,
   AddReadLaterEndPoint = `${Baseurl}api/reports/`,
   GetFavoriteEndpoint = `${Baseurl}api/reports/favorite`,
   GetReadLaterEndpoint = `${Baseurl}api/reports/future`,
-  DeleteFavoriteEndpoint = `${Baseurl}/api/reports/`,
-  DeleteReadLaterEndpoint = `${Baseurl}/api/reports/`;
+  DeleteFavoriteEndpoint = `${Baseurl}api/reports/`,
+  DeleteReadLaterEndpoint = `${Baseurl}api/reports/`,
+  GetCategoryEndpoint = `${Baseurl}api/categories/`,
+  GetDivisionEndpoint = `${Baseurl}api/divisions/`;
+
 
 export {
   LoginEndpoint,
@@ -49,6 +52,8 @@ export {
   GetReadLaterEndpoint,
   DeleteFavoriteEndpoint,
   DeleteReadLaterEndpoint,
+  GetCategoryEndpoint,
+  GetDivisionEndpoint,
 }
 
 
