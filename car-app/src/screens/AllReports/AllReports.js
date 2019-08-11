@@ -336,7 +336,6 @@ import colors from '../../assets/colors';
         <TouchableOpacity 
           onPress = {()=>this.handleFullReport(item.id)}
           style = {styles.cardView}>
-          <View style ={styles.reportHeader}>
             <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
@@ -353,25 +352,13 @@ import colors from '../../assets/colors';
               styles = {StyleSheet.flatten(styles.headerText)}
             />
 
-            <DisplayText
-              numberOfLines = { 2 } 
-              // ellipsizeMode = 'middle'
-              text = {''}
-              onPress = {()=>this.handleFullReport(item.id)}
-              styles = {StyleSheet.flatten(styles.headerText)}
-            /> 
-
              <DisplayText
-              numberOfLines = { 4 } 
+              numberOfLines = {4} 
               ellipsizeMode = 'middle'
-              text = {'Little Description needed'}
+              text = {item.excerpt.toLowerCase()}
               onPress = {()=>this.handleFullReport(item.id)}
               styles = {StyleSheet.flatten(styles.reportInfo)}
             />
-
-            {/* <HTML html={item.excerpt} /> */}
-
-          <View style = {styles.txtView}>
            
             <View style={styles.buttonView}>
               <SubmitButton
@@ -387,12 +374,10 @@ import colors from '../../assets/colors';
                 btnStyle = {styles.btnReadLate}
               />
             </View> 
-          </View>
-          </View>
+          {/* </View> */}
         </TouchableOpacity>
-        
-        </View>
-      );
+      </View>
+    );
   }
 
 

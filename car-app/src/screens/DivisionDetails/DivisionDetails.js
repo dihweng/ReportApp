@@ -289,16 +289,15 @@ export default class DivisionDetails extends Component {
     let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
     let favorite_button_text = item.is_favorite == true ? 'Remove Favorite' : 'Add Favorite';
     return (
-       <View style = {styles.listViewItem}>    
+      <View style = {styles.listViewItem}>    
         <TouchableOpacity 
-          onPress = {()=>this.handleFullReport(item)}
+          onPress = {()=>this.handleFullReport(item.id)}
           style = {styles.cardView}>
-          <View style ={styles.reportHeader}>
             <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
               text = {item.title}
-              onPress = {()=>this.handleFullReport(item)}
+              onPress = {()=>this.handleFullReport(item.id)}
               styles = {StyleSheet.flatten(styles.reportName)}
             />
 
@@ -306,30 +305,18 @@ export default class DivisionDetails extends Component {
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
               text = {item.citation}
-              onPress = {()=>this.handleFullReport(item)}
+              onPress = {()=>this.handleFullReport(item.id)}
               styles = {StyleSheet.flatten(styles.headerText)}
             />
 
             <DisplayText
-              numberOfLines = { 2 } 
-              // ellipsizeMode = 'middle'
-              text = {''}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.headerText)}
-            /> 
-
-             <DisplayText
-              numberOfLines = { 4 } 
+              numberOfLines = {4} 
               ellipsizeMode = 'middle'
-              text = {'Little Description needed'}
-              onPress = {()=>this.handleFullReport(item)}
+              text = {item.excerpt.toLowerCase()}
+              onPress = {()=>this.handleFullReport(item.id)}
               styles = {StyleSheet.flatten(styles.reportInfo)}
             />
-
-            {/* <HTML html={item.excerpt} /> */}
-
-          <View style = {styles.txtView}>
-           
+          
             <View style={styles.buttonView}>
               <SubmitButton
                 title={favorite_button_text}
@@ -344,12 +331,10 @@ export default class DivisionDetails extends Component {
                 btnStyle = {styles.btnReadLate}
               />
             </View> 
-          </View>
-          </View>
+          {/* </View> */}
         </TouchableOpacity>
-        
-        </View>
-      );
+      </View>
+    );
   }
 
 

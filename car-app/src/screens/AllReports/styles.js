@@ -95,14 +95,7 @@ export default styles = StyleSheet.create({
   //   borderRadius : 8,
   //   height : 100,
   // },
-  listViewItem : {
-    alignItems: 'center',
-    width: '100%',
-    justifyContent: 'center',
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginTop: 8,
-  },
+  
   searchView : {
     width: '100%',
     // marginTop : 8,
@@ -118,9 +111,16 @@ export default styles = StyleSheet.create({
     paddingLeft: 16,
     alignItems: 'center'
   },
+  listViewItem : {
+    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'center',
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 8,
+  },
   cardView:{
     width: '99%',
-    height : 200 ,
     backgroundColor: theme.colorAccent,
     borderRadius : 2,
     marginTop: 4,
@@ -136,20 +136,7 @@ export default styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 8,
   },
-  // ImageView : {
-  //   width : 40,
-  //   height : 40,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   borderRadius : (Platform.OS === 'ios') ? 20 : 30,
-  //   marginTop : 4
-  // },  
-  // personImage : {
-  //   resizeMode : 'cover',
-  //   height : 39,
-  //   width : 39,
-  //   borderRadius : (Platform.OS === 'ios') ? 20 : 30
-  // },
+
   txtView : {
     flexDirection : 'column',
     height : '100%',
@@ -174,7 +161,7 @@ export default styles = StyleSheet.create({
     fontSize : theme.SmallerFont,
     // color : theme.primaryTextColor,
     color : "#333",
-    marginTop : 4
+    marginTop : 2
   },
   iconView : {
     justifyContent: 'center',
@@ -182,19 +169,18 @@ export default styles = StyleSheet.create({
     width : 40,
   },
   buttonView : {
-    // paddingHorizontal: 8,
     justifyContent: 'space-between',
     flexDirection : 'row',
-    marginTop : 8
+    marginTop : 4
   },
   
   bioTextView : {
     width : '95%',
     marginBottom : 8
   },
-  reportHeader : {
-    flexDirection : 'column',
-  },
+  // reportHeader : {
+  //   flexDirection : 'column',
+  // },
   reportName : {
     fontFamily : theme.secondaryFont,
     fontSize : theme.MediumFont,

@@ -38,7 +38,7 @@ export default class PersonalDetails extends Component {
       isValidDob : true,
       modalGenderVisible: false,
       isValidGender: false,
-      isOccupationValid: false,
+      // isOccupationValid: false,
       flag : defaultFlag,
       modalVisible : false,
       nationalityModalVisible : false,
@@ -53,7 +53,7 @@ export default class PersonalDetails extends Component {
       startDate : 'YYYY/MM/DD',
       email : '',
       phone : '',
-      occupation : '',
+      // occupation : '',
       nationality : '',
       title : '',
       message : '',
@@ -96,23 +96,19 @@ export default class PersonalDetails extends Component {
       id,
       token,
       name,
-      startDate,
       gender,
       email,
       phone,
-      occupation,
       country,
     } = this.state;
 
     let endpoint = `${UpdateBankDetails}/${id}`;
     let body = {
       name:name,
-      dob:startDate,
       email:email,
       gender:gender,
       phone:phone,
       country:country,
-      occupation:occupation,
     };
     fetch(endpoint, {
       method : "PUT",
@@ -125,7 +121,7 @@ export default class PersonalDetails extends Component {
       }
     })
     .then((res) => {
-      if (typeof res.message !== 'undefined' && res.message !== 'Profile updated successfully' ) {
+      if (typeof res.message !== 'undefined' ) {
         return this.setState({
           showLoading : false,
           title : 'Alert',
@@ -138,7 +134,6 @@ export default class PersonalDetails extends Component {
           showLoading : false,
         });
         return this.props.navigation.navigate('ManageAccount')
-        // return this.refs.toast.show(res.message, 300);
       }
     })
   }
@@ -191,21 +186,7 @@ export default class PersonalDetails extends Component {
       }
     }
   }
-  handleOccupationChange = (occupation) => {
-    if(occupation.length > 0) {
-      this.setState({
-        isOccupationValid: true,
-        occupation : occupation
-      });
-    }
-    else {
-      if (occupation.length < 1) {
-        this.setState({
-          isOccupationValid : false
-        });
-      }
-    }
-  }
+ 
   // phone numberz
   onChangeText(key, value) {
     this.setState({
@@ -225,13 +206,6 @@ export default class PersonalDetails extends Component {
       const countryFlag = await countryData.filter(
         obj => obj.name === country
       )[0].flag
-      //get country code name
-
-      // const countryCodeName = await countryData.filter(
-      //   obj => obj.name === country
-      // )[0].code
-
-      // Update the state then hide the Modal
 
       this.setState({ 
         phone: countryCode, 
@@ -301,14 +275,7 @@ export default class PersonalDetails extends Component {
     this.setState({startDatePickerVisible: false});
   };
 
-  handleStartDatePicked = (date) => {
-    this.setState({
-      startDate : moment(date).format("YYYY/MM/DD"),
-      isValidDob : true,
-    }); 
-    this.hideStartDateTimePicker();
-  };
-  //set gender picker
+
   setGenderPicker = (newValue) => {
     this.setState({
       gender: newValue,
@@ -335,8 +302,7 @@ render () {
     {title: 'Female', value: 'Female'},
     {title: 'Male', value: 'Male'},
   ];
-  const { title, message, showAlert, showLoading, startDatePickerVisible, startDate, flag } = this.state
-  let now = new Date();
+  const { title, message, showAlert, showLoading, flag } = this.state
   const countryData = data
 
   return(
@@ -409,25 +375,7 @@ render () {
               /> 
             </View>
             <View style = {styles.dateGenderView}>
-              {/* Datepicker View */}
-              <View style = {styles.formContainer}>
-                <DisplayText
-                  text={'Date of Birth *'}
-                  styles = {styles.formHeaderTxt}
-                />
-                <TouchableOpacity 
-                  underlayColor={colors.white}
-                  onPress = {this.showStartDateTimePicker}
-                  style = {styles.textBoder}>
-                  <View style = {styles.viewTxtgender}>
-                    <Text style = {styles.genderText}>
-                      {startDate}
-                    </Text>
-                    
-                  </View>
-                </TouchableOpacity>
-                
-              </View>
+          
               {/* Gender modal selection */}
               <View style = {styles.formContainer}>
                 <DisplayText
@@ -580,27 +528,7 @@ render () {
                   
                 </View>
               </Modal>
-            {/* occupatio textinput */}
-            <View style = {styles.formView}>
-              <DisplayText
-                text={'Occupation *'}
-                styles = {styles.formHeaderTxt}
-              />
-              <InputField
-                textColor={colors.text_color}
-                inputType={'name'}
-                keyboardType={'default'}
-                onChangeText = {this.handleOccupationChange}
-                autoCapitalize = "words"
-                height = {40}
-                // borderWidth = {1}
-                borderColor={colors.field_color}
-                borderRadius={4}
-                paddingLeft = {8}
-                formStyle = {styles.formstyle}
-                
-              /> 
-            </View>
+        
               <View style = {styles.CountryView}>
                 <DisplayText
                   text={'Nationality *'}
@@ -658,12 +586,7 @@ render () {
                 </View>
               </Modal>
             </View>
-            <DateTimePicker
-              isVisible={startDatePickerVisible}
-              onConfirm={ this.handleStartDatePicked}
-              onCancel={this.hideStartDateTimePicker}
-              maximumDate = {now}    
-            />
+ 
         </ScrollView>
       </KeyboardAvoidingView>
       <View style = {styles.signupLinkView}>

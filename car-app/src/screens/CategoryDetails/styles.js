@@ -94,13 +94,15 @@ export default styles = StyleSheet.create({
     height : 20,
   },
   listViewItem : {
-    alignItems : 'center',
-    width : '100%',
+    alignItems: 'center',
+    width: '100%',
     justifyContent: 'center',
+    // paddingLeft: 20,
+    // paddingRight: 20,
+    marginTop: 8,
   },
   cardView:{
     width: '99%',
-    height : 200 ,
     backgroundColor: theme.colorAccent,
     marginTop: 4,
     marginBottom : 4,
@@ -114,23 +116,7 @@ export default styles = StyleSheet.create({
     elevation: 1,
     paddingHorizontal: 8,
     paddingVertical: 8,
-    // flexDirection : 'row',
-    // alignItems : 'center'
   },
-  // ImageView : {
-  //   width : 40,
-  //   height : 40,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   borderRadius : (Platform.OS === 'ios') ? 20 : 30,
-  //   marginTop : 4
-  // },  
-  // personImage : {
-  //   resizeMode : 'cover',
-  //   height : 39,
-  //   width : 39,
-  //   borderRadius : (Platform.OS === 'ios') ? 20 : 30
-  // },
   txtView : {
     flexDirection : 'column',
     height : '100%',
@@ -144,18 +130,15 @@ export default styles = StyleSheet.create({
     marginTop : 4,
   },
   subHeaderText : {
-    // marginTop : 4,
     fontFamily : theme.subHeaderFont,
     fontSize : theme.SmallFont,
     color : theme.primaryColor,
-    // height : 40
   },
   reportInfo : {
     fontFamily : theme.secondaryFont,
     fontSize : theme.SmallerFont,
-    // color : theme.primaryTextColor,
     color : "#333",
-    marginTop : 4
+    marginTop : 2
   },
   iconView : {
     justifyContent: 'center',
@@ -163,7 +146,6 @@ export default styles = StyleSheet.create({
     width : 40,
   },
   buttonView : {
-    // paddingHorizontal: 8,
     justifyContent: 'space-between',
     flexDirection : 'row',
     marginTop : 8
@@ -187,7 +169,6 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems : 'center',
     height : 40,
-    // borderRadius : 4,
   },
   btnText : {
     fontSize: 16,
@@ -201,14 +182,12 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems : 'center',
     height : 40,
-    // borderRadius : 4,
   },
   cards : {
-    // justifyContent: 'center',
     alignItems : 'center',
-    shadowColor: colors.gray,
+    shadowColor: colors.primaryColor,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.25,
     shadowRadius: 2,
     elevation: 1,    
     height: 40,

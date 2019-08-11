@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView, 
   TouchableOpacity,StatusBar, Image, Text, StyleSheet,} from 'react-native';
-import {DisplayText, CustomToast,SingleButtonAlert} from '../../components';
+import {DisplayText, CustomToast,SingleButtonAlert, SubmitButton} from '../../components';
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import filter from 'lodash.filter';
@@ -333,63 +333,44 @@ export default class Citation extends Component {
         <TouchableOpacity 
           onPress = {()=>this.handleFullReport(item)}
           style = {styles.cardView}>
-          <View style ={styles.reportHeader}>
-            <DisplayText
-              numberOfLines = { 2 } 
-              ellipsizeMode = 'middle'
-              text = {item.title}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.reportName)}
+          <DisplayText
+            numberOfLines = { 2 } 
+            ellipsizeMode = 'middle'
+            text = {item.title}
+            onPress = {()=>this.handleFullReport(item)}
+            styles = {StyleSheet.flatten(styles.reportName)}
+          />
+          <DisplayText
+            numberOfLines = { 2 } 
+            ellipsizeMode = 'middle'
+            text = {item.citation}
+            onPress = {()=>this.handleFullReport(item)}
+            styles = {StyleSheet.flatten(styles.headerText)}
+          />
+          <DisplayText
+            numberOfLines = {4} 
+            ellipsizeMode = 'middle'
+            text = {item.excerpt.toLowerCase()}
+            onPress = {()=>this.handleFullReport(item.id)}
+            styles = {StyleSheet.flatten(styles.reportInfo)}
+          />
+          <View style={styles.buttonView}>
+            <SubmitButton
+              title={favorite_button_text}
+              onPress={()=>this.addDeleteFavorite(item.id, favorite_button_text, index)}
+              titleStyle={styles.btnText}
+              btnStyle = {styles.btnStyle}
             />
-
-            <DisplayText
-              numberOfLines = { 2 } 
-              ellipsizeMode = 'middle'
-              text = {item.citation}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.headerText)}
+            <SubmitButton
+              title={read_later_button_text}
+              onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
+              titleStyle={styles.btnText}
+              btnStyle = {styles.btnReadLate}
             />
-
-            <DisplayText
-              numberOfLines = { 2 } 
-              // ellipsizeMode = 'middle'
-              text = {''}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.headerText)}
-            /> 
-
-             <DisplayText
-              numberOfLines = { 4 } 
-              ellipsizeMode = 'middle'
-              text = {'Little Description needed'}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.reportInfo)}
-            />
-
-            {/* <HTML html={item.excerpt} /> */}
-
-          <View style = {styles.txtView}>
-           
-            <View style={styles.buttonView}>
-              <SubmitButton
-                title={favorite_button_text}
-                onPress={()=>this.addDeleteFavorite(item.id, favorite_button_text, index)}
-                titleStyle={styles.btnText}
-                btnStyle = {styles.btnStyle}
-              />
-              <SubmitButton
-                title={read_later_button_text}
-                onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
-                titleStyle={styles.btnText}
-                btnStyle = {styles.btnReadLate}
-              />
-            </View> 
-          </View>
-          </View>
-        </TouchableOpacity>
-        
-        </View>
-      );
+          </View> 
+        </TouchableOpacity>  
+      </View>
+    );
   }
 
 
@@ -431,7 +412,7 @@ export default class Citation extends Component {
         <View style = {styles.expandedView}>
           {/* Citation 0-9 */}
         <View style = {styles.citationView}>
-          <View style = {styles.sorting}>
+          {/* <View style = {styles.sorting}> */}
             <TouchableOpacity 
               onPress={this.changeLayout}
               style = {styles.sorting}>
@@ -441,7 +422,7 @@ export default class Citation extends Component {
                 style = {StyleSheet.flatten(styles.sortIcon)}
               />
             </TouchableOpacity>
-          </View>
+          {/* </View> */}
           <View style = {styles.citationRange}>
             <DisplayText
               numberOfLines = { 2 } 
@@ -465,7 +446,7 @@ export default class Citation extends Component {
           <View style = {styles.expandedView}>
 
             <View style = {styles.citationViewAlph}>
-              <View style = {styles.sorting}>
+              {/* <View style = {styles.sorting}> */}
                 <TouchableOpacity 
                   onPress={this.changeLayoutalph}
                   style = {styles.sorting}>
@@ -475,7 +456,7 @@ export default class Citation extends Component {
                     style = {StyleSheet.flatten(styles.sortIcon)}
                   />
                 </TouchableOpacity>
-              </View>
+              {/* </View> */}
               <View style = {styles.citationRange}>
                 <DisplayText
                   numberOfLines = { 3 } 

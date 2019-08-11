@@ -289,67 +289,50 @@ export default class CategoryDetails extends Component {
     let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
     let favorite_button_text = item.is_favorite == true ? 'Remove Favorite' : 'Add Favorite';
     return (
-       <View style = {styles.listViewItem}>    
+      <View style = {styles.listViewItem}>    
         <TouchableOpacity 
           onPress = {()=>this.handleFullReport(item)}
           style = {styles.cardView}>
-          <View style ={styles.reportHeader}>
-            <DisplayText
-              numberOfLines = { 2 } 
-              ellipsizeMode = 'middle'
-              text = {item.title}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.reportName)}
-            />
+          <DisplayText
+            numberOfLines = { 2 } 
+            ellipsizeMode = 'middle'
+            text = {item.title}
+            onPress = {()=>this.handleFullReport(item)}
+            styles = {StyleSheet.flatten(styles.reportName)}
+          />
 
-            <DisplayText
-              numberOfLines = { 2 } 
-              ellipsizeMode = 'middle'
-              text = {item.citation}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.headerText)}
-            />
-
-            <DisplayText
-              numberOfLines = { 2 } 
-              // ellipsizeMode = 'middle'
-              text = {''}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.headerText)}
-            /> 
-
-             <DisplayText
-              numberOfLines = { 4 } 
-              ellipsizeMode = 'middle'
-              text = {'Little Description needed'}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.reportInfo)}
-            />
-
-            {/* <HTML html={item.excerpt} /> */}
-
-          <View style = {styles.txtView}>
+          <DisplayText
+            numberOfLines = { 2 } 
+            ellipsizeMode = 'middle'
+            text = {item.citation}
+            onPress = {()=>this.handleFullReport(item)}
+            styles = {StyleSheet.flatten(styles.headerText)}
+          />
+          <DisplayText
+            numberOfLines = {4} 
+            ellipsizeMode = 'middle'
+            text = {item.excerpt.toLowerCase()}
+            onPress = {()=>this.handleFullReport(item.id)}
+            styles = {StyleSheet.flatten(styles.reportInfo)}
+          />
            
-            <View style={styles.buttonView}>
-              <SubmitButton
-                title={favorite_button_text}
-                onPress={()=>this.addDeleteFavorite(item.id, favorite_button_text, index)}
-                titleStyle={styles.btnText}
-                btnStyle = {styles.btnStyle}
-              />
-              <SubmitButton
-                title={read_later_button_text}
-                onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
-                titleStyle={styles.btnText}
-                btnStyle = {styles.btnReadLate}
-              />
-            </View> 
-          </View>
-          </View>
+          <View style={styles.buttonView}>
+            <SubmitButton
+              title={favorite_button_text}
+              onPress={()=>this.addDeleteFavorite(item.id, favorite_button_text, index)}
+              titleStyle={styles.btnText}
+              btnStyle = {styles.btnStyle}
+            />
+            <SubmitButton
+              title={read_later_button_text}
+              onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
+              titleStyle={styles.btnText}
+              btnStyle = {styles.btnReadLate}
+            />
+          </View> 
         </TouchableOpacity>
-        
-        </View>
-      );
+      </View>
+    );
   }
 
 

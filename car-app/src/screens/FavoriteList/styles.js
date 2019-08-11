@@ -348,20 +348,10 @@ export default styles = StyleSheet.create({
 
   // Render Row Styling
   listViewItem : {
-    alignItems: 'center',
+    // alignItems: 'center',
     width: '100%',
-    justifyContent: 'center',
-    paddingLeft: 20,
-    paddingRight: 20,
+    // justifyContent: 'center',
     marginTop: 8,
-  },
-  cardView:{
-    width: '99%',
-    height: 200,
-    backgroundColor: theme.colorAccent,
-    borderRadius : 2,
-    marginTop: 4,
-    marginBottom : 4,
     shadowColor: theme.primaryTextColor,
     shadowOffset: { 
       width: 0, 
@@ -370,6 +360,16 @@ export default styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 2,
     elevation: 1,
+    backgroundColor: theme.colorAccent,
+    borderRadius : 2,
+  },
+  flatlistContainer: {
+    paddingHorizontal: 20
+  },
+  cardView:{
+    width: '99%',
+    marginTop: 4,
+    marginBottom : 4,    
     paddingHorizontal: 8,
     paddingVertical: 10,
   },
@@ -418,5 +418,20 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 8,
     // padding : 20
+  },
+  deleteBtn: {
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: theme.buttonRed,
+    paddingHorizontal: 20,
+    paddingVertical: 4,
+    marginBottom: 8,
+    marginLeft: 8,
+    width: 100
+  },
+  deleteTxt: {
+    color: theme.buttonRed,
+    fontFamily: theme.LightRoboto,
+    fontSize: theme.SmallFont
   },
 });

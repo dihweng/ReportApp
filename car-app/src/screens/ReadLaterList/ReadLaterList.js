@@ -154,11 +154,10 @@ export default class ReadLaterList extends Component {
 
     try {
       let response = await fetch(endpoint, settings);
-      let res = await response.json();
+      let res = await response;
       if(res.status >= 200 && res.status < 300) {
         // this.handleGetReadLater();
         return await this.showNotification('Successfully Removed Report from Read Later');   
-
       }
       return await this.showNotification(res.message.toString());   
     } 
@@ -202,49 +201,45 @@ handleFullReport=async(item)=>{
 
   renderRow = ({item}) => {
     return (
-      <TouchableOpacity style = {styles.listViewItem}>    
+      <View style={styles.flatlistContainer}>
+      <View style = {styles.listViewItem}>    
         <TouchableOpacity 
           onLongPress={()=>this.deleteReadLater(item.id)}
           onPress = {()=>this.handleFullReport(item)}
           style = {styles.cardView}>
-          <View style ={styles.reportHeader}>
             <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
               text = {item.title}
               onPress = {()=>this.handleFullReport(item)}
-              onLongPress={()=>this.deleteReadLater(item.id)}
               styles = {StyleSheet.flatten(styles.reportName)}
             />
-          <View style = {styles.txtView}>
             <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
               text = {item.citation}
               onPress = {()=>this.handleFullReport(item)}
-              onLongPress={()=>this.deleteReadLater(item.id)}
               styles = {StyleSheet.flatten(styles.headerText)}
             />
-            <DisplayText
-              numberOfLines = { 2 } 
-              // ellipsizeMode = 'middle'
-              text = {''}
-              onPress = {()=>this.handleFullReport(item)}
-              onLongPress={()=>this.deleteReadLater(item.id)}
-              styles = {StyleSheet.flatten(styles.headerText)}
-            /> 
+
             <DisplayText
               numberOfLines = { 4 } 
               ellipsizeMode = 'middle'
-              text = {'Little Description needed'}
+              text = {item.excerpt.toLowerCase()}
               onPress = {()=>this.handleFullReport(item)}
-              onLongPress={()=>this.deleteReadLater(item.id)}
               styles = {StyleSheet.flatten(styles.reportInfo)}
               />
-            </View>
-          </View>
         </TouchableOpacity>
-      </TouchableOpacity>
+        <TouchableOpacity                  
+          style = {styles.deleteBtn}>
+          <DisplayText
+            text = {'Remove'}
+            onPress = {()=>this.deleteReadLater(item.id)}
+            styles = {StyleSheet.flatten(styles.deleteTxt)}
+          />
+        </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 

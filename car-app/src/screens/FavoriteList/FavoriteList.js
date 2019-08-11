@@ -194,52 +194,51 @@ renderHeader = () => {
         /> 
       </View>
     </View>
-}
+  }
 
   renderRow = ({item}) => {
     return (
-      <View style = {styles.listViewItem}>    
-        <TouchableOpacity 
-          onLongPress={()=>this.deleteFavorite(item.id)}
-          onPress = {()=>this.handleFullReport(item)}
-          style = {styles.cardView}>
-          <View style ={styles.reportHeader}>
-            <DisplayText
-              numberOfLines = { 2 } 
-              ellipsizeMode = 'middle'
-              text = {item.title}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.reportName)}
-            />
+      <View style={styles.flatlistContainer}>
 
-          <View style = {styles.txtView}>
-            <DisplayText
-              numberOfLines = { 2 } 
-              ellipsizeMode = 'middle'
-              text = {item.citation}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.headerText)}
-            />
-
-            <DisplayText
-              numberOfLines = { 2 } 
-              // ellipsizeMode = 'middle'
-              text = {''}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.headerText)}
-            /> 
-
-             <DisplayText
-              numberOfLines = { 4 } 
-              ellipsizeMode = 'middle'
-              text = {'Little Description needed'}
-              onPress = {()=>this.handleFullReport(item)}
-              styles = {StyleSheet.flatten(styles.reportInfo)}
+        <View style = {styles.listViewItem}>    
+          <TouchableOpacity 
+            onLongPress={()=>this.deleteFavorite(item.id)}
+            onPress = {()=>this.handleFullReport(item)}
+            style = {styles.cardView}>
+              <DisplayText
+                numberOfLines = { 2 } 
+                ellipsizeMode = 'middle'
+                text = {item.title}
+                onPress = {()=>this.handleFullReport(item)}
+                styles = {StyleSheet.flatten(styles.reportName)}
               />
-            </View>
-          </View>
-        </TouchableOpacity>
-      </View>
+
+              <DisplayText
+                numberOfLines = { 2 } 
+                ellipsizeMode = 'middle'
+                text = {item.citation}
+                onPress = {()=>this.handleFullReport(item)}
+                styles = {StyleSheet.flatten(styles.headerText)}
+              />
+
+              <DisplayText
+                numberOfLines = { 4 } 
+                ellipsizeMode = 'middle'
+                text = {item.excerpt.toLowerCase()}
+                onPress = {()=>this.handleFullReport(item)}
+                styles = {StyleSheet.flatten(styles.reportInfo)}
+                />
+          </TouchableOpacity>
+          <TouchableOpacity                  
+            style = {styles.deleteBtn}>
+            <DisplayText
+              text = {'Remove'}
+              onPress = {()=>this.deleteFavorite(item.id)}
+              styles = {StyleSheet.flatten(styles.deleteTxt)}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>  
     );
   }
 

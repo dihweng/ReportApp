@@ -203,7 +203,6 @@ export default styles = StyleSheet.create({
     },
     cardView:{
       width: '99%',
-      height: 200,
       backgroundColor: theme.colorAccent,
       borderRadius : 2,
       marginTop: 4,
@@ -217,8 +216,9 @@ export default styles = StyleSheet.create({
       shadowRadius: 2,
       elevation: 1,
       paddingHorizontal: 8,
-      paddingVertical: 10,
+      paddingVertical: 8,
     },
+  
     reportHeader : {
       flexDirection : 'column',
     },
@@ -251,7 +251,7 @@ export default styles = StyleSheet.create({
       fontSize : theme.SmallerFont,
       // color : theme.primaryTextColor,
       color : "#333",
-      marginTop : 4
+      marginTop : 2
     },
     taostView: {
       width: '100%',
