@@ -81,12 +81,6 @@ export default styles = StyleSheet.create({
     flexDirection : 'column',
     paddingLeft : 8,
   },
-  buttonView : {
-    // paddingHorizontal: 8,
-    justifyContent: 'space-between',
-    flexDirection : 'row',
-    marginTop : 8
-  },
   btnStyle : {
     backgroundColor : theme.buttonBlue,
     width : '48%',
@@ -146,7 +140,6 @@ export default styles = StyleSheet.create({
     paddingHorizontal : 4,
     paddingVertical : 8,
   },
-
   headerMessageView: {
     height: '80%',
     justifyContent: 'center',

@@ -81,33 +81,20 @@ export default styles = StyleSheet.create({
     flexDirection : 'column',
     paddingLeft : 8,
   },
-  buttonView : {
-    // paddingHorizontal: 8,
-    justifyContent: 'space-between',
-    flexDirection : 'row',
-    marginTop : 8
-  },
   btnStyle : {
-    backgroundColor : theme.buttonBlue,
-    width : '48%',
+    backgroundColor : theme.buttonPrimary,
+    width : '90%',
     justifyContent: 'center',
     alignItems : 'center',
     height : 40,
-    // borderRadius : 4,
+    borderRadius : 2,
+    marginTop: 16,
   },
   btnText : {
-    fontSize: theme.SmallFont,
-    color: theme.colorAccent,
-    fontFamily: theme.secondaryFont,
+    fontSize: 20,
+    color: colors.whiteShade,
+    fontFamily: theme.headerFont,
     alignSelf: 'center',    
-  },
-  btnReadLate : {
-    backgroundColor : theme.buttonRed,
-    width : '48%',
-    justifyContent: 'center',
-    alignItems : 'center',
-    height : 40,
-    // borderRadius : 4,
   },
   sortIcon : {
     height : 18,
@@ -146,7 +133,6 @@ export default styles = StyleSheet.create({
     paddingHorizontal : 4,
     paddingVertical : 8,
   },
-
   headerMessageView: {
     height: '80%',
     justifyContent: 'center',

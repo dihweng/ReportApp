@@ -105,7 +105,11 @@ export default class Citation extends Component {
         data: newData,
       });  
     }
-    
+    handleFullReport=(item)=>{
+      return this.props.navigation.navigate('FullReport', {
+        id: item.id, 
+      });
+    }
     const newData = filterData.filter(item => {
       const itemData = `${item.citation.toUpperCase()}`;
       const textData = citationAlph;
@@ -116,13 +120,6 @@ export default class Citation extends Component {
       data: newData,
     });
   }
-
-  handleFullReport=(item)=>{
-    return this.props.navigation.navigate('FullReport', {
-      id: item.id, 
-    });
-  }
-
   allReport = async() => {
     const {token} = this.state;
     this.showLoadingDialogue();

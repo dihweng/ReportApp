@@ -36,6 +36,7 @@ export default class Login extends Component {
 
   checkLogin =  async() => {
     let profile = await getProfile();
+    console.log({profilessss: profile})
     if(typeof profile.expires !== 'undefined' ) {
       this.setState({
         restoring : false,
@@ -95,7 +96,7 @@ export default class Login extends Component {
     const { password, email,  } = this.state,
       grant_type = 'password',
       client_id = '2',
-      client_secret = 'ek96jBYQRWz5KYiDU4vQoxegmUACPBxljZI52KwM';
+      client_secret = 'eRp00dmz9Kzui2q5zHiTgqSaE6WGOU9xSBeDaxKQ';
 
       this.showLoadingDialogue();
 
@@ -111,6 +112,7 @@ export default class Login extends Component {
       await this.login(body)
     }
     catch(error) {
+      this.hideLoadingDialogue();
       this.showNotification(error.toString());
     }
   }

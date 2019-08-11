@@ -1,53 +1,52 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView,
-   TouchableOpacity,StatusBar, Image, Text, StyleSheet, } from 'react-native';
-import {DisplayText, CustomToast,SubmitButton, SingleButtonAlert} from '../../components';
+import { View, SafeAreaView, StatusBar, FlatList, Image,TouchableOpacity, StyleSheet,} from 'react-native';
+import {DisplayText, SingleButtonAlert, SubmitButton } from '../../components';
 import styles from './styles';
+import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import filter from 'lodash.filter';
+import theme from '../../assets/theme';
 
 import { 
   DeleteFavoriteEndpoint, 
   DeleteReadLaterEndpoint, 
   getRouteToken, 
-  getAllReport, 
+  getAllReport,
   getProfile, 
   AddReadLaterEndPoint, 
-  AddFavoriteEndPoint 
-} from '../Utils/Utils';
+  AddFavoriteEndPoint } from '../Utils/Utils';
 
 
-export default class Citation extends Component {
+
+export default class DivisionDetails extends Component {
   constructor(props) {
     super(props);
     this.state ={
-      data : [],
-      showAlert : false,
+      data: [],
+      showAlert: false,
       showLoading: false,
-      message : '',
+      message: '',
       title: '',
-      refreshing: false,
-      expanded: false,
-      expandalph : false,
+      id: '',
       token: '',
-      filterData: [],
-      secondFilter: [],
-      numberCitatio: '',
-      alphabetCitation: '',
+      name: '',
     }
   }
   async componentDidMount(){
-    (Platform.OS === 'android') ? UIManager.setLayoutAnimationEnabledExperimental(true) : null
-    
     let profile = await getProfile();
-    this.setState({
-      token : profile.access_token,
-      expires : profile.expires,
-      showLoading:true,
-      // data:this.reports
+    const {navigation} = this.props,
+      id = navigation.getParam('id'),
+      name = navigation.getParam('name');
+    await this.setState({
+      token: profile.access_token,
+      expires: profile.expires,
+      showLoading: true,
+      id,
+      name,
     });
+    
     await this.handleGetAllReport();
+  
   }
   showLoadingDialogue =()=> {
     this.setState({
@@ -75,74 +74,34 @@ export default class Citation extends Component {
        showAlert : false,
      })
   }
-
- //filter citation numberts
-  handleCitationPress = (citation) => {
-    const {filterData} = this.state;
-    const newData = filterData.filter(item => {
-      const itemData = `${item.citation.toUpperCase()}`;
-      const textData = citation;
-
-      return itemData.indexOf(textData) > -1;
-    });
-    return this.setState({
-      data: newData,
-      secondFilter: newData,
-    });
-  }
-  // Filter by citation alphabets
-  handleCitationAlph = (citationAlph) => {
-    
-    const {filterData, secondFilter} = this.state;
-    if(secondFilter.length > 0 ){
-      const newData = secondFilter.filter(item => {
-        const itemData = `${item.citation.toUpperCase()}`;
-        const textData = citationAlph;
-  
-        return itemData.indexOf(textData) > -1;
-      });
-      return this.setState({
-        data: newData,
-      });  
-    }
-    
-    const newData = filterData.filter(item => {
-      const itemData = `${item.citation.toUpperCase()}`;
-      const textData = citationAlph;
-
-      return itemData.indexOf(textData) > -1;
-    });
-    return this.setState({
-      data: newData,
-    });
-  }
-
-  handleFullReport=(item)=>{
-    return this.props.navigation.navigate('FullReport', {
-      id: item.id, 
-    });
-  }
-
-  allReport = async() => {
-    const {token} = this.state;
+  allReport = async() =>{
+    const {token, id} = this.state; 
+    let endPoint = `${getAllReport}${'?'}${'division_id='}${id}`;
     this.showLoadingDialogue();
-    await getRouteToken(getAllReport, token)
+    await getRouteToken(endPoint, token)
       .then((res) => {
-        if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message);
-        }   
-        else {          
-
-          this.setState({
-            data: res.data,
-            filterData: res.data,
-          });
-          return this.hideLoadingDialogue();
+        if(typeof res.data !== 'undefined' ) {
+          if(res.data.length) {
+            this.setState({
+              data: res.data,
+            });
+            return this.hideLoadingDialogue();
+          }
+          else {
+            this.showNotification('No Record Found', 'Message');
+            return setTimeout(()=>{
+              this.handleCloseNotification();
+              return this.props.navigation.goBack();
+            }, 3000);
+          }
         }
-      }
-    );
+         this.showNotification(res.message, 'Message'); 
+         return setTimeout(()=>{
+          this.handleCloseNotification();
+          return this.props.navigation.goBack();
+        }, 3000);
+      }).catch(error => this.showNotification(error.toString(), 'Message'));
   }
-
   handleGetAllReport = async() => {
     this.showLoadingDialogue();
 
@@ -150,21 +109,23 @@ export default class Citation extends Component {
       await this.allReport()
     }
     catch(error) {
-      this.showNotification(error.toString(), 'Message');
+     return this.showNotification(error.toString());
     }
   }
-  handleApply = () => {
-    alert('sorry cant apply citation now')
-  }
-  changeLayout = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    this.setState({ expanded: !this.state.expanded });
-  }
-  changeLayoutalph = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    this.setState({ expandalph: !this.state.expandalph });
+
+  handleFullReport=async(item)=>{
+    this.showLoadingDialogue();
+
+    this.props.navigation.navigate('FullReport', {
+      id: item.id,
+      content: item.content,
+      excerpt: item.excerpt,  
+    });
   }
 
+  handleGoBack = () => {
+    return this.props.navigation.goBack();
+  }
 
   addDeleteReadlater = (id, title, index) =>{
     this.showLoadingDialogue();
@@ -327,6 +288,7 @@ export default class Citation extends Component {
     }
   }
 
+
   renderRow = ({item, index}) => {
     let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
     let favorite_button_text = item.is_favorite == true ? 'Remove Favorite' : 'Add Favorite';
@@ -396,141 +358,70 @@ export default class Citation extends Component {
 
 
   render () {
-    const { showLoading, title, message, showAlert, } = this.state;
-
-    var citationsAlph = ['A','B','C','D','E','F','G','H','I','J','K','L', 'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-    var citations = ['1', '2', '3', '4', '6','7', '8', '9'];
-    var citationList = citations.map((citation, index) => {
-      return <TouchableOpacity 
-                key = {index}
-                style = {styles.citisionTp}
-                onPress={()=>this.handleCitationPress(citation)}>
-              <Text 
-                style={styles.text}
-                key = {index}>
-                {citation}
-              </Text> 
-              </TouchableOpacity>
-    });
-    var citationListAlhp = citationsAlph.map((citationAlph, index) => {
-      return <TouchableOpacity 
-                key = {index}
-                style = {styles.citisionTp}
-                onPress={()=>this.handleCitationAlph(citationAlph)}>
-              <Text 
-                style={styles.text}
-                key = {index}>
-                {citationAlph}
-              </Text> 
-              </TouchableOpacity>
-    })
+    const { showLoading, title, message, showAlert, name} = this.state;
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
-      <ScrollView>
-      <View style={styles.wrapper}>
-        {/* Citation 0-9 */}
-        <View style = {styles.expandedView}>
-          {/* Citation 0-9 */}
-        <View style = {styles.citationView}>
-          <View style = {styles.sorting}>
-            <TouchableOpacity 
-              onPress={this.changeLayout}
-              style = {styles.sorting}>
-              <Image
-                onPress={this.changeLayout}
-                source = {require('../../assets/images/sort_up.png')}
-                style = {StyleSheet.flatten(styles.sortIcon)}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style = {styles.citationRange}>
-            <DisplayText
-              numberOfLines = { 2 } 
-              ellipsizeMode = 'middle'
-              text = {'CITATION 1 - 9'}
-              styles = {StyleSheet.flatten(styles.citationNumber)}
+        <View style = {styles.navBar}>
+          <TouchableOpacity 
+            onPress = {this.handleGoBack}
+            style = {styles.headerImage}>
+            <Image
+              onPress = {this.handleG0Back}
+              source = {require('../../assets/images/back.png')}
+              style = {StyleSheet.flatten(styles.headerIcon)}
             />
+          </TouchableOpacity>
+          <View style = {styles.nameView}>
             <DisplayText
-              numberOfLines = { 2 } 
-              ellipsizeMode = 'middle'
-              text = {'An inhibitory postsynaptic potential is a kind of synaptic potential that makes a postsynaptic neuron less likely to generate an action potential'}
-              styles = {StyleSheet.flatten(styles.citationBody)}
+              text={'Division'}
+              styles = {StyleSheet.flatten(styles.txtHeader)}/>
+          </View>
+        </View> 
+      <View style = {styles.viewBody}>
+        <View style = {styles.cards}>
+          <TouchableOpacity
+            onPress = {this.handleGoBack} 
+            style = {styles.angleView}>
+            <Image
+              onPress = {this.handleGoBack}
+              source = {require('../../assets/images/angle_back.png')}
+              style = {StyleSheet.flatten(styles.angleBack)}
+            />
+          </TouchableOpacity>
+          <View style ={styles.verticcalLine}></View>
+
+          <View style = { styles.viewText}>
+            <DisplayText
+              text={name}
+              styles = {StyleSheet.flatten(styles.categoryName)}
             />
           </View>
         </View>
-        <View style={{ flexDirection : 'row',height: this.state.expanded ? null : 0, overflow: 'hidden', flexWrap : "wrap" }}>
-            {citationList}
-        </View>
-        </View>
-          {/* Citation A - Z */}
-          <View style = {styles.expandedView}>
-
-            <View style = {styles.citationViewAlph}>
-              <View style = {styles.sorting}>
-                <TouchableOpacity 
-                  onPress={this.changeLayoutalph}
-                  style = {styles.sorting}>
-                  <Image
-                    onPress={this.changeLayoutalph}
-                    source = {require('../../assets/images/sort_up.png')}
-                    style = {StyleSheet.flatten(styles.sortIcon)}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style = {styles.citationRange}>
-                <DisplayText
-                  numberOfLines = { 3 } 
-                  ellipsizeMode = 'middle'
-                  text = {'CITATION A - Z'}
-                  styles = {StyleSheet.flatten(styles.citationNumber)}
-                />
-                <DisplayText
-                  numberOfLines = { 3 } 
-                  ellipsizeMode = 'middle'
-                  text = {'An inhibitory postsynaptic potential is a kind of synaptic potential that makes a postsynaptic neuron less likely to generate an action potential'}
-                  styles = {StyleSheet.flatten(styles.citationBody)}
-                />
-              </View>
-            </View>
-            <View style={{ flexDirection : 'row',height: this.state.expandalph ? null : 0, overflow: 'hidden', flexWrap : "wrap" }}>
-              {citationListAlhp}
-            </View>
-          </View>
-
-        {/* button */}
-        {/* <SubmitButton
-          title={'Apply'}
-          onPress={this.handleApply}
-          titleStyle={styles.btnText}
-          btnStyle = {styles.btnStyle}/> */}
-
-        </View>
-        <View style = {styles.viewBody}>
+        {/* <View style = {styles.viewBody}> */}
           <FlatList          
-            data={this.state.data}          
-            renderItem={this.renderRow}  
-            extraData={this.state}        
+            data={this.state.data}      
+            renderItem={this.renderRow}   
+            extraData={this.state}       
             keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
           />
-          <SingleButtonAlert
-            title = {title} 
-            message = {message}
-            handleCloseNotification = {this.handleCloseNotification}
-            visible = {showAlert}
-          />
-          <View style = {styles.taostView}>
-            <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          
-          </View> 
-        </View>  
-        </ScrollView>
-          <ProgressDialog
-            visible={showLoading}
-            title="Processing"
-            message="Please wait..."
-          />
-      </SafeAreaView>
-      )
-    }
-  } 
+        {/* </View>   */}
+      </View>  
+       
+      <ProgressDialog
+        visible={showLoading}
+        title="Processing"
+        message="Please wait..."
+      />
+      <SingleButtonAlert
+        title = {title} 
+        message = {message}
+        handleCloseNotification = {this.handleCloseNotification}
+        visible = {showAlert}
+      />
+    </SafeAreaView>
+    
+    )
+  }
+} 

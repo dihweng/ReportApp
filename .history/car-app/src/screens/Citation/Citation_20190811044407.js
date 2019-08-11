@@ -1,8 +1,8 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView,
-   TouchableOpacity,StatusBar, Image, Text, StyleSheet, } from 'react-native';
-import {DisplayText, CustomToast,SubmitButton, SingleButtonAlert} from '../../components';
+   TouchableOpacity,StatusBar, Image, Text, StyleSheet, SingleButtonAlert} from 'react-native';
+import {DisplayText, CustomToast,SubmitButton} from '../../components';
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import filter from 'lodash.filter';
@@ -105,7 +105,11 @@ export default class Citation extends Component {
         data: newData,
       });  
     }
-    
+    handleFullReport=(item)=>{
+      return this.props.navigation.navigate('FullReport', {
+        id: item.id, 
+      });
+    }
     const newData = filterData.filter(item => {
       const itemData = `${item.citation.toUpperCase()}`;
       const textData = citationAlph;
@@ -116,13 +120,6 @@ export default class Citation extends Component {
       data: newData,
     });
   }
-
-  handleFullReport=(item)=>{
-    return this.props.navigation.navigate('FullReport', {
-      id: item.id, 
-    });
-  }
-
   allReport = async() => {
     const {token} = this.state;
     this.showLoadingDialogue();

@@ -1,8 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView,
-   TouchableOpacity,StatusBar, Image, Text, StyleSheet, } from 'react-native';
-import {DisplayText, CustomToast,SubmitButton, SingleButtonAlert} from '../../components';
+import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView, TouchableOpacity,StatusBar, Image, Text, StyleSheet,} from 'react-native';
+import {DisplayText, CustomToast,SubmitButton} from '../../components';
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import filter from 'lodash.filter';
@@ -61,10 +60,10 @@ export default class Citation extends Component {
     });
   }
 
-  showNotification = (message, title) => {
+  showNotification = message => {
     this.setState({ 
       showLoading : false,
-      title : title,
+      title : 'Error!',
       message : message,
       showAlert : true,
     }); 
@@ -105,7 +104,6 @@ export default class Citation extends Component {
         data: newData,
       });  
     }
-    
     const newData = filterData.filter(item => {
       const itemData = `${item.citation.toUpperCase()}`;
       const textData = citationAlph;
@@ -116,13 +114,6 @@ export default class Citation extends Component {
       data: newData,
     });
   }
-
-  handleFullReport=(item)=>{
-    return this.props.navigation.navigate('FullReport', {
-      id: item.id, 
-    });
-  }
-
   allReport = async() => {
     const {token} = this.state;
     this.showLoadingDialogue();
@@ -149,8 +140,8 @@ export default class Citation extends Component {
     try {
       await this.allReport()
     }
-    catch(error) {
-      this.showNotification(error.toString(), 'Message');
+    catch(e) {
+      console.log({e})
     }
   }
   handleApply = () => {
@@ -165,171 +156,7 @@ export default class Citation extends Component {
     this.setState({ expandalph: !this.state.expandalph });
   }
 
-
-  addDeleteReadlater = (id, title, index) =>{
-    this.showLoadingDialogue();
-    if(title.includes('Remove')){
-      return this.deleteReadLater(id, index);
-    }
-    else {
-      return this.handleReadLater(id, index);
-    }
-  }
-
-  handleReadLater = async(id, index) =>{
-    try {
-      await this.readLater(id, index)
-    }
-    catch(error) {
-      return this.showNotification(error.toString());
-    }
-  }
-
-  readLater = async(id, index) =>{
-    const {token, data} = this.state;
-    let endpoint = `${AddReadLaterEndPoint}${id}/future`;
-    let settings = {
-      method : "POST",
-      headers : {
-        "Accept" : "application/json",
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      }
-    };
-
-    try {
-      let response  = await  fetch(endpoint, settings);
-      let res =  await response;
-      if(res.status >= 200 && res.status < 300) {
-        let targetPost = await data[index];
-        targetPost.is_future_saved =  await !targetPost.is_future_saved;
-        await this.setState({ data });
-        return await this.showNotification('Report Added to Read Later', 'Success');
-
-      }
-      else {
-        return this.showNotification('Failed to Add Report', 'Message');
-      }
-    }
-    catch(error) {
-      return this.showNotification(error.toString(), 'Message')
-    }
-  } 
-
-  deleteReadLater = async(id, index)=> {
-    const { token, data } = this.state
-    let endpoint = `${DeleteReadLaterEndpoint}${id}/${'future'}`      
-    const settings = {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,   
-
-      },
-    };
-
-    try {
-      let response = await fetch(endpoint, settings);
-      let res = await response;
-
-      if(res.status >= 200 && res.status < 300) {
-        let targetPost = await data[index];
-        targetPost.is_future_saved = await !targetPost.is_future_saved;
-        await this.setState({ data });
-        return await this.showNotification('Successfully Removed Report from Read Later', 'Success'); 
-
-      }
-      return await this.showNotification('Failed to Remove Report', 'Message');   
-    } 
-    catch(error){
-     return this.showNotification(error.toString(), 'Message'); 
-    }
-  }
-
-  addDeleteFavorite = (id, title, index) =>{
-    this.showLoadingDialogue();
-    if(title.includes('Remove')) {
-      return this.deleteFavorite(id, index);
-    }
-    else {
-      return this.handleAddFavorite(id, index);
-    }
-  }
-
-  handleAddFavorite = async(id, index) =>{
-    try {
-    return await this.addFavorite(id, index)
-    }
-    catch(error) {
-      return this.showNotification(error.toString());
-    }
-  }
-
-  addFavorite = async(id, index) =>{
-    const {token, data} = this.state;
-    let endpoint = `${AddFavoriteEndPoint}${id}/favorite`;
-     const  settings ={
-      method : "POST",
-      headers : {
-        "Accept" : "application/json",
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      }
-    }
-
-    try {
-      let response = fetch(endpoint, settings)
-      let res = await response;
-      if (res.status >= 200 && res.status < 300) {    
-        let targetPost = await data[index];
-        targetPost.is_favorite =  await !targetPost.is_favorite;
-        await this.setState({ data });
-        return await this.showNotification('Report Added To Favorite', 'Success');
-        
-      }
-      else {
-        return this.showNotification('Report Could Not be Added to Favorite',  'Message');
-      }
-
-    }
-    catch(error) {
-      return this.showNotification(error.toString(), 'Message');
-    }
-  } 
-
-  deleteFavorite = async(id, index)=> {
-    const { token, data} = this.state;
-    let endpoint = `${DeleteFavoriteEndpoint}${id}/${'favorite'}`      
-    const settings = {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,   
-
-      },
-    };
-
-    try {
-      let response = await fetch(endpoint, settings);
-      let res = await response;
-      if(res.status >= 200 && res.status < 300) {
-        let targetPost = await  data[index];
-        targetPost.is_favorite = await !targetPost.is_favorite;
-        await this.setState({ data });
-        return await this.showNotification('Successfully Removed Favorite', 'Success');   
-      }
-      return await this.showNotification('Failed to Removed Report', 'Message');   
-    } 
-    catch(error){
-     return this.showNotification(error.toString(), 'Message'); 
-    }
-  }
-
-  renderRow = ({item, index}) => {
-    let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
-    let favorite_button_text = item.is_favorite == true ? 'Remove Favorite' : 'Add Favorite';
+  renderRow = ({item}) => {
     return (
        <View style = {styles.listViewItem}>    
         <TouchableOpacity 
@@ -373,18 +200,8 @@ export default class Citation extends Component {
           <View style = {styles.txtView}>
            
             <View style={styles.buttonView}>
-              <SubmitButton
-                title={favorite_button_text}
-                onPress={()=>this.addDeleteFavorite(item.id, favorite_button_text, index)}
-                titleStyle={styles.btnText}
-                btnStyle = {styles.btnStyle}
-              />
-              <SubmitButton
-                title={read_later_button_text}
-                onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
-                titleStyle={styles.btnText}
-                btnStyle = {styles.btnReadLate}
-              />
+              {/* {this.displayfavoriteBtn(item.id, item.is_favorite)}
+              {this.displayReadLaterBtn(item.id, item.is_future_saved)} */}
             </View> 
           </View>
           </View>
@@ -396,7 +213,11 @@ export default class Citation extends Component {
 
 
   render () {
-    const { showLoading, title, message, showAlert, } = this.state;
+    const {
+      showLoading, 
+      title, 
+      message, 
+      showAlert, } = this.state;
 
     var citationsAlph = ['A','B','C','D','E','F','G','H','I','J','K','L', 'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     var citations = ['1', '2', '3', '4', '6','7', '8', '9'];
@@ -509,16 +330,10 @@ export default class Citation extends Component {
         <View style = {styles.viewBody}>
           <FlatList          
             data={this.state.data}          
-            renderItem={this.renderRow}  
-            extraData={this.state}        
+            renderItem={this.renderRow}          
+            // ListHeaderComponent={this.renderHeader}     
             keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
-          />
-          <SingleButtonAlert
-            title = {title} 
-            message = {message}
-            handleCloseNotification = {this.handleCloseNotification}
-            visible = {showAlert}
           />
           <View style = {styles.taostView}>
             <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          

@@ -1,8 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView,
-   TouchableOpacity,StatusBar, Image, Text, StyleSheet, } from 'react-native';
-import {DisplayText, CustomToast,SubmitButton, SingleButtonAlert} from '../../components';
+import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView, TouchableOpacity,StatusBar, Image, Text, StyleSheet,} from 'react-native';
+import {DisplayText, CustomToast,SubmitButton} from '../../components';
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import filter from 'lodash.filter';
@@ -61,10 +60,10 @@ export default class Citation extends Component {
     });
   }
 
-  showNotification = (message, title) => {
+  showNotification = message => {
     this.setState({ 
       showLoading : false,
-      title : title,
+      title : 'Error!',
       message : message,
       showAlert : true,
     }); 
@@ -105,7 +104,11 @@ export default class Citation extends Component {
         data: newData,
       });  
     }
-    
+    handleFullReport=(item)=>{
+      return this.props.navigation.navigate('FullReport', {
+        id: item.id, 
+      });
+    }
     const newData = filterData.filter(item => {
       const itemData = `${item.citation.toUpperCase()}`;
       const textData = citationAlph;
@@ -116,13 +119,6 @@ export default class Citation extends Component {
       data: newData,
     });
   }
-
-  handleFullReport=(item)=>{
-    return this.props.navigation.navigate('FullReport', {
-      id: item.id, 
-    });
-  }
-
   allReport = async() => {
     const {token} = this.state;
     this.showLoadingDialogue();
@@ -396,7 +392,11 @@ export default class Citation extends Component {
 
 
   render () {
-    const { showLoading, title, message, showAlert, } = this.state;
+    const {
+      showLoading, 
+      title, 
+      message, 
+      showAlert, } = this.state;
 
     var citationsAlph = ['A','B','C','D','E','F','G','H','I','J','K','L', 'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     var citations = ['1', '2', '3', '4', '6','7', '8', '9'];
@@ -509,16 +509,10 @@ export default class Citation extends Component {
         <View style = {styles.viewBody}>
           <FlatList          
             data={this.state.data}          
-            renderItem={this.renderRow}  
-            extraData={this.state}        
+            renderItem={this.renderRow}          
+            // ListHeaderComponent={this.renderHeader}     
             keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
-          />
-          <SingleButtonAlert
-            title = {title} 
-            message = {message}
-            handleCloseNotification = {this.handleCloseNotification}
-            visible = {showAlert}
           />
           <View style = {styles.taostView}>
             <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          
