@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
 import {DisplayText, SubmitButton, SingleButtonAlert } from '../../components';
-import { getUserDatials } from '../Utils/Utils';
+import { getUserDetails } from '../Utils/Utils';
 import styles from './styles';
 import colors from '../../assets/colors';
 
@@ -17,7 +17,7 @@ export default class ManageAccount extends Component {
   }
 
   async componentDidMount(){
-    // let userDetails = await getUserDatials();
+    // let userDetails = await getUserDetails();
 
     // let bank = userDetails.data.bank_name;
     // this.setState({

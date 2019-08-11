@@ -1,7 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, SafeAreaView, Image, Text } from 'react-native';
-import { getUserDatials} from '../Utils/Utils'
+import { getUserDetails} from '../Utils/Utils'
 import colors from '../../assets/colors';
 import styles from './styles';
 import theme from '../../assets/theme';
@@ -80,7 +80,7 @@ export default class CustomSidebarMenu extends Component {
 
   
   async componentDidMount(){
-    const profile = await getUserDatials();
+    const profile = await getUserDetails();
     let firstname, lastname;
     try {
       if (profile !== 'undefined' || profile !== ''){
@@ -136,11 +136,9 @@ export default class CustomSidebarMenu extends Component {
                 {email} 
               </Text> 
             :
-              <DisplayText
-                // onPress = {this.handleGetProfile}
-                text = {'Nigeria Court of Appeal \n Report Nigeria'}
-                style = {styles.txtEmail}
-              />
+              <Text style = {styles.txtuserName}>
+                {'Court of Appeal Report'}
+              </Text>
             }
             
           </View>

@@ -55,12 +55,9 @@ export default class CreateIssue extends Component {
     let data = JSON.stringify({
       'subject' : messageSubject, 
     });
-    console.log({messageIssue: data});
 
     postWithToken (CreateSupport, data, token)
     .then((res) => {
-      console.log({helloError: res})
-
       if (typeof res.message !== 'undefined' ) {  
         return  this.setState({ 
           showLoading : false,
@@ -70,8 +67,6 @@ export default class CreateIssue extends Component {
         }); 
       }
       else {
-        console.log('getResponse: ', res);
-        // let access_token = res.access_token;          
         this.setState({ 
           showLoading : false, 
         });   

@@ -106,8 +106,8 @@ export default class ReadLaterList extends Component {
     try {
       await this.AllReadLater()
     }
-    catch(e) {
-      console.log({e})
+    catch(error) {
+      return this.showNotification(error.toString());
     }
   }
   // search filter 
@@ -155,7 +155,6 @@ export default class ReadLaterList extends Component {
     try {
       let response = await fetch(endpoint, settings);
       let res = await response.json();
-      console.log({res})
       if(res.status >= 200 && res.status < 300) {
         // this.handleGetReadLater();
         return await this.showNotification('Successfully Removed Report from Read Later');   

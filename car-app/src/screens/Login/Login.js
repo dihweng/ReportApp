@@ -73,12 +73,10 @@ export default class Login extends Component {
     this.showLoadingDialogue();
     postRoute(LoginEndpoint, body)
       .then((res) => {
-        console.log({responseee1: res})
         if (typeof res.message !== 'undefined') {  
           return this.showNotification(res.message);
         }   
         else {
-          console.log({responseee: res})
           this.hideLoadingDialogue();
           saveProfile(
             res.access_token,

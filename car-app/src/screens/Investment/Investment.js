@@ -46,8 +46,6 @@ export default class Investment extends Component {
   }
   handleGetProfile = () => {
     const{token} = this.state;
-    console.log({tokien_check : token});
-    
     this.setState({
       showLoading: true
     });
@@ -55,7 +53,6 @@ export default class Investment extends Component {
 
       getRoute(endPoint, token)
       .then((res) => {
-        console.log({getProfile: res})
         if (typeof res.message !== 'undefined' || typeof res.message === '') {  
           return  this.setState({ 
             showLoading : false,
@@ -84,18 +81,14 @@ export default class Investment extends Component {
       })
   }
   handleGetAllInvestment = (id) => {
-    const{token} = this.state;
-    console.log({tokien_check : id});
-    
+    const{token} = this.state;    
     this.setState({
       showLoading: true
     });
     let endPoint = `${AllInvestmentEndpoint}${id}/${"investments"}`;
-    console.log({tokien_check : endPoint});
 
       getRoute(endPoint, token)
       .then((res) => {
-        console.log({responses: res})
         if (typeof res.message !== 'undefined' || typeof res.message === '') {  
           return  this.setState({ 
             showLoading : false,
@@ -117,7 +110,6 @@ export default class Investment extends Component {
         }
         else {
           const data = res.data;
-          console.log({resSuccessdata: data});
           this.setState({ 
             showLoading : false, 
             data : data,
@@ -140,7 +132,6 @@ export default class Investment extends Component {
   }
 
   handleFlatlist = (item) => {
-    console.log( {item: item});
     return this.props.navigation.navigate('InvestmentDetails', {
       "id" : item.id,
       "currency" : item.currency,

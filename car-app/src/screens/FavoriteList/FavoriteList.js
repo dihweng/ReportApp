@@ -101,18 +101,16 @@ export default class FavoriteList extends Component {
   //Call AllReadLater function
   handleGetFavorite = async() => {
     this.showLoadingDialogue();
-
     try {
       await this.AllFavorite()
     }
-    catch(e) {
-      console.log({e})
+    catch(error) {
+      return this.showNotification(error.toString());
     }
   }
 
   //Handle Delete favorite reports from list
   deleteFavorite=async(id)=> {
-    console.log({deleteiddd: id})
     const { token } = this.state
     this.showLoadingDialogue();
 
@@ -131,7 +129,6 @@ export default class FavoriteList extends Component {
     try {
       let response = await fetch(endpoint, settings);
       let res = await response;
-      console.log({responssssss: res});
       if(res.status >= 200 && res.status < 300) {
         // this.handleGetReadLater();
         return await this.showNotification('Successfully Removed Favorite');   

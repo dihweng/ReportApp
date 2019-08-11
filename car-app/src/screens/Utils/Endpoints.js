@@ -10,7 +10,7 @@ import { AsyncStorage } from 'react-native';
     };
     return await AsyncStorage.setItem('details', JSON.stringify(details))
   }
-  export const getUserDatials = async() => {
+  export const getUserDetails = async() => {
     return await AsyncStorage.getItem('details')
       .then((value) => {
         if (value) {

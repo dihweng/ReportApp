@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import { View, Text,  ScrollView, SafeAreaView, StatusBar, Image, KeyboardAvoidingView,TouchableOpacity, StyleSheet,} from 'react-native';
 import {DisplayText,InputField, SubmitButton, SingleButtonAlert } from '../../components';
-import { getUserDatials } from '../Utils/Utils'
+import { getUserDetails } from '../Utils/Utils'
 import styles from './styles';
 import RadioGroup from 'react-native-radio-buttons-group';
 import data from '../Utils/Countries';
@@ -54,7 +54,7 @@ export default class Subscribe extends Component {
   }
 
   async componentDidMount(){
-    let userDetails = await getUserDatials();
+    let userDetails = await getUserDetails();
     
     await this.setState({
       email: userDetails.data.email,
@@ -160,13 +160,11 @@ export default class Subscribe extends Component {
     selectedButtonPlan = selectedButtonPlan ? selectedButtonPlan.value : payment[0].label;
 
     if ( selectedButtonPlan === 'Online') {
-      console.log({selected: selectedButtonPlan})
       return this.setState({
         paymentType: selectedButtonPlan
       });
     }
     else if ( selectedButtonPlan === 'Manual'){
-      console.log({selected2: selectedButtonPlan});
       return this.setState({
         paymentType: selectedButtonPlan
       });

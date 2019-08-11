@@ -411,6 +411,12 @@ export default styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center'
-  }
-
+  },
+  viewBody : {
+    // alignItems : 'center',
+    flex : 1,
+    justifyContent: 'center',
+    marginBottom: 8,
+    // padding : 20
+  },
 });

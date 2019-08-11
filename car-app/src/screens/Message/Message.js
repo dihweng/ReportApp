@@ -8,7 +8,7 @@ import colors from '../../assets/colors';
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import {DisplayText, SingleButtonAlert} from '../../components';
-import { postWithToken, TicketMessageEndpoint, getUserDatials, GetAllMessageEndPoint, getRoute } from '../Utils/Utils'
+import { postWithToken, TicketMessageEndpoint, getUserDetails, GetAllMessageEndPoint, getRoute } from '../Utils/Utils'
 import moment from 'moment';
 
 //used to make random-sized messages
@@ -102,14 +102,11 @@ export default class Message extends Component {
     this.mounted = true
     // this.Clock = setInterval( () => this.GetTime(), 1000 );
 
-    let userDetails = await getUserDatials();
+    let userDetails = await getUserDetails();
 
     const id = userDetails.data.id,
       name = userDetails.data.name,
       token = userDetails.token;
-
-    // let profile = await getProfile();
-    console.log({idddddd:id});
     this.setState({
       token :token,
       userid : id,
@@ -145,7 +142,6 @@ export default class Message extends Component {
     let data = {
       'body' : inputMessage, 
     };
-    console.log({messageIssue: inputMessage});
     fetch(endPoint, {
       method : "POST",
       body : JSON.stringify(data),
@@ -166,8 +162,6 @@ export default class Message extends Component {
         });
       }
       else {
-        console.log({success : res});
-
         this.setState({
           showLoading : false,
         });
@@ -179,18 +173,13 @@ export default class Message extends Component {
 
   handleGetAllMessage = () => {
     const{token, id} = this.state;
-    console.log({tokien_check : token});
-    
     this.setState({
       showLoading: true
     });
     let endPoint = `${GetAllMessageEndPoint}/${id}/${"messages"}`;
-    console.log({endpoint_check : endPoint});
-
       getRoute(endPoint, token)
       .then((res) => {
         if (typeof res.message !== 'undefined' || typeof res.message === '') { 
-          console.log({helloError: res})
           return  this.setState({ 
             showLoading : false,
             title : 'Alert',
@@ -200,7 +189,6 @@ export default class Message extends Component {
         }
         else {
           const dataResponse = res.data.reverse();
-          // console.log({checkRes: dataResponse});
 
           this.handleConvertData(dataResponse)
           this.setState({ 
@@ -215,15 +203,11 @@ export default class Message extends Component {
   };
   handleConvertData = (dataResponse) => {
     const {userid, messages, name} = this.state;
-    console.log({checkRes: userid});
     
     dataResponse.forEach((data) => { 
       const message = data.body,
       time = data.created_at,
       newDate = moment(time).format("DD-MM-YYYY")
-
-      console.log({body: data,});
-
       if (data.user_id === this.state.userid) {
         let body = `${message}\n${newDate}\n${name}`
         return  messages.push({direction: "right", text: body});

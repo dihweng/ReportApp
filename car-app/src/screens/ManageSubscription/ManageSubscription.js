@@ -1,18 +1,23 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, ScrollView, SafeAreaView, StatusBar, Image, FlatList, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, SubmitButton, SingleButtonAlert } from '../../components';
-import { getUserDatials } from '../Utils/Utils';
+import { View, SafeAreaView, StatusBar, Image, FlatList, TouchableOpacity, StyleSheet,} from 'react-native';
+import {DisplayText, SingleButtonAlert } from '../../components';
+import { getUserDetails, GetAllSubscription, getRouteToken} from '../Utils/Utils';
+import { ProgressDialog } from 'react-native-simple-dialogs';
 import styles from './styles';
 import colors from '../../assets/colors';
-
 
 export default class ManageSubscription extends Component {
   constructor(props) {
     super(props);
     this.state ={
       data : [],
-      
+      id: '',
+      token: '',
+      showAlert : false,
+      showLoading: false,
+      message : '',
+      title: '',
     }
   }
   subscription = [
@@ -99,27 +104,101 @@ export default class ManageSubscription extends Component {
     },
  
 ];
-  
-// componentWillMount(){
-//   // logout();
-//   this.setState({
-//     data:this.reports
-//   });
-// }
-async componentDidMount(){
-  this.setState({
-    data:this.subscription
-  });
-    // let userDetails = await getUserDatials();
 
-    // let bank = userDetails.data.bank_name;
-    // this.setState({
-    //   bankName: bank,
-    // });
+  async componentDidMount(){
+    let userDetails = await getUserDetails();
+    const id = userDetails.data.id,
+      token = userDetails.token;
+
+      this.setState({
+      id,
+      token,
+    });
+    await this.handleGetSubscription();
+
+  }
+
+  allSubscription = async() => {
+    const {token, id} = this.state;
+    let endpoint = `${GetAllSubscription}${id}/${'subscriptions'}`
+    this.showLoadingDialogue();
+    await getRouteToken(endpoint, token)
+      .then((res) => {
+        if (typeof res.message !== 'undefined') {  
+          return this.showNotification(res.message);
+        }   
+        else {          
+          this.setState({
+            data: res.data,
+          });
+          return this.hideLoadingDialogue();
+        }
+      }
+    );
+  }
+
+  handleGetSubscription = async() => {
+    this.showLoadingDialogue();
+
+    try {
+      await this.allSubscription()
+    }
+    catch(error) {
+      return this.showNotification(error.toString());
+    }
   }
   handleBackPress = () => {
     return this.props.navigation.popToTop()
   }
+
+  showLoadingDialogue =()=> {
+    this.setState({
+      showLoading: true,
+    });
+  }
+
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
+
+  showNotification = message => {
+    this.setState({ 
+      showLoading : false,
+      title : 'Error!',
+      message : message,
+      showAlert : true,
+    }); 
+  }
+
+  handleCloseNotification = () => {
+    return this.setState({
+       showAlert : false,
+     })
+  }
+
+  handleSubscription = () => {
+    // return alert('are you okay? you already @ Subscription')
+    return this.props.navigation.navigate('ManageSubscription');
+  }
+  handleViewPlan = () => {
+    return this.props.navigation.navigate('ViewPlan');
+  }
+  handleSubscribe = () => {
+    return this.props.navigation.navigate('Subscribe');
+  }
+
+  
+  toggleDrawer = () => {
+    //Props to open/close the drawer
+    this.props.navigation.toggleDrawer();
+  };
+  handleBackPress = () => {
+    return this.props.navigation.popToTop()
+  }
+
+ 
   renderRow = ({item}) => {
     return (
       <View style = {styles.listViewItem}>    
@@ -173,30 +252,12 @@ async componentDidMount(){
     );
   }
 
-
-
-  handleSubscription = () => {
-    // return alert('are you okay? you already @ Subscription')
-    return this.props.navigation.navigate('ManageSubscription');
-  }
-  handleViewPlan = () => {
-    return this.props.navigation.navigate('ViewPlan');
-  }
-  handleSubscribe = () => {
-    return this.props.navigation.navigate('Subscribe');
-  }
-
-  
-  toggleDrawer = () => {
-    //Props to open/close the drawer
-    this.props.navigation.toggleDrawer();
-  };
-  handleBackPress = () => {
-    return this.props.navigation.popToTop()
-  }
-
- 
   render () {
+    const {
+      showLoading, 
+      title, 
+      message, 
+      showAlert, } = this.state;
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
@@ -257,6 +318,17 @@ async componentDidMount(){
           />
         </View>
       </View>
+      <ProgressDialog
+        visible={showLoading}
+        title="Processing"
+        message="Please wait..."
+      />
+      <SingleButtonAlert
+        title = {title} 
+        message = {message}
+        handleCloseNotification = {this.handleCloseNotification}
+        visible = {showAlert}
+      />
     </SafeAreaView>
     )
   }

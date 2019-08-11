@@ -1,8 +1,13 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView, 
-  TouchableOpacity,StatusBar, Image, Text, StyleSheet,} from 'react-native';
+<<<<<<< HEAD
+import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView,
+   TouchableOpacity,StatusBar, Image, Text, StyleSheet, } from 'react-native';
+import {DisplayText, CustomToast,SubmitButton, SingleButtonAlert} from '../../components';
+=======
+import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView, TouchableOpacity,StatusBar, Image, Text, StyleSheet,} from 'react-native';
 import {DisplayText, CustomToast,SingleButtonAlert} from '../../components';
+>>>>>>> 147febcea176f0cd8c1846d4060d4c4a2e651f5d
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import filter from 'lodash.filter';
@@ -150,7 +155,11 @@ export default class Citation extends Component {
       await this.allReport()
     }
     catch(error) {
-      return this.showNotification(error.toString(), 'Message');
+<<<<<<< HEAD
+      this.showNotification(error.toString(), 'Message');
+=======
+      return this.showNotification(error.toString());
+>>>>>>> 147febcea176f0cd8c1846d4060d4c4a2e651f5d
     }
   }
   

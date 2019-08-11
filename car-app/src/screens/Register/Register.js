@@ -189,7 +189,6 @@ checkPassword(password1, password2) {
           }   
         }  
         else if(res.data) {
-          console.log({res: res.data});
           this.hideLoadingDialogue();
           this.Toast('User Registration Successful')
           return setTimeout(() => {
@@ -223,8 +222,8 @@ checkPassword(password1, password2) {
     try {
       await this.register(body)
     }
-    catch(e) {
-      console.log({e})
+    catch(error) {
+      return this.showNotification(error.toString());
     }
   }
 
@@ -336,7 +335,6 @@ checkPassword(password1, password2) {
       this.setState({
           isChecked:!this.state.isChecked
       })
-      console.log({check: isChecked})
   }
   handleAcceptTerms=()=>{
     const {isChecked} = this.state;
@@ -399,8 +397,8 @@ checkPassword(password1, password2) {
       })
       await this.hideModal()
     }
-    catch (err) {
-      console.log(err)
+    catch (error) {
+      return this.showNotification(error.toString());
     }
   }
 

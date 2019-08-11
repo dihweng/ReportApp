@@ -42,7 +42,6 @@ export default class ChangePhone extends Component {
         token : token,
         id : id,
       });
-      console.log({iddddd: id , token: token});
   }
 
   handleBackPress = () => {
@@ -73,7 +72,6 @@ export default class ChangePhone extends Component {
   //   let body = {
   //     phone : phoneNumber
   //   }
-  //   console.log({endPoint: endPoint});
 
   //   fetch(endPoint, {
   //     method : "PUT",
@@ -87,7 +85,6 @@ export default class ChangePhone extends Component {
   //   })
   //   .then((res) => {
   //     if ( res.status >= 400 && res.status <= 500 ) {
-  //       console.log('error', res)
   //       // alert(res._bodyText.errors)
   //       return this.setState({
   //         showLoading : false,
@@ -97,7 +94,6 @@ export default class ChangePhone extends Component {
   //       });
   //     }
   //     else {
-  //       console.log({success : res});
         
   //       this.setState({
   //         showLoading : false,
