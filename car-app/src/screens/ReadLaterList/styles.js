@@ -385,4 +385,11 @@ export default styles = StyleSheet.create({
     color : "#333",
     marginTop : 4
   },
+  viewBody : {
+    // alignItems : 'center',
+    flex : 1,
+    justifyContent: 'center',
+    marginBottom: 8,
+    // padding : 20
+  },
 });
