@@ -65,8 +65,7 @@ export default class Security extends Component {
   }
 
   toggleButtonState = () => {
-    const { isPasswordValid, isNewPasswordValid, isConfirmPasswordValid } = this.state;
-          
+    const { isPasswordValid, isNewPasswordValid, isConfirmPasswordValid } = this.state;        
     if ( isPasswordValid && isNewPasswordValid && isConfirmPasswordValid ) {
       return true;
     } 

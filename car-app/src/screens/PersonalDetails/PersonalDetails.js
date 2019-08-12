@@ -14,7 +14,7 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import {Input, Icon} from 'native-base'
-import {DisplayText, InputField, SingleButtonAlert, SubmitButton} from '../../components';
+import {DisplayText, InputField, SubmitButton} from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors'
 import data from '../Register/Countries';
