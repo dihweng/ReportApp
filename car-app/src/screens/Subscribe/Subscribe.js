@@ -14,14 +14,9 @@ export default class Subscribe extends Component {
   constructor(props) {
     super(props);
     this.state ={
-      name: '',
-      planName: '',
-      email: '',
-      plan: '',
-      phoneNumber: '',
-      address: '',
+      id: '',
+      plan_id: '',
       flag: '',
-      planType: '',
       paymentType: 'Online',
       amount: '',
       showAlert: false,
@@ -61,6 +56,7 @@ export default class Subscribe extends Component {
       phoneNumber: userDetails.data.phone,
       name: userDetails.data.name,
       token: userDetails.token,
+      id: userDetails.data.id,
     });
     await this.handleGetProduct();
   }
@@ -78,11 +74,13 @@ export default class Subscribe extends Component {
   }
   handleGetProduct = async() => {
     const { navigation } = this.props,
+      plan_id = navigation.getParam('plan_id', 'NO-ID'),
       amount = navigation.getParam('amount', 'NO-ID'),
       planType = navigation.getParam('planType', 'NO-ID'),
       planName = navigation.getParam('name', 'NO-ID');
 
     await this.setState ({
+      plan_id,
       planType,
       amount,
       planName,
@@ -129,16 +127,12 @@ export default class Subscribe extends Component {
   }
 
   handleConfirm = () => {
-    const {paymentType, amount, email, name, token} = this.state;
-    const firstname = name.split(" ")[0],
-      lastname = name.split(" ")[1];
+    const {id, plan_id, paymentType} = this.state;
     (paymentType === 'Online') ? 
       this.props.navigation.navigate('Payment', {
-        'amount': amount,
-        'email': email,
-        'firstname': firstname,
-        'lastname': lastname,
-        'token': token,
+        'id': id,
+        'plan-id': plan_id
+        
       })
     : 
     this.handleBankPayment();

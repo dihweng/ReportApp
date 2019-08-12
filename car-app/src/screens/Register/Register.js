@@ -196,7 +196,7 @@ checkPassword(password1, password2) {
           }, 4000);
          
         }
-      else {
+        else {
         let message = 'Check Your Network Connection';
         return this.showNotification(message);
       }

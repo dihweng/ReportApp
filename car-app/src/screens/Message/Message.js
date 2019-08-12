@@ -8,7 +8,7 @@ import colors from '../../assets/colors';
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import {DisplayText, SingleButtonAlert} from '../../components';
-import { postWithToken, TicketMessageEndpoint, getUserDetails, GetAllMessageEndPoint, getRoute } from '../Utils/Utils'
+import { postWithToken, TicketMessageEndpoint, getUserDetails, GetAllMessageEndPoint, getRoute, getRouteToken } from '../Utils/Utils'
 import moment from 'moment';
 
 //used to make random-sized messages
@@ -177,7 +177,7 @@ export default class Message extends Component {
       showLoading: true
     });
     let endPoint = `${GetAllMessageEndPoint}/${id}/${"messages"}`;
-      getRoute(endPoint, token)
+      getRouteToken(endPoint, token)
       .then((res) => {
         if (typeof res.message !== 'undefined' || typeof res.message === '') { 
           return  this.setState({ 

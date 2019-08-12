@@ -37,6 +37,27 @@ export default class CreateIssue extends Component {
   handleBack = () => {
     return this.props.navigation.goBack();
   }
+   // Show Loading Spinner
+   showLoadingDialogue =()=> {
+    this.setState({
+      showLoading: true,
+    });
+  }
+// Hide Loading Spinner
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
+// Show Dialog message
+  showNotification = message => {
+    this.setState({ 
+      showLoading : false,
+      title : 'Error!',
+      message : message,
+      showAlert : true,
+    }); 
+  }
 
   handleCloseNotification = () => {
     return this.setState({
@@ -47,14 +68,14 @@ export default class CreateIssue extends Component {
   handleCreateTicket = () => {
     const {messageIssue, token} = this.state;
 
-    const messageSubject = messageIssue.toString();
     this.setState({
       showLoading : true
     });
 
-    let data = JSON.stringify({
-      'subject' : messageSubject, 
-    });
+    let data = { 
+      'subject': messageIssue,
+      'channel': 'Report Error'
+      };
 
     postWithToken (CreateSupport, data, token)
     .then((res) => {
@@ -148,7 +169,7 @@ export default class CreateIssue extends Component {
           />
           <InputField
             textColor={colors.darkGray}
-            inputType={'email'}
+            inputType={'name'}
             keyboardType={'default'}
             onChangeText = {this.handleaIssueChange}
             autoCapitalize = "none"

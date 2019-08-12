@@ -8,6 +8,9 @@ export default styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  containerScroll:{
+    flex: 1,
+  },
   navBar: {
     flexDirection : 'row',
     // paddingTop : (Platform.OS === "ios") ? 16 : 14,
@@ -88,13 +91,12 @@ export default styles = StyleSheet.create({
     height: 20,
     tintColor: theme.primaryColor
   },
-  // listItems : {
-  //   marginTop : 8,
-  //   width : '90%',
-  //   elevation : 1,
-  //   borderRadius : 8,
-  //   height : 100,
-  // },
+  toastView: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: (Platform.OS == 'ios') ? 20 : 0,
+  },
   
   searchView : {
     width: '100%',

@@ -4,7 +4,6 @@ import { View, Text, FlatList, SafeAreaView, StatusBar, Image, TouchableOpacity,
 import {DisplayText, SingleButtonAlert} from '../../components';
 import styles from './styles';
 import moment from 'moment';
-import Toast from 'react-native-easy-toast';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import { getProfile, getRoute, ProfileEndpoint, AllInvestmentEndpoint } from '../Utils/Utils';
 import colors from '../../assets/colors';

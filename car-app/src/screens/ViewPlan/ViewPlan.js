@@ -163,7 +163,8 @@ export default class ViewPlan extends Component {
     return await this.props.navigation.navigate('Subscribe', {
       'amount': item.amount,
       'planType': planType,
-      'name' : item.name,
+      'name': item.name,
+      'plan_id': item.id,
     });
   }
   handleBack = () => {
