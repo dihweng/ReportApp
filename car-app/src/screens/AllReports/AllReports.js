@@ -10,6 +10,7 @@ import { ProgressDialog } from 'react-native-simple-dialogs';
 import colors from '../../assets/colors';
 import {connect} from 'react-redux';
 import { setProfile } from '../../redux/actions/ProfileActions';
+import DropdownAlert from 'react-native-dropdownalert';
 
  class AllReports extends Component {
   constructor(props) {
@@ -155,10 +156,14 @@ import { setProfile } from '../../redux/actions/ProfileActions';
         let targetPost = await data[index];
         targetPost.is_favorite =  await !targetPost.is_favorite;
         await this.setState({ data });
-        return await this.showNotification('Report Added To Favorite', 'Success');
-        
+        // await this.handleCloseNotification()
+        await this.hideLoadingDialogue();
+        return await this.dropDownAlertRef.alertWithType('success', 'Success', 'Report Added To Favorite');
+
       }
       else {
+        // this.dropDownAlertRef.alertWithType('error', 'Error', error.message);
+
         return this.showNotification('Report Could Not be Added to Favorite',  'Message');
       }
 
@@ -425,6 +430,7 @@ import { setProfile } from '../../redux/actions/ProfileActions';
         handleCloseNotification = {this.handleCloseNotification}
         visible = {showAlert}
       />
+      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
       
     </SafeAreaView>
     )
