@@ -162,9 +162,9 @@ import DropdownAlert from 'react-native-dropdownalert';
 
       }
       else {
-        // this.dropDownAlertRef.alertWithType('error', 'Error', error.message);
-
-        return this.showNotification('Report Could Not be Added to Favorite',  'Message');
+        await this.hideLoadingDialogue();
+        return await this.dropDownAlertRef.alertWithType('error', 'Alert', 'Report Could Not be Added to Favorite');
+        // return this.showNotification('Report Could Not be Added to Favorite',  'Message');
       }
 
     }
@@ -201,11 +201,16 @@ import DropdownAlert from 'react-native-dropdownalert';
         let targetPost = await data[index];
         targetPost.is_future_saved =  await !targetPost.is_future_saved;
         await this.setState({ data });
-        return await this.showNotification('Report Added to Read Later', 'Success');
+        
+        // return await this.showNotification('Report Added to Read Later', 'Success');
+        await this.hideLoadingDialogue();
+        return await this.dropDownAlertRef.alertWithType('success', 'Success', 'Report Added To Read Later');
 
       }
       else {
-        return this.showNotification('Failed to Add Report', 'Message');
+        await this.hideLoadingDialogue();
+        return await this.dropDownAlertRef.alertWithType('error', 'Alert', 'Report Could Not be Added to Read Later');
+        // return this.showNotification('Failed to Add Report', 'Message');
       }
     }
     catch(error) {
@@ -259,9 +264,15 @@ import DropdownAlert from 'react-native-dropdownalert';
         let targetPost = await  data[index];
         targetPost.is_favorite = await !targetPost.is_favorite;
         await this.setState({ data });
-        return await this.showNotification('Successfully Removed Favorite', 'Success');   
+        // return await this.showNotification('Successfully Removed Favorite', 'Success');   
+        await this.hideLoadingDialogue();
+        return await this.dropDownAlertRef.alertWithType('success', 'Success', 'Report Removed From Favorite');
+
       }
-      return await this.showNotification('Failed to Removed Report', 'Message');   
+      await this.hideLoadingDialogue();
+      return await this.dropDownAlertRef.alertWithType('error', 'Alert', 'Failed to Remove Report');
+
+      // return await this.showNotification('Failed to Removed Report', 'Message');   
     } 
     catch(error){
      return this.showNotification(error.toString(), 'Message'); 
@@ -289,10 +300,15 @@ import DropdownAlert from 'react-native-dropdownalert';
         let targetPost = await data[index];
         targetPost.is_future_saved = await !targetPost.is_future_saved;
         await this.setState({ data });
-        return await this.showNotification('Successfully Removed Report from Read Later', 'Success'); 
+        // return await this.showNotification('Successfully Removed Report from Read Later', 'Success'); 
+        await this.hideLoadingDialogue();
+        return await this.dropDownAlertRef.alertWithType('success', 'Success', 'Report Removed From Read Later');
 
       }
-      return await this.showNotification('Failed to Remove Report', 'Message');   
+      await this.hideLoadingDialogue();
+      return await this.dropDownAlertRef.alertWithType('success', 'Success', 'Failed to Remove Report');
+
+      // return await this.showNotification('Failed to Remove Report', 'Message');   
     } 
     catch(error){
      return this.showNotification(error.toString(), 'Message'); 
