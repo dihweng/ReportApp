@@ -26,7 +26,6 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   TextInput,
-  Button,
   TouchableHighlight,
 } from 'react-native';
 import { Input, Icon } from 'native-base'
