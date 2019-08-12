@@ -8,8 +8,6 @@ import { DeleteFavoriteEndpoint, DeleteReadLaterEndpoint, getRouteToken, getAllR
   ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint } from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import colors from '../../assets/colors';
-import {connect} from 'react-redux';
-import { setProfile } from '../../redux/actions/ProfileActions';
 
  class AllReports extends Component {
   constructor(props) {
@@ -84,7 +82,7 @@ import { setProfile } from '../../redux/actions/ProfileActions';
           return this.hideLoadingDialogue();
         }
       }
-    ).catch(error=>this.showNotification(error.toString(), 'Message'));
+    );
   }
 
   handleGetAllReport = async() => {
@@ -104,14 +102,13 @@ import { setProfile } from '../../redux/actions/ProfileActions';
 
     await getRouteToken(ProfileEndpoint, token)
       .then((res) => {
-        console.log({res})
+
         if (typeof res.message !== 'undefined') {  
           return this.showNotification(res.message);
         }
   
         else {
           saveUserDetail(res.data, token);
-          this.props.setProfile(res.data);
           return this.handleGetAllReport();
         }
       })
@@ -419,17 +416,5 @@ import { setProfile } from '../../redux/actions/ProfileActions';
   }
 } 
 
-const mapStateToProps = (state, ownProps) =>{
-  return{
-    profile: state.ProfileReducer.profile
-  }
-}
-
-const mapDispatchToProps = (dispatch) =>{
-  return{
-    setProfile: (data) =>{dispatch(setProfile(data))},
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AllReports);
+export default AllReports;
 

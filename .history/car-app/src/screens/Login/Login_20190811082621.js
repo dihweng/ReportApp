@@ -8,7 +8,6 @@ import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import theme from '../../assets/theme';
 
-
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -61,10 +60,10 @@ export default class Login extends Component {
     });
   }
 
-  showNotification = (message, title)=> {
+  showNotification = message => {
     this.setState({ 
       showLoading : false,
-      title : title,
+      title : 'Error!',
       message : message,
       showAlert : true,
     }); 
@@ -72,10 +71,10 @@ export default class Login extends Component {
 
   login = async(body) =>{
     this.showLoadingDialogue();
-    await postRoute(LoginEndpoint, body)
+    postRoute(LoginEndpoint, body)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message, 'Message');
+          return this.showNotification(res.message);
         }   
         else {
           this.hideLoadingDialogue();
@@ -88,13 +87,13 @@ export default class Login extends Component {
           return this.props.navigation.navigate('Menu');
         }
       }
-    ).catch(error=>this.showNotification(error.toString, 'Message'))
+    );
   } 
   handleSignIn = async () =>{
     const { password, email,  } = this.state,
       grant_type = 'password',
       client_id = '2',
-      client_secret = 'nHcDeuwa5RVdgRsS26cEkUJRjtuuuIyC0FWdmKVp';
+      client_secret = 'ek96jBYQRWz5KYiDU4vQoxegmUACPBxljZI52KwM';
 
       this.showLoadingDialogue();
 
@@ -110,7 +109,7 @@ export default class Login extends Component {
       await this.login(body)
     }
     catch(error) {
-      this.showNotification(error.toString(), 'Message');
+      this.showNotification(error.toString());
     }
   }
   handleEmailChange = (email) => {

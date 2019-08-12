@@ -7,6 +7,7 @@ import {
   SafeAreaView, 
   StatusBar, 
   Image, 
+  AsyncStorage, 
   StyleSheet,
   KeyboardAvoidingView,
   FlatList,
@@ -15,21 +16,25 @@ import {
   Modal,
 
 } from 'react-native';
-import { Icon} from 'native-base'
+import {
+  Container,
+  Item,
+  Input,
+  Icon
+} from 'native-base'
 import styles from './styles';
 import colors from '../../assets/colors'
 import data from '../Register/Countries';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import {DisplayText, InputField, SingleButtonAlert, SubmitButton} from '../../components';
-import { UpdateUserEndpoint, updateUserDetails, getUserDetails } from '../Utils/Utils';
-import {connect} from 'react-redux';
-import { setProfile } from '../../redux/actions/ProfileActions';
+import { UpdateBankDetails, putRoute, getUserDetails } from '../Utils/Utils';
+import moment from 'moment';
 
 const defaultFlag = data.filter(
   obj => obj.name === 'Nigeria'
   )[0].flag
 
- class ContactDetails extends Component {
+export default class ContactDetails extends Component {
   constructor(props) {
     super(props);
     this.state ={
@@ -53,11 +58,15 @@ const defaultFlag = data.filter(
 
   async componentDidMount(){
     let userDetails = await getUserDetails();
-    const {profile} = this.props;
-    await this.setState({
-      id :  userDetails.data.id,
-      token: userDetails.token,
-      //profile.
+
+    const id = userDetails.data.id,
+      token = userDetails.token;
+      
+    // let newDate = moment(dob).format("YYYY/MM/DD");
+
+      this.setState({
+      id,
+      token,
     });
   }
 
@@ -92,7 +101,7 @@ const defaultFlag = data.filter(
     this.showLoadingDialogue();
 
     const {  id, token, address, city, country, stateProReg } = this.state;
-    let endpoint = `${UpdateUserEndpoint}/${id}`;    
+    let endpoint = `${UpdateBankDetails}/${id}`;    
 
     let body = {id, token, address, city, country, stateProReg};
 
@@ -117,7 +126,7 @@ const defaultFlag = data.filter(
       else {
         this.props.setProfile(res.data);
         updateUserDetails(res.data, token);
-        return this.showNotification('Contact Updated Successfully', 'Success');    
+        return this.showNotification('Profile Updated Successfully', 'Success');    
       }
     }
     catch(error) {
@@ -182,6 +191,39 @@ const defaultFlag = data.filter(
   }
 
 
+  selectNationality = async(country) => {
+    // Get data from Countries.js  
+    const countryData = await data
+    try {
+      //get country  name
+      const countryName = await countryData.filter(
+        obj => obj.name === country
+      )[0].name
+      // Update the state then hide the Modal
+      this.setState({ 
+        country : countryName,
+      })
+      await this.hideNationalityModal()
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
+  showNationalityModal = ()=> {
+    this.setState({ 
+      nationalityModalVisible: true 
+    })
+  }
+  hideNationalityModal =()=> {
+    this.setState({ 
+      nationalityModalVisible: false 
+    })
+    // Refocus on the Input field after selecting the country code
+    // this.refs.PhoneInput._root.focus()
+  }
+
+  
   render () {
     const { title, message, showAlert, showLoading } = this.state
     const countryData = data
@@ -384,17 +426,3 @@ const defaultFlag = data.filter(
    )
   }
 } 
-
-const mapStateToProps = (state, ownProps) =>{
-  return{
-    profile: state.ProfileReducer.profile
-  }
-}
-
-const mapDispatchToProps = (dispatch) =>{
-  return{
-    setProfile: (data) =>{dispatch(setProfile(data))},
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactDetails);

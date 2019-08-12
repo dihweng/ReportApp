@@ -1,11 +1,21 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, ScrollView, TouchableOpacity,  SafeAreaView,  StatusBar, Image, StyleSheet, KeyboardAvoidingView} from 'react-native';
+import { 
+  View, 
+  ScrollView, 
+  TouchableOpacity, 
+  SafeAreaView, 
+  StatusBar, 
+  Image, 
+  StyleSheet,
+  KeyboardAvoidingView,
+} from 'react-native';
 import {DisplayText, InputField, SubmitButton, SingleButtonAlert} from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import { getUserDetails, ChangePassword } from '../Utils/Utils';
+import console = require('console');
 
 
 export default class Security extends Component {
@@ -98,9 +108,10 @@ export default class Security extends Component {
     
     try {
       let response = await fetch(endPoint, settings);
-      let res = await response;
-      if(res.status >=400 && res.ststus <=500) {
-        return await this.showNotification('The old password is incorrect.', 'Message');
+      let res = await response.json();
+      console.log({res})
+      if(typeof res.message !== 'undefined') {
+        return await this.showNotification(res.message, 'Message');
       }
       else {
         return await this.showNotification('Password Update Successful', 'Success');
@@ -281,7 +292,7 @@ render () {
                 <SubmitButton
                   title={'Update'}
                   // disabled={!this.toggleButtonState()}
-                  onPress={this.verifyPassword}
+                  onPress={this.handleChangePassword}
                   titleStyle={styles.btnText}
                   btnStyle = {styles.btnStyle}
                 />

@@ -7,6 +7,7 @@ import {
   SafeAreaView, 
   StatusBar, 
   Image, 
+  AsyncStorage, 
   StyleSheet,
   KeyboardAvoidingView,
   FlatList,
@@ -15,21 +16,25 @@ import {
   Modal,
 
 } from 'react-native';
-import { Icon} from 'native-base'
+import {
+  Container,
+  Item,
+  Input,
+  Icon
+} from 'native-base'
 import styles from './styles';
 import colors from '../../assets/colors'
 import data from '../Register/Countries';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import {DisplayText, InputField, SingleButtonAlert, SubmitButton} from '../../components';
-import { UpdateUserEndpoint, updateUserDetails, getUserDetails } from '../Utils/Utils';
-import {connect} from 'react-redux';
-import { setProfile } from '../../redux/actions/ProfileActions';
+import { UpdateBankDetails, putRoute, getUserDetails } from '../Utils/Utils';
+import moment from 'moment';
 
 const defaultFlag = data.filter(
   obj => obj.name === 'Nigeria'
   )[0].flag
 
- class ContactDetails extends Component {
+export default class ContactDetails extends Component {
   constructor(props) {
     super(props);
     this.state ={
@@ -53,50 +58,35 @@ const defaultFlag = data.filter(
 
   async componentDidMount(){
     let userDetails = await getUserDetails();
-    const {profile} = this.props;
-    await this.setState({
-      id :  userDetails.data.id,
-      token: userDetails.token,
-      //profile.
+
+    const id = userDetails.data.id,
+      token = userDetails.token;
+      
+    // let newDate = moment(dob).format("YYYY/MM/DD");
+
+      this.setState({
+      id,
+      token,
     });
   }
 
-  showLoadingDialogue =()=> {
+  
+  handleUpdate = async() => {
+    const {  id, token, address, city, country, stateProReg } = this.state;
+
     this.setState({
       showLoading: true,
     });
-  }
 
-  hideLoadingDialogue =()=> {
-    this.setState({
-      showLoading: false,
-    });
-  }
+    let endpoint = `${UpdateBankDetails}/${id}`;    
 
-  showNotification = (message, title) => {
-    this.setState({ 
-      showLoading : false,
-      title : title,
-      message : message,
-      showAlert : true,
-    }); 
-  }
-
-  handleCloseNotification = () => {
-    return this.setState({
-       showAlert : false,
-     })
-  }
-
-  handleUpdate = async() => {
-    this.showLoadingDialogue();
-
-    const {  id, token, address, city, country, stateProReg } = this.state;
-    let endpoint = `${UpdateUserEndpoint}/${id}`;    
-
-    let body = {id, token, address, city, country, stateProReg};
-
-    const settings = {
+    let body = {
+      address:address,       
+      city:city,
+      country:country,
+      state : stateProReg,
+    };
+    fetch(endpoint, {
       method : "PUT",
       body : JSON.stringify(body),
       headers : {
@@ -104,26 +94,24 @@ const defaultFlag = data.filter(
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       }
-    }
-
-    try {
-
-      let response = await fetch(endpoint, settings);
-      let res =  await response.json();
-      if(typeof res.errors !== 'undefined') {
-        const value = Object.values(res.errors);
-        return this.showNotification(value[0].toString(), 'Error');
+    })
+    .then((res) => {
+      if (typeof res.message !== 'undefined' && res.message !== 'Profile updated successfully' ) {
+        return this.setState({
+          showLoading : false,
+          title : 'Alert',
+          message : res.message,
+          showAlert : true,
+        });
       }
       else {
-        this.props.setProfile(res.data);
-        updateUserDetails(res.data, token);
-        return this.showNotification('Contact Updated Successfully', 'Success');    
+        this.setState({
+          showLoading : false,
+        });
+        return this.props.navigation.navigate('ManageAccount')
+        // return this.refs.toast.show(res.message, 300);
       }
-    }
-    catch(error) {
-      return this.showNotification(error.toString(), 'Message');
-    }
-   
+    })
   }
 
   handleChangeAddress = (address) => {
@@ -182,6 +170,39 @@ const defaultFlag = data.filter(
   }
 
 
+  selectNationality = async(country) => {
+    // Get data from Countries.js  
+    const countryData = await data
+    try {
+      //get country  name
+      const countryName = await countryData.filter(
+        obj => obj.name === country
+      )[0].name
+      // Update the state then hide the Modal
+      this.setState({ 
+        country : countryName,
+      })
+      await this.hideNationalityModal()
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
+  showNationalityModal = ()=> {
+    this.setState({ 
+      nationalityModalVisible: true 
+    })
+  }
+  hideNationalityModal =()=> {
+    this.setState({ 
+      nationalityModalVisible: false 
+    })
+    // Refocus on the Input field after selecting the country code
+    // this.refs.PhoneInput._root.focus()
+  }
+
+  
   render () {
     const { title, message, showAlert, showLoading } = this.state
     const countryData = data
@@ -384,17 +405,3 @@ const defaultFlag = data.filter(
    )
   }
 } 
-
-const mapStateToProps = (state, ownProps) =>{
-  return{
-    profile: state.ProfileReducer.profile
-  }
-}
-
-const mapDispatchToProps = (dispatch) =>{
-  return{
-    setProfile: (data) =>{dispatch(setProfile(data))},
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactDetails);

@@ -111,7 +111,6 @@ import { setProfile } from '../../redux/actions/ProfileActions';
   
         else {
           saveUserDetail(res.data, token);
-          this.props.setProfile(res.data);
           return this.handleGetAllReport();
         }
       })

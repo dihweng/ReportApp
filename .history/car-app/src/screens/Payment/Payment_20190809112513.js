@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import { SafeAreaView, View } from 'react-native';
 import styles from './styles';
 import Rave from 'react-native-rave';
+import Toast from 'react-native-easy-toast';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import { SingleButtonAlert } from '../../components/Alert';
 import {postWithToken, CreateInvestment} from '../Utils/Utils';

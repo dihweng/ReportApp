@@ -7,6 +7,7 @@ import {
   SafeAreaView, 
   StatusBar, 
   Image, 
+  AsyncStorage, 
   StyleSheet,
   KeyboardAvoidingView,
   FlatList,
@@ -15,21 +16,25 @@ import {
   Modal,
 
 } from 'react-native';
-import { Icon} from 'native-base'
+import {
+  Container,
+  Item,
+  Input,
+  Icon
+} from 'native-base'
 import styles from './styles';
 import colors from '../../assets/colors'
 import data from '../Register/Countries';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import {DisplayText, InputField, SingleButtonAlert, SubmitButton} from '../../components';
-import { UpdateUserEndpoint, updateUserDetails, getUserDetails } from '../Utils/Utils';
-import {connect} from 'react-redux';
-import { setProfile } from '../../redux/actions/ProfileActions';
+import { UpdateBankDetails, putRoute, getUserDetails } from '../Utils/Utils';
+import moment from 'moment';
 
 const defaultFlag = data.filter(
   obj => obj.name === 'Nigeria'
   )[0].flag
 
- class ContactDetails extends Component {
+export default class ContactDetails extends Component {
   constructor(props) {
     super(props);
     this.state ={
@@ -53,11 +58,9 @@ const defaultFlag = data.filter(
 
   async componentDidMount(){
     let userDetails = await getUserDetails();
-    const {profile} = this.props;
     await this.setState({
       id :  userDetails.data.id,
       token: userDetails.token,
-      //profile.
     });
   }
 
@@ -92,7 +95,7 @@ const defaultFlag = data.filter(
     this.showLoadingDialogue();
 
     const {  id, token, address, city, country, stateProReg } = this.state;
-    let endpoint = `${UpdateUserEndpoint}/${id}`;    
+    let endpoint = `${UpdateBankDetails}/${id}`;    
 
     let body = {id, token, address, city, country, stateProReg};
 

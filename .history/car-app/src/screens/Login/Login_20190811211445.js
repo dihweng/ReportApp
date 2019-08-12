@@ -61,10 +61,10 @@ export default class Login extends Component {
     });
   }
 
-  showNotification = (message, title)=> {
+  showNotification = message => {
     this.setState({ 
       showLoading : false,
-      title : title,
+      title : 'Error!',
       message : message,
       showAlert : true,
     }); 
@@ -72,10 +72,10 @@ export default class Login extends Component {
 
   login = async(body) =>{
     this.showLoadingDialogue();
-    await postRoute(LoginEndpoint, body)
+    postRoute(LoginEndpoint, body)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message, 'Message');
+          return this.showNotification(res.message);
         }   
         else {
           this.hideLoadingDialogue();
@@ -88,7 +88,7 @@ export default class Login extends Component {
           return this.props.navigation.navigate('Menu');
         }
       }
-    ).catch(error=>this.showNotification(error.toString, 'Message'))
+    )
   } 
   handleSignIn = async () =>{
     const { password, email,  } = this.state,
@@ -110,7 +110,7 @@ export default class Login extends Component {
       await this.login(body)
     }
     catch(error) {
-      this.showNotification(error.toString(), 'Message');
+      this.showNotification(error.toString());
     }
   }
   handleEmailChange = (email) => {

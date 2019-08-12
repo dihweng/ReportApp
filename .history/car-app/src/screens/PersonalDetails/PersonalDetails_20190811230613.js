@@ -7,11 +7,14 @@ import {
   StatusBar, 
   TouchableOpacity, 
   Image, 
+  AsyncStorage, 
   Text,
   StyleSheet,
   KeyboardAvoidingView,
   Modal,
   TouchableHighlight,
+  FlatList, 
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {Input, Icon} from 'native-base'
 import {DisplayText, InputField, SingleButtonAlert, SubmitButton} from '../../components';
@@ -19,7 +22,7 @@ import styles from './styles';
 import colors from '../../assets/colors'
 import data from '../Register/Countries';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import { UpdateUserEndpoint,updateUserDetails, getUserDetails } from '../Utils/Utils';
+import { UpdateBankDetails,updateUserDetails, getUserDetails } from '../Utils/Utils';
 import theme from '../../assets/theme';
 import {connect} from 'react-redux';
 import { setProfile } from '../../redux/actions/ProfileActions';
@@ -113,7 +116,7 @@ const defaultFlag = data.filter(
     this.showLoadingDialogue();
 
     const {  id, token, name, gender, email, phone, country } = this.state;
-    let endpoint = `${UpdateUserEndpoint}/${id}`;
+    let endpoint = `${UpdateBankDetails}/${id}`;
     let body = {name, email,  gender, phone, country,};
 
     const settings = {

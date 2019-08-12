@@ -53,11 +53,9 @@ const defaultFlag = data.filter(
 
   async componentDidMount(){
     let userDetails = await getUserDetails();
-    const {profile} = this.props;
     await this.setState({
       id :  userDetails.data.id,
       token: userDetails.token,
-      //profile.
     });
   }
 

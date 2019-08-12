@@ -1,6 +1,15 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, ScrollView, TouchableOpacity,  SafeAreaView,  StatusBar, Image, StyleSheet, KeyboardAvoidingView} from 'react-native';
+import { 
+  View, 
+  ScrollView, 
+  TouchableOpacity, 
+  SafeAreaView, 
+  StatusBar, 
+  Image, 
+  StyleSheet,
+  KeyboardAvoidingView,
+} from 'react-native';
 import {DisplayText, InputField, SubmitButton, SingleButtonAlert} from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors'
@@ -78,7 +87,7 @@ export default class Security extends Component {
   }
   handleChangePassword = async() => {
     const {newPassword, confirmPassword, password, id ,token} = this.state;
-    let endPoint = `${ChangePassword}${id}/${'password/reset'}`;
+    let endPoint = `${ChangePassword}${id}/${'password/reset'}`
 
     let body = {
       password_old : password,
@@ -94,21 +103,35 @@ export default class Security extends Component {
         'Accept': 'application/json',
         'Authorization': `Bearer ${token}`,
       }
-    };
+    }
     
-    try {
-      let response = await fetch(endPoint, settings);
-      let res = await response;
-      if(res.status >=400 && res.ststus <=500) {
-        return await this.showNotification('The old password is incorrect.', 'Message');
-      }
-      else {
-        return await this.showNotification('Password Update Successful', 'Success');
-      }
-    }
-    catch(error) {
-      return this.showNotification(error.toString(), 'Message');
-    }
+
+    let response = await fetch(endPoint, settings);
+    let res = response.json();
+     console.log({res})
+    // .then((res) => {
+    //   if ( res.status >= 400 && res.status <= 500 ) {
+    //     // alert(res._bodyText.errors)
+    //     return this.setState({
+    //       showLoading : false,
+    //       title : 'Alert',
+    //       message : 'Password Not Successful',
+    //       showAlert : true,
+    //     });
+    //   }
+    //   else {
+    //     this.setState({
+    //       showLoading : false,
+    //       title : 'Alert',
+    //       message : 'Password Change Successful',
+    //       showAlert : true,
+    //     });
+    //    // return this.props.navigation.navigate('DashBoard')
+    //   }
+    // })
+    //   .catch((error) => {
+    //   console.error(error);
+    // }); 
   }
 
   handdleBackPress = () => {
@@ -281,7 +304,7 @@ render () {
                 <SubmitButton
                   title={'Update'}
                   // disabled={!this.toggleButtonState()}
-                  onPress={this.verifyPassword}
+                  onPress={this.handleChangePassword}
                   titleStyle={styles.btnText}
                   btnStyle = {styles.btnStyle}
                 />
