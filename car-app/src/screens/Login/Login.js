@@ -1,13 +1,13 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, StyleSheet, StatusBar,TouchableOpacity, SafeAreaView, Image, KeyboardAvoidingView,ScrollView } from 'react-native';
-import {DisplayText, InputField, SingleButtonAlert, ErrorAlert,SubmitButton, AuthBackground} from '../../components';
-import styles, { IMAGE_HEIGHT, }  from './styles';
+import {DisplayText, InputField,SubmitButton, AuthBackground} from '../../components';
+import styles from './styles';
 import { getProfile, LoginEndpoint, postRoute, saveProfile} from '../Utils/Utils';
 import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import theme from '../../assets/theme';
-
+import DropdownAlert from 'react-native-dropdownalert';
 
 export default class Login extends Component {
   constructor(props) {
@@ -61,21 +61,16 @@ export default class Login extends Component {
     });
   }
 
-  showNotification = (message, title)=> {
-    this.setState({ 
-      showLoading : false,
-      title : title,
-      message : message,
-      showAlert : true,
-    }); 
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   }
 
   login = async(body) =>{
-    this.showLoadingDialogue();
     await postRoute(LoginEndpoint, body)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message, 'Message');
+          return this.showNotification('error', 'Message', res.message);
         }   
         else {
           this.hideLoadingDialogue();
@@ -88,17 +83,17 @@ export default class Login extends Component {
           return this.props.navigation.navigate('Menu');
         }
       }
-    ).catch(error=>this.showNotification(error.toString, 'Message'))
+    ).catch(error=>this.showNotification('error', 'Message', error.toString()));
+    
   } 
   handleSignIn = async () =>{
+    this.showLoadingDialogue();
     const { password, email,  } = this.state,
       grant_type = 'password',
       client_id = '2',
       client_secret = 'nHcDeuwa5RVdgRsS26cEkUJRjtuuuIyC0FWdmKVp';
 
-      this.showLoadingDialogue();
-
-    let body = {
+    let body = await {
       username : email, 
       password : password, 
       grant_type : grant_type,
@@ -110,7 +105,8 @@ export default class Login extends Component {
       await this.login(body)
     }
     catch(error) {
-      this.showNotification(error.toString(), 'Message');
+      return this.showNotification('error', 'Message', error.toString());
+
     }
   }
   handleEmailChange = (email) => {
@@ -168,10 +164,11 @@ export default class Login extends Component {
 
   render () {
     const { showLoading, restoring } = this.state
-
     if(restoring) {
       return (
-        <SafeAreaView style = {styles.splashView}>    
+        <SafeAreaView style = {styles.splashView}> 
+        <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+   
           <Image
             source={require('../../assets/images/logo_login.png')}
             style={StyleSheet.flatten(styles.logoIcon)}/> 
@@ -179,16 +176,16 @@ export default class Login extends Component {
       );
     }
     else {
-      const { title, message, showAlert } = this.state
-
       return(
         <AuthBackground>
         <SafeAreaView style={styles.container}>  
           <StatusBar barStyle="default" /> 
+
           <KeyboardAvoidingView
             style = {styles.wrapper }
             behavior = { 'padding' }>
-          
+            <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
           <View style={styles.logoView}>
             <Image
               source={require('../../assets/images/logo.png')}
@@ -278,12 +275,7 @@ export default class Login extends Component {
               titleStyle={styles.btnText}
               btnStyle = {styles.btnStyle}
             />
-            <ErrorAlert
-              title = {title} 
-              message = {message}
-              handleCloseNotification = {this.handleCloseNotification}
-              visible = {showAlert}
-            />
+          
             <DisplayText
               text={'Forget Password?'}
               styles = {styles.forgetPwd}
