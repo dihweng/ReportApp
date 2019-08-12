@@ -196,11 +196,8 @@ checkPassword(password1, password2) {
           }, 4000);
          
         }
-        else {
-        let message = 'Check Your Network Connection';
-        return this.showNotification(message);
-      }
-    });
+        
+    }).catch(error=>this.showNotification(error.toString(), 'Message'));
   } 
 
   handleSignUp = async () =>{

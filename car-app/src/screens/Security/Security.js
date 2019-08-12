@@ -6,6 +6,8 @@ import styles from './styles';
 import colors from '../../assets/colors'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import { getUserDetails, ChangePassword } from '../Utils/Utils';
+import DropdownAlert from 'react-native-dropdownalert';
+
 
 
 export default class Security extends Component {
@@ -17,7 +19,7 @@ export default class Security extends Component {
       newPassword : '',
       isNewPasswordValid : false,
       confirmPassword : '',
-      isConfirmPasswordValid : '',
+      isConfirmPasswordValid : false,
       showAlert: false,
       showLoading: false,
       title: '',
@@ -49,14 +51,11 @@ export default class Security extends Component {
     });
   }
 
-  showNotification = (message, title) => {
-    this.setState({ 
-      showLoading : false,
-      title : title,
-      message : message,
-      showAlert : true,
-    }); 
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   }
+
 
 
   handleCloseNotification = () => {
@@ -66,9 +65,9 @@ export default class Security extends Component {
   }
 
   toggleButtonState = () => {
-    const { isValidPassword, isNewPasswordValid, isConfirmPasswordValid } = this.state;
+    const { isPasswordValid, isNewPasswordValid, isConfirmPasswordValid } = this.state;
           
-    if ( isValidPassword && isNewPasswordValid && isConfirmPasswordValid ) {
+    if ( isPasswordValid && isNewPasswordValid && isConfirmPasswordValid ) {
       return true;
     } 
     else {
@@ -80,9 +79,9 @@ export default class Security extends Component {
     this.showLoadingDialogue();
     const {newPassword, confirmPassword} = this.state;
     if( newPassword !== confirmPassword){
-      return  await this.showNotification('Passwords Donot Match', 'Message');
+      return  await this.showNotification('error', 'Message', 'Passwords Donot Match');
     } else if (newPassword < 8){
-      return  await this.showNotification('Password cannot be Less than 8 Characters', 'Message')
+      return  await this.showNotification('error', 'Message','Password cannot be Less than 8 Characters');
     }
     return await this.handleChangePassword();
 
@@ -111,14 +110,14 @@ export default class Security extends Component {
       let response = await fetch(endPoint, settings);
       let res = await response;
       if(res.status >=400 && res.status <=500) {
-        return await this.showNotification('The old password is incorrect.', 'Message');
+        return await this.showNotification('error', 'Message','The old password is incorrect.');
       }
       else {
-        return await this.showNotification('Password Update Successful', 'Success');
+        return await this.showNotification('success', 'Success','Password Update Successful');
       }
     }
     catch(error) {
-      return this.showNotification(error.toString(), 'Message');
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
 
@@ -172,10 +171,12 @@ export default class Security extends Component {
   }
   
 render () {
-  const { title, message, showAlert, showLoading } = this.state
+  const {showLoading } = this.state
 
   return(
     <SafeAreaView style={styles.container}> 
+      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
       <StatusBar barStyle="default" /> 
         <View style = {styles.navBar}>
           <TouchableOpacity 
@@ -296,12 +297,8 @@ render () {
                   titleStyle={styles.btnText}
                   btnStyle = {styles.btnStyle}
                 />
-                <SingleButtonAlert
-                  title = {title} 
-                  message = {message}
-                  handleCloseNotification = {this.handleCloseNotification}
-                  visible = {showAlert}
-                />
+               
+
               </View>
             </View>
           </ScrollView>
