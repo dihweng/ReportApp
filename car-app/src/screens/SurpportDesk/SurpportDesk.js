@@ -6,7 +6,7 @@ import {DisplayText, SubmitButton, SingleButtonAlert, InputField} from '../../co
 import styles from './styles';
 import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import { getRoute, getUserDetails, AllListofSupport } from '../Utils/Utils';
+import { getRouteToken, getUserDetails, AllListofSupport } from '../Utils/Utils';
 import moment from 'moment';
 
 export default class SurpportDesk extends Component {
@@ -36,7 +36,27 @@ export default class SurpportDesk extends Component {
     });
     this.handleGetAllTicket()
   }
-
+ // Show Loading Spinner
+ showLoadingDialogue =()=> {
+  this.setState({
+    showLoading: true,
+  });
+}
+// Hide Loading Spinner
+hideLoadingDialogue =()=> {
+  this.setState({
+    showLoading: false,
+  });
+}
+// Show Dialog message
+showNotification = message => {
+  this.setState({ 
+    showLoading : false,
+    title : 'Error!',
+    message : message,
+    showAlert : true,
+  }); 
+}
   toggleDrawer = () => {
     //Props to open/close the drawer
     this.props.navigation.toggleDrawer();
@@ -53,13 +73,14 @@ export default class SurpportDesk extends Component {
 
   handleGetAllTicket = () => {
     const{token, userId} = this.state;
-    
+    console.log({user: userId, tokenssssisuse: token});
     this.setState({
       showLoading: true
     });
     let endPoint = `${AllListofSupport}/${userId}/${"support"}`;
-      getRoute(endPoint, token)
+      getRouteToken(endPoint, token)
       .then((res) => {
+        console.log({response: res});
         if ( res.status >= 400 && res.status <= 500 ) { 
           return  this.setState({ 
             showLoading : false,
@@ -70,6 +91,7 @@ export default class SurpportDesk extends Component {
         }
         else {
           const data = res.data;
+          console.log({response: data});
           this.setState({ 
             showLoading : false, 
             data : data,

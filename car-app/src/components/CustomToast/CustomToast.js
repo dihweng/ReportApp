@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     zIndex: 9999,
     position: 'absolute',
+    top: 16,
     justifyContent: 'center'
   },
   ToastBoxInsideText: {

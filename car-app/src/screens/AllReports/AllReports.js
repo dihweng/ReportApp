@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList, SafeAreaView, StatusBar, TouchableOpacity, Image, StyleSheet,} from 'react-native';
+import { View, FlatList, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, Image, StyleSheet,} from 'react-native';
 import {DisplayText, SubmitButton, SingleButtonAlert, InputField,CustomToast} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
@@ -24,7 +24,8 @@ import colors from '../../assets/colors';
       read_later_status:false,
       favorite_button_text:'',
       read_later_button_text:'',
-      
+      isFetching: false,
+
     }
   }
 
@@ -66,6 +67,13 @@ import colors from '../../assets/colors';
      })
   }
 
+  onRefresh() {
+    console.log('refreshing');
+    this.setState({ isFetching: true }, function() {
+      this.handleGetAllReport();
+    });
+  }
+
   allReport = async() =>{
     const {token} = this.state;
     this.showLoadingDialogue();
@@ -78,6 +86,7 @@ import colors from '../../assets/colors';
           this.setState({
             data: res.data,
             filterData: res.data,
+            isFetching: false 
           });
           return this.hideLoadingDialogue();
         }
@@ -386,20 +395,22 @@ import colors from '../../assets/colors';
     return(
       <SafeAreaView style={styles.container}> 
        <StatusBar barStyle="default"/>
-       
-       <View style = {styles.viewBody}>
-        <FlatList          
-          data={this.state.data}      
-          extraData={this.state}    
-          renderItem={this.renderRow}          
-          ListHeaderComponent={this.renderHeader}     
-          keyExtractor={ data=> data.id.toString()}   
-          showsVerticalScrollIndicator={false}
-        />
-        <View style = {styles.taostView}>
-          <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          
-        </View> 
-      </View>  
+       <ScrollView style={styles.containerScroll}>
+
+        <View style = {styles.viewBody}>
+          <FlatList   
+            onRefresh={() => this.onRefresh()}
+            refreshing={this.state.isFetching}       
+            data={this.state.data}      
+            extraData={this.state}    
+            renderItem={this.renderRow}          
+            ListHeaderComponent={this.renderHeader}     
+            keyExtractor={ data=> data.id.toString()}   
+            showsVerticalScrollIndicator={false}
+          />
+
+        </View>  
+      </ScrollView>
       <ProgressDialog
         visible={showLoading}
         title="Processing"
@@ -411,6 +422,7 @@ import colors from '../../assets/colors';
         handleCloseNotification = {this.handleCloseNotification}
         visible = {showAlert}
       />
+      
     </SafeAreaView>
     )
   }

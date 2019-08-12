@@ -85,7 +85,7 @@ export default styles = StyleSheet.create({
     alignItems : 'center',
   },
   btnStyle : {
-    backgroundColor : colors.green_background,
+    backgroundColor : theme.primaryColor,
     width : '50%',
     justifyContent: 'center',
     alignItems : 'center',

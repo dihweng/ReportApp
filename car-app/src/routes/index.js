@@ -33,6 +33,8 @@ import FavoriteList from '../screens/FavoriteList/FavoriteList';
 import ReadLaterList from '../screens/ReadLaterList/ReadLaterList';
 import Payment from '../screens/Payment/Payment';
 import DivisionDetails from '../screens/DivisionDetails/DivisionDetails';
+import CreateIssue from '../screens/CreateIssue/CreateIssue';
+import Message from '../screens/Message/Message';
 
  const AuthStack = createStackNavigator({ 
   Login: {
@@ -234,7 +236,20 @@ const MenuStack = createStackNavigator({
     navigationOptions: {
       header: null,
     }
-  }
+  },
+  CreateIssue: {
+    screen: CreateIssue,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Message: {
+    screen: Message,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  
 },
   {
     mode: 'modal',
