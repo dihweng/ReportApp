@@ -14,7 +14,7 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import {Input, Icon} from 'native-base'
-import {DisplayText, InputField, SingleButtonAlert, SubmitButton} from '../../components';
+import {DisplayText, InputField, SubmitButton} from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors'
 import data from '../Register/Countries';
@@ -23,6 +23,8 @@ import { UpdateUserEndpoint,updateUserDetails, getUserDetails } from '../Utils/U
 import theme from '../../assets/theme';
 import {connect} from 'react-redux';
 import { setProfile } from '../../redux/actions/ProfileActions';
+import DropdownAlert from 'react-native-dropdownalert';
+
 
 const defaultFlag = data.filter(
   obj => obj.name === 'Nigeria'
@@ -94,13 +96,9 @@ const defaultFlag = data.filter(
     });
   }
 
-  showNotification = (message, title) => {
-    this.setState({ 
-      showLoading : false,
-      title : title,
-      message : message,
-      showAlert : true,
-    }); 
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   }
 
   handleCloseNotification = () => {
@@ -132,16 +130,16 @@ const defaultFlag = data.filter(
       let res =  await response.json();
       if(typeof res.errors !== 'undefined') {
         const value = Object.values(res.errors);
-        return this.showNotification(value[0].toString(), 'Error');
+        return this.showNotification('error', 'Message', value[0].toString());
       }
       else {
         this.props.setProfile(res.data);
         updateUserDetails(res.data, token);
-        return this.showNotification('Profile Updated Successfully', 'Success');    
+        return this.showNotification('success', 'Success', 'Profile Updated Successfully');    
       }
     }
     catch(error) {
-      return this.showNotification(error.toString(), 'Message');
+      return this.showNotification('error', 'Message' , error.toString());
     }
    
   }
@@ -250,10 +248,12 @@ render () {
     {title: 'Female', value: 'Female'},
     {title: 'Male', value: 'Male'},
   ];
-  const { title, message, showAlert, showLoading, flag, name, email, phone, gender, nationality  } = this.state;
+  const {showLoading, flag, name, email, phone, gender, nationality  } = this.state;
 
   return(
     <SafeAreaView style={styles.container}> 
+      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
       <StatusBar barStyle="default" /> 
       <View style = {styles.navBar}>
         <TouchableOpacity 
@@ -456,12 +456,14 @@ render () {
             titleStyle={styles.btnText}
             btnStyle = {styles.btnStyle}
           />
-          <SingleButtonAlert
+          {/* <SingleButtonAlert
             title = {title} 
             message = {message}
             handleCloseNotification = {this.handleCloseNotification}
             visible = {showAlert}
-          />
+          /> */}
+
+
         </View>
       </View>
     </SafeAreaView>

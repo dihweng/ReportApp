@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import {DisplayText, InputField, SingleButtonAlert,CustomToast,ErrorAlert,SubmitButton} from '../../components';
+import {DisplayText, InputField, SubmitButton} from '../../components';
 import styles, { IMAGE_HEIGHT, IMAGE_HEIGHT_SMALL }  from './styles';
 import { isEmailValid,RegisterEndpoint, postRoute, isPhoneValid,} from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
@@ -8,6 +8,8 @@ import colors from '../../assets/colors';
 import CheckBox from 'react-native-check-box'
 import data from './Countries';
 import theme from '../../assets/theme';
+import DropdownAlert from 'react-native-dropdownalert';
+
 
 import { 
   View, 
@@ -35,7 +37,7 @@ class Register extends Component {
     this.state = {
       flag: '',
       nameCode: '',
-      phoneNumber: '',
+      phoneNumber: '+234',
       modalVisible: false,
       isEmailValid: false,
       isValidPhoneNumber: false,
@@ -146,72 +148,76 @@ class Register extends Component {
   }
 
   hideLoadingDialogue =()=> {
-    this.setState({
+    return this.setState({
       showLoading: false,
     });
   }
 
-showNotification = message => {
-  this.setState({ 
-    showLoading : false,
-    title : 'Error!',
-    message : message,
-    showAlert : true,
-  }); 
-}
-checkEmail(email) {
-  if(!isEmailValid(email)){
-    let message = 'Invalid Email Address';
-    return this.showNotification(message);
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   }
-}
-checkPhone(phoneNumber) {
-  if(!isPhoneValid(phoneNumber)){
-    let message = 'Invalid Phone Number';
-    return this.showNotification(message);
+  checkEmail(email) {
+    if(!isEmailValid(email)){
+      let message = 'Invalid Email Address';
+      return this.showNotification('error', 'Message', message);
+    }
   }
-}
-checkPassword(password1, password2) {
-    if(password1 !== password2) {
-    let message = 'Passwords Do not Match';
-    return this.showNotification(message);
+  checkPhone(phoneNumber){
+    if(!isPhoneValid(phoneNumber)){
+      let message = 'Invalid Phone Number';
+      this.showNotification('error', 'Message', message);
+       return false;
+    }
+    else {
+      return  true;
+    }
   }
-}
+  checkPassword(password1, password2){
+      if(password1 !== password2) {
+      let message = 'Passwords Do not Match';
+      this.showNotification('error', 'Message', message);
+       return false;
+    }
+    else {
+      return true;
+    }
+  }
   register = async(body) =>{
     this.showLoadingDialogue();
-    postRoute(RegisterEndpoint, body)
+    await postRoute(RegisterEndpoint, body)
       .then((res) => {
         if(typeof res.errors !== 'undefined') {
           const value = Object.values(res.errors);
           if (typeof res.message !== 'undefined') {  
-            let message = value[0].toString();
-            return this.showNotification(message);
+            return this.showNotification('error', 'Message', value[0].toString());
+
           }   
         }  
         else if(res.data) {
           this.hideLoadingDialogue();
-          this.Toast('User Registration Successful')
+          this.showNotification('success', 'Success', 'Registration Sucessful');
           return setTimeout(() => {
             this.props.navigation.navigate('Login');
-          }, 4000);
+          }, 3000);
          
         }
-        else {
-        let message = 'Check Your Network Connection';
-        return this.showNotification(message);
-      }
-    });
+        
+    }).catch(error=>this.showNotification('error', 'Message', error.toString()));
+    
   } 
 
   handleSignUp = async () =>{
     const { name, email, password, password2, phoneNumber, username } = this.state;
-  
     this.showLoadingDialogue();
-    await this.checkEmail(email);
-    await this.checkPhone(phoneNumber);
-    await this.checkPassword(password, password2);
-
-    let body = {
+     let phoneValidation =  await this.checkPhone(phoneNumber) ;
+     let passwordValidation = await this.checkPassword(password, password2);
+  
+    if(phoneValidation == false || passwordValidation == false ) {
+      return await this.hideLoadingDialogue();
+    }
+    
+    let body =  await {
       name : name, 
       email : email.toLowerCase(), 
       password : password, 
@@ -220,11 +226,12 @@ checkPassword(password1, password2) {
     };
 
     try {
-      await this.register(body)
+      await this.register(body);
     }
     catch(error) {
-      return this.showNotification(error.toString());
+      return this.showNotification('error', 'Message', error.toString());
     }
+     
   }
 
   handleCloseNotification = () => {
@@ -330,10 +337,8 @@ checkPassword(password1, password2) {
   }
 
   handleCheckBox = () => {
-    const {isChecked} = this.state;
-    
-      this.setState({
-          isChecked:!this.state.isChecked
+     return this.setState({
+        isChecked:!this.state.isChecked
       })
   }
   handleAcceptTerms=()=>{
@@ -343,7 +348,8 @@ checkPassword(password1, password2) {
       this.handleSignUp()
     }
     else{
-      alert('You Must Accept Terms and Conditions to Proceed')
+      return this.showNotification('warning', 'Message', 'Accept Terms & Conditon to Continue');
+
     }
   }
 
@@ -398,7 +404,7 @@ checkPassword(password1, password2) {
       await this.hideModal()
     }
     catch (error) {
-      return this.showNotification(error.toString());
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
 
@@ -410,39 +416,23 @@ checkPassword(password1, password2) {
     // Refocus on the Input field after selecting the country code
     this.refs.PhoneInput._root.focus()
   }
-  signup=()=>{
+ 
 
-  }
-  Toast=(message)=>{
-    this.refs.defaultToastBottom.ShowToastFunction(message);
-  }
-
-  // Default_Toast_Top = () => {
-  //   this.refs.defaultToastTop.ShowToastFunction('Default Toast Top Message.');
-  // }
-  // Default_Toast_Bottom_With_Different_Color=()=>{
-  //   this.refs.defaultToastBottomWithDifferentColor.ShowToastFunction('Default Toast Bottom Message With Different Color.');
-  // }
-  // Default_Toast_Top_With_Different_Color=()=> {
-  //   this.refs.defaultToastTopWithDifferentColor.ShowToastFunction('Default Toast Top Message With Different Color.');
-  // }
   render () {
-    const { title, message, showAlert, showLoading, flag } = this.state
+    const { showLoading, flag } = this.state
     const countryData = data
 
     return(
      <SafeAreaView style={styles.container}> 
 
         <View  style={styles.headerView}>
+        <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
           <DisplayText
             text={'Create Account'}
             styles = {[StyleSheet.flatten(styles.welcomeText)]}
           />
         </View>
-
-        {/* <View style = {styles.toastView}> */}
-          <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "top"/>          
-        {/* </View>  */}
         <KeyboardAvoidingView
           style={styles.wrapper}
           behavior = 'padding'> 
@@ -781,15 +771,7 @@ checkPassword(password1, password2) {
               visible={showLoading}
               title="Processing"
               message="Please wait..."/>
-              <ErrorAlert
-                title = {title} 
-                message = {message}
-                handleCloseNotification = {this.handleCloseNotification}
-                visible = {showAlert}
-              />
-            <View style = {styles.toastView}>
-              <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "top"/>          
-            </View>      
+                 
           </ScrollView>
         </KeyboardAvoidingView>
             
