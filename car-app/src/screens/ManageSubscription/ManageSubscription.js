@@ -5,7 +5,6 @@ import {DisplayText, SingleButtonAlert } from '../../components';
 import { getUserDetails, GetAllSubscription, getRouteToken} from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import styles from './styles';
-import colors from '../../assets/colors';
 
 export default class ManageSubscription extends Component {
   constructor(props) {
@@ -124,6 +123,7 @@ export default class ManageSubscription extends Component {
     this.showLoadingDialogue();
     await getRouteToken(endpoint, token)
       .then((res) => {
+        console.log({responManage: res})
         if (typeof res.message !== 'undefined') {  
           return this.showNotification(res.message);
         }   

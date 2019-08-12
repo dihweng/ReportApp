@@ -131,8 +131,7 @@ export default class Subscribe extends Component {
     (paymentType === 'Online') ? 
       this.props.navigation.navigate('Payment', {
         'id': id,
-        'plan-id': plan_id
-        
+        'plan_id': plan_id
       })
     : 
     this.handleBankPayment();

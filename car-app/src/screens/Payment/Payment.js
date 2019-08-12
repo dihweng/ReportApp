@@ -38,7 +38,7 @@ export default class Payment extends Component {
     const{navigation} = this.props,
     plan_id = navigation.getParam('plan_id'),
     id = navigation.getParam('id'),
-    uri = `http://a91dadc7.ngrok.io/api/process?user_id=${id}&plan_id=${plan_id}`;
+    uri = `https://a50b02cf.ngrok.io/api/process?user_id=${id}&plan_id=${plan_id}`;
      
    return(
     // <SafeAreaView style={styles.container}>
