@@ -19,6 +19,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-autogrow-input": "^0.2.1",
     "react-native-check-box": "^2.1.7",
+    "react-native-dropdownalert": "^4.1.1",
     "react-native-easy-grid": "^0.2.1",
     "react-native-keyboard-spacer": "^0.4.1",
     "react-native-modal-datetime-picker": "^7.5.0",
