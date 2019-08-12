@@ -1,15 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import { 
-  View, 
-  ScrollView, 
-  TouchableOpacity, 
-  SafeAreaView, 
-  StatusBar, 
-  Image, 
-  StyleSheet,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { View, ScrollView, TouchableOpacity,  SafeAreaView,  StatusBar, Image, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import {DisplayText, InputField, SubmitButton, SingleButtonAlert} from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors'
@@ -45,69 +36,79 @@ export default class Security extends Component {
       id : id,
     });
   }
+
+  showLoadingDialogue =()=> {
+    this.setState({
+      showLoading: true,
+    });
+  }
+
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
+
+  showNotification = (message, title) => {
+    this.setState({ 
+      showLoading : false,
+      title : title,
+      message : message,
+      showAlert : true,
+    }); 
+  }
+
+
   handleCloseNotification = () => {
     return this.setState({
        showAlert : false
      })
   }
-  handleChangePassword = () => {
-    const {newPassword, confirmPassword, password, id ,token} = this.state;
 
+  verifyPassword = async()=> {
+    this.showLoadingDialogue();
+    const {newPassword, confirmPassword} = this.state;
     if( newPassword !== confirmPassword){
-      this.setState({
-        showAlert: true,
-        message: 'Passwords Do not Match',
-        title: 'Alert',
-      });
+      return  await this.showNotification('Passwords Donot Match', 'Message');
     } else if (newPassword < 8){
-      this.setState({
-        showAlert: true,
-        message: 'Password Must Be 8 or More Characters',
-        title: 'Alert',
-      });
+      return  await this.showNotification('Password cannot be Less than 8 Characters', 'Message')
     }
-    this.setState({
-      showLoading : true,
-    });
-    let endPoint = `${ChangePassword}${id}/${'password/reset'}`
-    
-    fetch(endPoint, {
+    return await this.handleChangePassword();
+
+  }
+  handleChangePassword = async() => {
+    const {newPassword, confirmPassword, password, id ,token} = this.state;
+    let endPoint = `${ChangePassword}${id}/${'password/reset'}`;
+
+    let body = {
+      password_old : password,
+      password : newPassword,
+      password_confirmation : confirmPassword,
+    };
+
+    const settings = {
       method : "POST",
-      body : JSON.stringify({
-        password_old : password,
-        password : newPassword,
-        password_confirmation : confirmPassword,
-      }),
+      body : JSON.stringify(body),
       headers : {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': `Bearer ${token}`,
-
       }
-    })
-    .then((res) => {
-      if ( res.status >= 400 && res.status <= 500 ) {
-        // alert(res._bodyText.errors)
-        return this.setState({
-          showLoading : false,
-          title : 'Alert',
-          message : 'Password Not Successful',
-          showAlert : true,
-        });
+    };
+    
+    try {
+      let response = await fetch(endPoint, settings);
+      let res = await response;
+      if(res.status >=400 && res.ststus <=500) {
+        return await this.showNotification('The old password is incorrect.', 'Message');
       }
       else {
-        this.setState({
-          showLoading : false,
-          title : 'Alert',
-          message : 'Password Change Successful',
-          showAlert : true,
-        });
-        return this.props.navigation.navigate('DashBoard')
+        return await this.showNotification('Password Update Successful', 'Success');
       }
-    })
-      .catch((error) => {
-      console.error(error);
-    }); 
+    }
+    catch(error) {
+      return this.showNotification(error.toString(), 'Message');
+    }
   }
 
   handdleBackPress = () => {
@@ -280,7 +281,7 @@ render () {
                 <SubmitButton
                   title={'Update'}
                   // disabled={!this.toggleButtonState()}
-                  onPress={this.handleChangePassword}
+                  onPress={this.verifyPassword}
                   titleStyle={styles.btnText}
                   btnStyle = {styles.btnStyle}
                 />

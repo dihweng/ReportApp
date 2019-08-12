@@ -1,13 +1,12 @@
 const Baseurl = 'http://45.76.189.218/';
 import { AsyncStorage } from 'react-native';
-import { Alert } from 'react-native';
 const LoginEndpoint = `${Baseurl}oauth/token`,
   RegisterEndpoint = `${Baseurl}api/users`,
   ProfileEndpoint = `${Baseurl}api/users/me`,
   UpdateProfileEndoint = `${Baseurl}profile`,
   VerificationEndpoint = `${Baseurl}api/users/`,
   CreateInvestment = `${Baseurl}api/investments`,
-  UpdateBankDetails = `${Baseurl}api/users`,
+  UpdateUserEndpoint = `${Baseurl}api/users`,
   getAllReport = `${Baseurl}api/reports`,
   WithdrawInvestment = `${Baseurl}api/investments/`,
   WithdrawReferal = `${Baseurl}api/users/`,
@@ -38,7 +37,7 @@ export {
   UpdateProfileEndoint,
   VerificationEndpoint,
   CreateInvestment,
-  UpdateBankDetails,
+  UpdateUserEndpoint,
   getAllReport,
   WithdrawInvestment,
   WithdrawReferal,
@@ -237,4 +236,15 @@ export const getUserDetails = async() => {
         return false;
       }
   });
+}
+
+export const updateUserDetails = async(data, token)=> {
+  let details = {
+    'data' : data,
+    'token' : token,
+  };
+
+  await AsyncStorage.removeItem('details');
+  return await AsyncStorage.setItem('details', JSON.stringify(details))
+
 }

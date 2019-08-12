@@ -36,16 +36,6 @@ export default class DashBoard extends Component {
   searchFilterFunction = (text) => {
 
   }
- 
-  // async componentDidMount(){
-  //   let profile = await getProfile();
-
-  //   this.setState({
-  //     token : profile.access_token,
-  //   });
-
-  //   // await this.handleGetProfile();
-  // }
 
   handleCloseNotification = () => {
     return this.setState({

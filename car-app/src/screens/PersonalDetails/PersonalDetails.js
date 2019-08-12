@@ -7,35 +7,31 @@ import {
   StatusBar, 
   TouchableOpacity, 
   Image, 
-  AsyncStorage, 
   Text,
   StyleSheet,
   KeyboardAvoidingView,
   Modal,
   TouchableHighlight,
-  FlatList, 
-  TouchableWithoutFeedback,
 } from 'react-native';
 import {Input, Icon} from 'native-base'
 import {DisplayText, InputField, SingleButtonAlert, SubmitButton} from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors'
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import moment from 'moment';
 import data from '../Register/Countries';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import { UpdateBankDetails, putRoute, getUserDetails } from '../Utils/Utils';
+import { UpdateUserEndpoint,updateUserDetails, getUserDetails } from '../Utils/Utils';
 import theme from '../../assets/theme';
+import {connect} from 'react-redux';
+import { setProfile } from '../../redux/actions/ProfileActions';
 
 const defaultFlag = data.filter(
   obj => obj.name === 'Nigeria'
   )[0].flag
 
-export default class PersonalDetails extends Component {
+ class PersonalDetails extends Component {
   constructor(props) {
     super(props);
     this.state ={
-      isValidDob : true,
       modalGenderVisible: false,
       isValidGender: false,
       // isOccupationValid: false,
@@ -50,11 +46,8 @@ export default class PersonalDetails extends Component {
       token : '',
       name : '',
       gender: 'Gender',
-      startDate : 'YYYY/MM/DD',
       email : '',
       phone : '',
-      // occupation : '',
-      nationality : '',
       title : '',
       message : '',
       
@@ -71,71 +64,86 @@ export default class PersonalDetails extends Component {
   }
   async componentDidMount(){
     let userDetails = await getUserDetails();
+    const {profile} = this.props;
+    
+    await this.setState({
+      id:userDetails.data.id,
+      token:userDetails.token,
+      name: profile.name,
+      email:profile.email,
+      phone: profile.phone,
+      gender: profile.gender,
+      nationality: profile.country,
 
-    const id = userDetails.data.id,
-      token = userDetails.token;
-    this.setState({
-      id,
-      token,
     });
   }
 
   handdleBackPress = () => {
     return this.props.navigation.goBack();
   };
-  handleCloseNotification = () => {
-    return this.setState({
-      showAlert : false
-    });
-  }
-  handleUpdate = async() => {
+
+  showLoadingDialogue =()=> {
     this.setState({
       showLoading: true,
     });
-    const { 
-      id,
-      token,
-      name,
-      gender,
-      email,
-      phone,
-      country,
-    } = this.state;
+  }
 
-    let endpoint = `${UpdateBankDetails}/${id}`;
-    let body = {
-      name:name,
-      email:email,
-      gender:gender,
-      phone:phone,
-      country:country,
-    };
-    fetch(endpoint, {
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
+
+  showNotification = (message, title) => {
+    this.setState({ 
+      showLoading : false,
+      title : title,
+      message : message,
+      showAlert : true,
+    }); 
+  }
+
+  handleCloseNotification = () => {
+    return this.setState({
+       showAlert : false,
+     })
+  }
+
+  handleUpdate = async() => {
+    this.showLoadingDialogue();
+
+    const {  id, token, name, gender, email, phone, country } = this.state;
+    let endpoint = `${UpdateUserEndpoint}/${id}`;
+    let body = {name, email,  gender, phone, country,};
+
+    const settings = {
       method : "PUT",
       body : JSON.stringify(body),
       headers : {
         "Accept" : "application/json",
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
-
       }
-    })
-    .then((res) => {
-      if (typeof res.message !== 'undefined' ) {
-        return this.setState({
-          showLoading : false,
-          title : 'Alert',
-          message : res.message,
-          showAlert : true,
-        });
+    }
+
+    try {
+
+      let response = await fetch(endpoint, settings);
+      let res =  await response.json();
+      if(typeof res.errors !== 'undefined') {
+        const value = Object.values(res.errors);
+        return this.showNotification(value[0].toString(), 'Error');
       }
       else {
-        this.setState({
-          showLoading : false,
-        });
-        return this.props.navigation.navigate('ManageAccount')
+        this.props.setProfile(res.data);
+        updateUserDetails(res.data, token);
+        return this.showNotification('Profile Updated Successfully', 'Success');    
       }
-    })
+    }
+    catch(error) {
+      return this.showNotification(error.toString(), 'Message');
+    }
+   
   }
 
   handleFullName = (name) => {
@@ -170,7 +178,6 @@ export default class PersonalDetails extends Component {
     }
   }
 
-
   handleEmailChange = (email) => {
     if(email.length > 0) {
       this.setState({
@@ -194,33 +201,6 @@ export default class PersonalDetails extends Component {
     })
   }
 
-  async selectCountry(country) {
-    // Get data from Countries.js  
-    const countryData = await data
-    try {
-      // Get the country code
-      const countryCode = await countryData.filter(
-        obj => obj.name === country
-      )[0].dial_code
-      // Get the country flag
-      const countryFlag = await countryData.filter(
-        obj => obj.name === country
-      )[0].flag
-
-      this.setState({ 
-        phone: countryCode, 
-        flag: countryFlag, 
-        // nameCode : countryCodeName,
-      })
-      await this.hideModal()
-    }
-    catch (err) {
-      console.log(err)
-    }
-  }
-
-
-
   showModal() {
     this.setState({ 
       modalVisible: true 
@@ -233,38 +213,6 @@ export default class PersonalDetails extends Component {
     // Refocus on the Input field after selecting the country code
     this.refs.PhoneInput._root.focus()
   }
-
-  selectNationality = async(country) => {
-    // Get data from Countries.js  
-    const countryData = await data
-    try {
-      //get country  name
-      const countryName = await countryData.filter(
-        obj => obj.name === country
-      )[0].name
-      // Update the state then hide the Modal
-      this.setState({ 
-        nationality : countryName,
-      })
-      await this.hideNationalityModal()
-    }
-    catch (err) {
-      console.log(err)
-    }
-  }
-  showNationalityModal = ()=> {
-    this.setState({ 
-      nationalityModalVisible: true 
-    })
-  }
-  hideNationalityModal =()=> {
-    this.setState({ 
-      nationalityModalVisible: false 
-    })
-    // Refocus on the Input field after selecting the country code
-    // this.refs.PhoneInput._root.focus()
-  }
-
 
   //show date picker
   showStartDateTimePicker = () => {
@@ -302,8 +250,7 @@ render () {
     {title: 'Female', value: 'Female'},
     {title: 'Male', value: 'Male'},
   ];
-  const { title, message, showAlert, showLoading, flag } = this.state
-  const countryData = data
+  const { title, message, showAlert, showLoading, flag, name, email, phone, gender, nationality  } = this.state;
 
   return(
     <SafeAreaView style={styles.container}> 
@@ -366,6 +313,7 @@ render () {
                 onChangeText = {this.handleFullName}
                 autoCapitalize = "words"
                 height = {40}
+                defaultValue={name}
                 // borderWidth = {1}
                 borderColor={colors.field_color}
                 borderRadius={4}
@@ -388,7 +336,7 @@ render () {
                   style = {styles.textBoder}>
                   <View style = {styles.viewTxtgender}>
                     <Text style = {styles.genderText}>
-                      {this.state.gender}
+                      {gender}
                     </Text>
                     <Icon
                       active
@@ -412,7 +360,7 @@ render () {
                     <View style={{flex: 1, justifyContent: 'center'}}>
                       <DisplayText
                         style={styles.textHeaderStyle}
-                        text ={' Gender '} 
+                        text ={'Gender'} 
                         />
                         {pickerGender.map((value, index) => {
                           return <TouchableHighlight key={index} onPress={() => this.setGenderPicker(value.value)}>
@@ -439,6 +387,7 @@ render () {
                 autoCapitalize = "none"
                 height = {40}
                 borderWidth = {1}
+                defaultValue={email}
                 borderColor={colors.field_color}
                 borderRadius={4}
                 paddingLeft = {8}
@@ -471,7 +420,7 @@ render () {
                 {/* </View> */}
                 <Input
                   style={styles.input}
-                  placeholder='+2348012341234'
+                  placeholder={phone ? phone :'+2348012341234'}
                   placeholderTextColor='#adb4bc'
                   keyboardType={'phone-pad'}
                   returnKeyType='done'
@@ -492,101 +441,6 @@ render () {
                 />
               </View>
             </View>
-            {/* Modal for country code and flag */}
-              <Modal
-                animationType="slide"
-                transparent={true}
-                onRequestClose={this.hideModal}
-                visible={this.state.modalVisible}>
-                <View style={{ flex : 1, paddingLeft : 20, paddingRight : 20}}>
-                  <View style={{ flex: 7, marginTop: 10 }}>
-                    {/* Render the list of countries */}
-                    <FlatList
-                      data={countryData}
-                      keyExtractor={(item, index) => index.toString()}
-                      renderItem={
-                        ({ item }) =>
-                          <TouchableWithoutFeedback onPress={() => this.selectCountry(item.name)}>
-                            <View style={styles.countryStyle}>
-                              <Text style={styles.textStyle}>
-                                {item.flag} {item.name} ({item.dial_code})
-                              </Text>
-                            </View>
-                          </TouchableWithoutFeedback>
-                      }
-                    />
-                  </View>
-                  <View style={styles.closeButtonStyle}>
-                  <TouchableOpacity
-                    style={styles.closeButton}
-                    onPress={() => this.hideModal()}>
-                    <Text style={styles.textBtn}>
-                      Close
-                    </Text>
-                  </TouchableOpacity>
-                  </View>
-                  
-                </View>
-              </Modal>
-        
-              <View style = {styles.CountryView}>
-                <DisplayText
-                  text={'Nationality *'}
-                  styles = {styles.formHeaderTxt}
-                />
-                <TouchableOpacity 
-                  underlayColor={colors.white}
-                  onPress={() => this.showNationalityModal()}
-                  style = {styles.textBoder}>
-                  <View style = {styles.viewTxtgender}>
-                    <Text style = {styles.genderText}>
-                      {this.state.nationality}
-                    </Text>
-                    <Icon
-                      active
-                      name='md-arrow-dropdown'
-                      style={styles.iconStyle}
-                      onPress={() => this.showNationalityModal()}
-                    />
-                  </View>
-                </TouchableOpacity>
-                <Modal
-                animationType="slide"
-                transparent={true}
-                onRequestClose={this.hideNationalityModal}
-                visible={this.state.nationalityModalVisible}>
-                <View style={{ flex : 1, paddingLeft : 20, paddingRight : 20}}>
-                  <View style={{ flex: 7, marginTop: 10 }}>
-                    {/* Render the list of countries */}
-                    <FlatList
-                      data={countryData}
-                      keyExtractor={(item, index) => index.toString()}
-                      renderItem={
-                        ({ item }) =>
-                          <TouchableWithoutFeedback onPress={() => this.selectNationality(item.name)}>
-                            <View style={styles.countryStyle}>
-                              <Text style={styles.textStyle}>
-                                {item.flag} {item.name} 
-                              </Text>
-                            </View>
-                          </TouchableWithoutFeedback>
-                      }
-                    />
-                  </View>
-                  <View style={styles.closeButtonStyle}>
-                  <TouchableOpacity
-                    style={styles.closeButton}
-                    onPress={() => this.hideNationalityModal()}>
-                    <Text style={styles.textBtn}>
-                      Close
-                    </Text>
-                  </TouchableOpacity>
-                  </View>
-                  
-                </View>
-              </Modal>
-            </View>
- 
         </ScrollView>
       </KeyboardAvoidingView>
       <View style = {styles.signupLinkView}>
@@ -614,3 +468,17 @@ render () {
     )
   }
 } 
+
+const mapStateToProps = (state, ownProps) =>{
+  return{
+    profile: state.ProfileReducer.profile
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+  return{
+    setProfile: (data) =>{dispatch(setProfile(data))},
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalDetails);
