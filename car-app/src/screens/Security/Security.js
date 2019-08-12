@@ -65,6 +65,17 @@ export default class Security extends Component {
      })
   }
 
+  toggleButtonState = () => {
+    const { isValidPassword, isNewPasswordValid, isConfirmPasswordValid } = this.state;
+          
+    if ( isValidPassword && isNewPasswordValid && isConfirmPasswordValid ) {
+      return true;
+    } 
+    else {
+      return false;
+    }
+  }
+
   verifyPassword = async()=> {
     this.showLoadingDialogue();
     const {newPassword, confirmPassword} = this.state;
@@ -99,7 +110,7 @@ export default class Security extends Component {
     try {
       let response = await fetch(endPoint, settings);
       let res = await response;
-      if(res.status >=400 && res.ststus <=500) {
+      if(res.status >=400 && res.status <=500) {
         return await this.showNotification('The old password is incorrect.', 'Message');
       }
       else {
@@ -280,7 +291,7 @@ render () {
                 />
                 <SubmitButton
                   title={'Update'}
-                  // disabled={!this.toggleButtonState()}
+                  disabled={!this.toggleButtonState()}
                   onPress={this.verifyPassword}
                   titleStyle={styles.btnText}
                   btnStyle = {styles.btnStyle}
