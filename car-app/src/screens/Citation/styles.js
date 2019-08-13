@@ -118,6 +118,7 @@ export default styles = StyleSheet.create({
     marginBottom : 4,
     fontSize : theme.SmallFont,
     color : theme.textGray,
+    fontFamily : theme.secondaryFont,
   },
   citationBody : {
     marginBottom : 4,

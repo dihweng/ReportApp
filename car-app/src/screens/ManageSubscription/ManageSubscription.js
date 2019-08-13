@@ -55,6 +55,7 @@ export default class ManageSubscription extends Component {
     this.showLoadingDialogue();
     await getRouteToken(endpoint, token)
       .then((res) => {
+        console.log({responseSub: res})
         if (typeof res.message !== 'undefined') {  
           return this.showNotification('error', 'Message', res.message);
         }   

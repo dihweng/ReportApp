@@ -18,6 +18,7 @@ export default class FullReport extends Component {
       title: '',
       content: '',
       excerpt:'',
+      id: '',
     }
 
   }
@@ -62,9 +63,7 @@ export default class FullReport extends Component {
     const{navigation} = this.props;
     let reportId = await navigation.getParam('id');
     return await this.getReportById(reportId);
-      
   }
-
   getReportById = async(reportId)=> {
 
     const {token} = this.state;
@@ -93,13 +92,11 @@ export default class FullReport extends Component {
       else {
         return await this.showNotification(res.message,  'Message');
       }
-
     }
     catch(error) {
       return this.showNotification(error.toString(), 'Message');
     }
   }
-
   showLoadingDialogue =()=> {
     this.setState({
       showLoading: true,
@@ -119,8 +116,13 @@ export default class FullReport extends Component {
   }
 
 
-  handleRatio = () => {
-    return this.props.navigation.navigate('Ratios');
+  handleRatio = async() => {
+    const {id, excerpt} = this.state
+    return await this.props.navigation.navigate('Ratios', {
+      id: id,
+      // excerpt: excerpt,
+    });
+
   }
   handleFullReport = () => {
     return this.props.navigation.navigate('FullReport');
@@ -132,11 +134,6 @@ export default class FullReport extends Component {
   handleOnBackPress = () => {
     this.props.navigation.navigate('DashBoard');
   };
- 
-  handleConfirm = () => {
-    alert('confirm coming soon');
-  }
-
   
 
   render () {

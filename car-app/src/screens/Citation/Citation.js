@@ -116,6 +116,7 @@ export default class Citation extends Component {
   }
 
   handleFullReport=async(item)=>{
+    console.log({hello: item.id})
     if(this.state.isActive === false) {
       await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
       return await setTimeout(() => {
@@ -480,7 +481,7 @@ export default class Citation extends Component {
                 <DisplayText
                   numberOfLines = { 3 } 
                   ellipsizeMode = 'middle'
-                  text = {'CITATION A - Z'}
+                  text = {'Filter Reports by Aphabet'}
                   styles = {StyleSheet.flatten(styles.citationNumber)}
                 />
                 <DisplayText

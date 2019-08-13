@@ -280,4 +280,19 @@ export default styles = StyleSheet.create({
     fontSize: 16,
 
   },
+  reportName : {
+    fontFamily : theme.secondaryFont,
+    fontSize : theme.MediumFont,
+    color : colors.primaryTextColor,
+    marginTop : 8,
+    fontWeight: 'bold'
+  },
+  text : {
+    fontFamily : theme.primaryFont,
+    fontSize : theme.SmallerFont,
+    color : "#333",
+    marginTop : 8,
+    // textAlign: 'justify',
+    lineHeight: 20
+  },
 });
