@@ -106,6 +106,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 
   handleGetProfile = async() => {
     const{token} = this.state;
+    let status = 'expired';
     await getRouteToken(ProfileEndpoint, token)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
@@ -115,10 +116,13 @@ import DropdownAlert from 'react-native-dropdownalert';
         else {
           saveUserDetail(res.data, token);
           this.props.setProfile(res.data);
-          this.setState({
-            isActive : res.data.subscription == 'Active' ? true : true,
-          });
-          subscription(res.data.subscription);
+          if(typeof res.data.subscription.status !== 'undefined'){
+            status = res.data.subscription.status;     
+          }
+            this.setState({
+              isActive : status == 'active' ? true : false,
+            }); 
+          subscription(status);
           return this.handleGetAllReport();
         }
       })
