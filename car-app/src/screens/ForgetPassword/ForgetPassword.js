@@ -1,11 +1,12 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, ScrollView, SafeAreaView, StatusBar, Image, KeyboardAvoidingView, StyleSheet,} from 'react-native';
-import {DisplayText, InputField, SubmitButton,SingleButtonAlert} from '../../components';
+import {DisplayText, InputField, SubmitButton,} from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors'
-import { isEmailValid, postRoute, ForgotPassword } from '../Utils/Utils';
+import { postRoute, ForgotPassword } from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
+import DropdownAlert from 'react-native-dropdownalert';
 
 
 export default class ForgetPassword extends Component {
@@ -21,41 +22,61 @@ export default class ForgetPassword extends Component {
     }
   }
 
-  handleForgetPassword = () => {
-    const { email } = this.state;
-    this.props.navigation.navigate('Verification');
 
-    // if(!isEmailValid(email)){
-    //   return this.setState({
-    //     showAlert: true,
-    //     message: 'Invalid Email Address',
-    //     title: 'Alert',
-    //   });
-    // }
-    // this.setState({
-    //   showLoading : true,
-    // });
-    // const body = JSON.stringify({
-    //   'email' : email,
-    // });
-    // postRoute(ForgotPassword, body)
-    //   .then((res) => {
-    //     if (typeof res.message !== 'undefined' || typeof res.message === 'The given data was invalid') {  
-    //       return  this.setState({ 
-    //         showLoading : false,
-    //         title : 'Alert',
-    //         message : res.message,
-    //         showAlert : true,
-    //       }); 
-    //     }
-    //     else {
-    //       this.setState({ 
-    //         showLoading : false, 
-    //       }); 
-    //       this.props.navigation.navigate('Login');
-    //     }
-    //   });
+  showLoadingDialogue =()=> {
+    this.setState({
+      showLoading: true,
+    });
   }
+// Hide Loading Spinner
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
+
+  toggleButtonState = () => {
+    const { isValidEmailAddress } = this.state;
+          
+    if ( isValidEmailAddress) {
+      return true;
+    } 
+    else {
+      return false;
+    }
+  }
+
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
+  }
+
+  handleForgetPassword = async() => {
+    const { email } = this.state;
+    this.setState({
+      showLoading : true,
+    });
+
+    let body = await {
+      'email' : email,
+    }
+
+    await postRoute(ForgotPassword, body)
+      .then((res) => {
+        if(typeof res.errors !== 'undefined') {
+          const value = Object.values(res.errors);
+          if (typeof res.message !== 'undefined') {  
+            return this.showNotification('error', 'Message', value[0].toString());
+          }   
+        }  
+        else {
+           this.showNotification('success', 'Success', res.message);
+           return setTimeout(()=>{
+            this.props.navigation.navigate('Login');
+           }, 3000);
+        }
+      });
+    }
 
   handleCloseNotification = () => {
     return this.setState({
@@ -78,6 +99,7 @@ export default class ForgetPassword extends Component {
       }
     }
   }
+
   handleResetPassword = () => {
     return this.props.navigation.navigate('CreateNewPassword')
   }
@@ -86,7 +108,7 @@ export default class ForgetPassword extends Component {
   }
 
   render () {
-    const {showAlert, showLoading, message, title } = this.state;
+    const {showLoading,} = this.state;
     return(
       <SafeAreaView style={styles.container}> 
         <StatusBar barStyle="default" /> 
@@ -95,13 +117,12 @@ export default class ForgetPassword extends Component {
               source={require('../../assets/images/key.png')}
               style={StyleSheet.flatten(styles.lockIcon)}/> 
           </View>
-          {/* <View style = {styles.traingleView}>
-            <View style = {styles.triangleShape}></View>
-          </View> */}
          
           <KeyboardAvoidingView
             style={styles.wrapper}
             behavior = 'padding'> 
+          <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
             <ScrollView
               style={{flex:1,}}
               showsVerticalScrollIndicator={false}>
@@ -129,7 +150,6 @@ export default class ForgetPassword extends Component {
                   onChangeText = {this.handleEmailChange}
                   autoCapitalize = "none"
                   height = {40}
-                  // width = {'70%'}
                   borderWidth = {1}
                   borderColor={colors.textInput_border}
                   borderRadius = {4}
@@ -140,18 +160,15 @@ export default class ForgetPassword extends Component {
                   onPress = {this.handleForgetPassword}
                   btnStyle = {styles.buttonBorder}
                   titleStyle={styles.btnText}
+                  disabled={!this.toggleButtonState()}
                 />
-                  <ProgressDialog
+
+                <ProgressDialog
                   visible={showLoading}
                   title="Processing"
                   message="Please wait..."
-                  />
-                  <SingleButtonAlert
-                    title = {title} 
-                    message = {message}
-                    handleCloseNotification = {this.handleCloseNotification}
-                    visible = {showAlert}
-                  />
+                />
+                  
                 <View style = {styles.backView}>
                   <DisplayText
                     text={'<< '}

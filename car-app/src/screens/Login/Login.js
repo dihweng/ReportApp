@@ -38,9 +38,7 @@ export default class Login extends Component {
   checkLogin =  async() => {
     let profile = await getProfile();
     if(typeof profile.expires !== 'undefined' ) {
-      // this.setState({
-      //   restoring : false,
-      // });
+      
       return this.props.navigation.navigate('Menu');
     }
     else {
