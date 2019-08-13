@@ -156,12 +156,7 @@ export default styles = StyleSheet.create({
     borderWidth : 1,
     borderColor : theme.secondaryTextColor,
   },
-  splashView : {
-    flex : 1,
-    justifyContent: 'center', 
-    alignItems :'center', 
-    // backgroundColor: colors.green_background
-  },
+  
   iconForm: {
     height : 18,
     width : 18,

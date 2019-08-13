@@ -10,7 +10,7 @@ export default styles = StyleSheet.create({
   navBar: {
     flexDirection : 'row',
     // paddingTop : (Platform.OS === "ios") ? 16 : 14,
-    height : (Platform.OS === "ios") ? 40 : 60,
+    height : (Platform.OS === "ios") ? 50 : 60,
     backgroundColor: theme.toolBarColor,
     width: '100%',
     alignItems: 'center',
@@ -184,7 +184,7 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 5,
     borderRadius: 40,
-    backgroundColor: colors.green_background,
+    backgroundColor: theme.primaryColor,
   },
   sendIcon : {
     tintColor : colors.white,
@@ -219,7 +219,7 @@ export default styles = StyleSheet.create({
   },
 
   messageBubbleRight: {
-    backgroundColor: colors.green_background,
+    backgroundColor: theme.primaryColor,
     borderBottomLeftRadius: 16,
     borderTopLeftRadius : 16,
     borderTopRightRadius: 16,
