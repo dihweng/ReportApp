@@ -116,7 +116,6 @@ import DropdownAlert from 'react-native-dropdownalert';
         else {
           saveUserDetail(res.data, token);
           this.props.setProfile(res.data);
-          console.log({res})
           if(res.data.subscription !== null){
             status = res.data.subscription.status;     
           }
@@ -140,7 +139,7 @@ import DropdownAlert from 'react-native-dropdownalert';
     else {
        await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
        return await setTimeout(() => {
-         this.props.navigation.navigate('Subscription');
+         this.props.navigation.navigate('ManageSubscription');
        }, 3000);
       
 
@@ -310,7 +309,7 @@ import DropdownAlert from 'react-native-dropdownalert';
     if(this.state.isActive === false) {
       await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
       return await setTimeout(() => {
-        this.props.navigation.navigate('Subscription');
+        this.props.navigation.navigate('ManageSubscription');
       }, 3000);   
     }
     else {
@@ -328,7 +327,7 @@ import DropdownAlert from 'react-native-dropdownalert';
     if(this.state.isActive === false) {
        await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
       return await setTimeout(() => {
-        this.props.navigation.navigate('Subscription');
+        this.props.navigation.navigate('ManageSubscription');
       }, 3000);    
     }
     else {

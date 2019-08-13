@@ -120,7 +120,7 @@ export default class Citation extends Component {
     if(this.state.isActive === false) {
       await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
       return await setTimeout(() => {
-        this.props.navigation.navigate('Subscription');
+        this.props.navigation.navigate('ManageSubscription');
       }, 3000);    
     }
     else {
@@ -172,7 +172,7 @@ export default class Citation extends Component {
     if(this.state.isActive === false) {
       await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
       return await setTimeout(() => {
-        this.props.navigation.navigate('Subscription');
+        this.props.navigation.navigate('ManageSubscription');
       }, 3000);    
     }
     else {
@@ -261,7 +261,7 @@ export default class Citation extends Component {
     if(this.state.isActive === false) {
        await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
       return await  setTimeout(() => {
-        this.props.navigation.navigate('Subscription');
+        this.props.navigation.navigate('ManageSubscription');
       }, 3000);   
     }
     else {
