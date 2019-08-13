@@ -1,5 +1,4 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-const window = Dimensions.get('window');
 import theme from '../../assets/theme';
 import colors from '../../assets/colors';
 
@@ -238,11 +237,16 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  toastView: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: (Platform.OS == 'ios') ? 20 : 0,
-    marginBottom: 20
+  splashView : {
+    flex : 1,
+    justifyContent: 'center', 
+    alignItems :'center', 
+    backgroundColor: theme.primaryColor,
+  },
+
+  logoIcon : {
+    resizeMode : 'contain',
+    height : '100%',
+    width : '100%',
   },
 });

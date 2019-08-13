@@ -1,13 +1,13 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList, ScrollView, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, CustomToast,SingleButtonAlert, InputField } from '../../components';
+import { View, FlatList, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
+import {DisplayText, InputField } from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
 import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import {GetFavoriteEndpoint, getProfile,getRouteToken, DeleteFavoriteEndpoint} from '../Utils/Utils';
-
+import DropdownAlert from 'react-native-dropdownalert';
 
 
 export default class FavoriteList extends Component {
@@ -33,6 +33,14 @@ export default class FavoriteList extends Component {
       // data:this.reports
     });
     await this.handleGetFavorite();
+    this.focusListener =  await this.props.navigation.addListener('didFocus', () => {
+      this.handleGetFavorite();
+    }); 
+  }
+
+  componentWillUnmount(){
+    this.focusListener.remove();
+
   }
 
 
@@ -62,15 +70,11 @@ export default class FavoriteList extends Component {
       showLoading: false,
     });
   }
-// Show Dialog message
-  showNotification = message => {
-    this.setState({ 
-      showLoading : false,
-      title : 'Error!',
-      message : message,
-      showAlert : true,
-    }); 
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   }
+
 // Hide Dialog message
   handleCloseNotification = () => {
     return this.setState({
@@ -84,16 +88,22 @@ export default class FavoriteList extends Component {
     await getRouteToken(GetFavoriteEndpoint, token)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message);
+          return this.showNotification('error', 'Message', res.message);
         }   
         else {    
-          this.setState({
-            data: res.data,
-            filterData: res.data,
-            id: res.data.id
-          });
-          // this.Toast('Successful');
-          return this.hideLoadingDialogue();
+          if(res.data.length){
+           return this.setState({
+              data: res.data,
+              filterData: res.data,
+              id: res.data.id,
+              showLoading: false
+            });
+          }
+          this.showNotification('error', 'Message', 'No Record Found');
+          // setTimeout(()=>{
+          //   this.props.navigation.navigate('DashBoard');
+          // },3000)
+
         }
       }
     );
@@ -105,11 +115,10 @@ export default class FavoriteList extends Component {
       await this.AllFavorite()
     }
     catch(error) {
-      return this.showNotification(error.toString());
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
 
-  //Handle Delete favorite reports from list
   deleteFavorite=async(id)=> {
     const { token } = this.state
     this.showLoadingDialogue();
@@ -130,14 +139,12 @@ export default class FavoriteList extends Component {
       let response = await fetch(endpoint, settings);
       let res = await response;
       if(res.status >= 200 && res.status < 300) {
-        // this.handleGetReadLater();
-        return await this.showNotification('Successfully Removed Favorite');   
-
+        return this.showNotification('success', 'Success', 'Report Removal Successful');
       }
-      return await this.showNotification(res.message.toString());   
+      return await this.showNotification('error', 'Message', 'Failed to Remove Report');
     } 
     catch(error){
-     return this.showNotification(error.toString()); 
+      return this.showNotification('error', 'Message', error.toString());
     }
 
   }
@@ -156,10 +163,6 @@ export default class FavoriteList extends Component {
     return this.setState({
       data: newData,
     });
-  }
-
-  Toast=(message)=>{
-    this.refs.defaultToastBottom.ShowToastFunction(message);
   }
   // On pressing a report will navigate you to Full Report
 //With the Params id, content and except
@@ -243,7 +246,7 @@ renderHeader = () => {
   }
 
   render () {
-    const { title, message, showAlert, showLoading } = this.state
+    const {showLoading } = this.state
 
     return(
       <SafeAreaView style={styles.container}> 
@@ -266,15 +269,6 @@ renderHeader = () => {
           </View>
         </View> 
         <View style = {styles.cards}>
-          {/* <TouchableOpacity
-            onPress = {this.handlePlainReport}  
-            style = {styles.customTabTp2}>
-              <DisplayText
-              text={'Plain Report'}
-              onPress = {this.handlePlainReport}  
-              styles = {StyleSheet.flatten(styles.txtTabHeader)}
-            />
-          </TouchableOpacity> */}
           <TouchableOpacity
             onPress = {this.handleFavoriteList}  
             style = {styles.customTabTp}>
@@ -297,26 +291,21 @@ renderHeader = () => {
         <View style = {styles.viewBody}>
           <FlatList          
             data={this.state.data}          
-            renderItem={this.renderRow}          
+            renderItem={this.renderRow}  
+            extraData={this.state}        
             ListHeaderComponent={this.renderHeader}     
             keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
           />
-          <View style = {styles.taostView}>
-            <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          
-          </View> 
+         
         </View>  
         <ProgressDialog
           visible={showLoading}
           title="Processing"
           message="Please wait..."
         />
-        <SingleButtonAlert
-          title = {title} 
-          message = {message}
-          handleCloseNotification = {this.handleCloseNotification}
-          visible = {showAlert}
-        />
+        <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
       </SafeAreaView> 
     )
   }

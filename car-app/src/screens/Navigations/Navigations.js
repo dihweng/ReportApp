@@ -29,11 +29,6 @@ import AllReports from '../../screens/AllReports/AllReports';
 import Citation from '../../screens/Citation/Citation';
 import Category from '../../screens/Category/Category';
 import Division from '../Division/Division';
-import Subscribe from '../Subscribe/Subscribe';
-// import ViewPlan from '../ViewPlan/ViewPlan';
-import Ratios from '../Ratios/Ratios';
-import CitedAuthorities from '../CitedAuthorities/CitedAuthorities';
-import FullReport from '../FullReport/FullReport';
 import PlainReport from '../PlainReport/PlainReport';
 import FavoriteList from '../FavoriteList/FavoriteList';
 import ReadLaterList from '../ReadLaterList/ReadLaterList';
@@ -63,6 +58,7 @@ class Navigations extends Component {
   };
 
   render(){
+    
     return(
       <SafeAreaView style={{ flexDirection: 'row' }}>
         <StatusBar barStyle="default"/>

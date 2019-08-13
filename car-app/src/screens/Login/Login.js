@@ -38,9 +38,9 @@ export default class Login extends Component {
   checkLogin =  async() => {
     let profile = await getProfile();
     if(typeof profile.expires !== 'undefined' ) {
-      this.setState({
-        restoring : false,
-      });
+      // this.setState({
+      //   restoring : false,
+      // });
       return this.props.navigation.navigate('Menu');
     }
     else {
@@ -170,7 +170,7 @@ export default class Login extends Component {
         <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
    
           <Image
-            source={require('../../assets/images/logo_login.png')}
+            source={require('../../assets/images/splash.png')}
             style={StyleSheet.flatten(styles.logoIcon)}/> 
         </SafeAreaView>
       );

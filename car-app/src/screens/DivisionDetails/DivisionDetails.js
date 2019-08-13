@@ -1,11 +1,10 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, SafeAreaView, StatusBar, FlatList, Image,TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, SingleButtonAlert, SubmitButton } from '../../components';
+import {DisplayText, SubmitButton } from '../../components';
 import styles from './styles';
-import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import theme from '../../assets/theme';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import { 
   DeleteFavoriteEndpoint, 
@@ -14,9 +13,9 @@ import {
   getAllReport,
   getProfile, 
   AddReadLaterEndPoint, 
-  AddFavoriteEndPoint } from '../Utils/Utils';
-
-
+  getSubscription,
+  AddFavoriteEndPoint, 
+  subscription} from '../Utils/Utils';
 
 export default class DivisionDetails extends Component {
   constructor(props) {
@@ -30,17 +29,20 @@ export default class DivisionDetails extends Component {
       id: '',
       token: '',
       name: '',
+      isActive: false,
     }
   }
   async componentDidMount(){
     let profile = await getProfile();
+    let subscription = await getSubscription();
     const {navigation} = this.props,
       id = navigation.getParam('id'),
       name = navigation.getParam('name');
+
     await this.setState({
       token: profile.access_token,
       expires: profile.expires,
-      showLoading: true,
+      isActive:subscription,
       id,
       name,
     });
@@ -60,13 +62,9 @@ export default class DivisionDetails extends Component {
     });
   }
 
-  showNotification = (message, title) => {
-    this.setState({ 
-      showLoading : false,
-      title : title,
-      message : message,
-      showAlert : true,
-    }); 
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   }
 
   handleCloseNotification = () => {
@@ -88,19 +86,19 @@ export default class DivisionDetails extends Component {
             return this.hideLoadingDialogue();
           }
           else {
-            this.showNotification('No Record Found', 'Message');
+            this.showNotification('error', 'Message', 'No Report Found');
             return setTimeout(()=>{
               this.handleCloseNotification();
               return this.props.navigation.goBack();
             }, 3000);
           }
         }
-         this.showNotification(res.message, 'Message'); 
-         return setTimeout(()=>{
+        this.showNotification('error', 'Message', res.message);
+        return setTimeout(()=>{
           this.handleCloseNotification();
           return this.props.navigation.goBack();
         }, 3000);
-      }).catch(error => this.showNotification(error.toString(), 'Message'));
+      }).catch(error =>this.showNotification('error', 'Message', error.toString()));
   }
   handleGetAllReport = async() => {
     this.showLoadingDialogue();
@@ -109,27 +107,43 @@ export default class DivisionDetails extends Component {
       await this.allReport()
     }
     catch(error) {
-     return this.showNotification(error.toString());
+     return this.showNotification('error', 'Message', error.toString());
     }
   }
 
   handleFullReport=async(item)=>{
-    this.props.navigation.navigate('FullReport', {
-      id: item.id, 
-    });
+    if(this.state.isActive === false) {
+      await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+      return await setTimeout(() => {
+        this.props.navigation.navigate('Subscription');
+      }, 3000);    
+    }
+    else {
+       await this.props.navigation.navigate('FullReport', {
+        id: item.id, 
+      });
+    }
   }
 
   handleGoBack = () => {
     return this.props.navigation.goBack();
   }
 
-  addDeleteReadlater = (id, title, index) =>{
-    this.showLoadingDialogue();
-    if(title.includes('Remove')){
-      return this.deleteReadLater(id, index);
+  addDeleteReadlater = async(id, title, index) =>{
+    if(this.state.isActive === false) {
+      await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+      return await setTimeout(() => {
+        this.props.navigation.navigate('Subscription');
+      }, 3000);    
     }
     else {
-      return this.handleReadLater(id, index);
+       await this.showLoadingDialogue();
+      if(title.includes('Remove')){
+        return await this.deleteReadLater(id, index);
+      }
+      else {
+        return await this.handleReadLater(id, index);
+      }
     }
   }
 
@@ -138,7 +152,7 @@ export default class DivisionDetails extends Component {
       await this.readLater(id, index)
     }
     catch(error) {
-      return this.showNotification(error.toString());
+      this.showNotification('error', 'Message', error.toString());
     }
   }
 
@@ -161,15 +175,15 @@ export default class DivisionDetails extends Component {
         let targetPost = await data[index];
         targetPost.is_future_saved =  await !targetPost.is_future_saved;
         await this.setState({ data });
-        return await this.showNotification('Report Added to Read Later', 'Success');
+        return await this.showNotification('success', 'Success', 'Report Added Successfully');
 
       }
       else {
-        return this.showNotification('Failed to Add Report', 'Message');
+        return await this.showNotification('error', 'Message', 'Failed to Add Report');
       }
     }
     catch(error) {
-      return this.showNotification(error.toString(), 'Message')
+      this.showNotification('error', 'Message', error.toString());
     }
   } 
 
@@ -194,23 +208,31 @@ export default class DivisionDetails extends Component {
         let targetPost = await data[index];
         targetPost.is_future_saved = await !targetPost.is_future_saved;
         await this.setState({ data });
-        return await this.showNotification('Successfully Removed Report from Read Later', 'Success'); 
+         return await this.showNotification('success', 'Success', 'Report Removal Successful');
 
       }
-      return await this.showNotification('Failed to Remove Report', 'Message');   
+      return await this.showNotification('error', 'Message', 'Failed to Remove Report');
     } 
     catch(error){
-     return this.showNotification(error.toString(), 'Message'); 
+      this.showNotification('error', 'Message', error.toString());
     }
   }
 
-  addDeleteFavorite = (id, title, index) =>{
-    this.showLoadingDialogue();
-    if(title.includes('Remove')) {
-      return this.deleteFavorite(id, index);
+  addDeleteFavorite = async(id, title, index) =>{
+    if(this.state.isActive === false) {
+      await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+      return await setTimeout(() => {
+        this.props.navigation.navigate('Subscription');
+      }, 3000);    
     }
     else {
-      return this.handleAddFavorite(id, index);
+       await this.showLoadingDialogue();
+      if(title.includes('Remove')) {
+        return await this.deleteFavorite(id, index);
+      }
+      else {
+        return await this.handleAddFavorite(id, index);
+      }
     }
   }
 
@@ -219,7 +241,7 @@ export default class DivisionDetails extends Component {
     return await this.addFavorite(id, index)
     }
     catch(error) {
-      return this.showNotification(error.toString());
+     return this.showNotification('error', 'Message', error.toString());
     }
   }
 
@@ -242,16 +264,15 @@ export default class DivisionDetails extends Component {
         let targetPost = await data[index];
         targetPost.is_favorite =  await !targetPost.is_favorite;
         await this.setState({ data });
-        return await this.showNotification('Report Added To Favorite', 'Success');
-        
+        return await this.showNotification('success', 'Success', 'Report Added Successfully');
       }
       else {
-        return this.showNotification('Report Could Not be Added to Favorite',  'Message');
+        return await  this.showNotification('error', 'Message', 'Failed to Add Favorite');
       }
 
     }
     catch(error) {
-      return this.showNotification(error.toString(), 'Message');
+     return this.showNotification('error', 'Message', error.toString());
     }
   } 
 
@@ -275,12 +296,12 @@ export default class DivisionDetails extends Component {
         let targetPost = await  data[index];
         targetPost.is_favorite = await !targetPost.is_favorite;
         await this.setState({ data });
-        return await this.showNotification('Successfully Removed Favorite', 'Success');   
+        return await this.showNotification('success', 'Success', 'Report Removal Successful');
       }
-      return await this.showNotification('Failed to Removed Report', 'Message');   
+       return await this.showNotification('error', 'Message', 'Failed to Remove Report');
     } 
     catch(error){
-     return this.showNotification(error.toString(), 'Message'); 
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
 
@@ -339,7 +360,7 @@ export default class DivisionDetails extends Component {
 
 
   render () {
-    const { showLoading, title, message, showAlert, name} = this.state;
+    const { showLoading, name} = this.state;
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
@@ -395,12 +416,8 @@ export default class DivisionDetails extends Component {
         title="Processing"
         message="Please wait..."
       />
-      <SingleButtonAlert
-        title = {title} 
-        message = {message}
-        handleCloseNotification = {this.handleCloseNotification}
-        visible = {showAlert}
-      />
+      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
     </SafeAreaView>
     
     )

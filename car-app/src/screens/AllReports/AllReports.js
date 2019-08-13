@@ -5,7 +5,7 @@ import {DisplayText, SubmitButton, SingleButtonAlert, InputField,CustomToast} fr
 import styles from './styles';
 import theme from '../../assets/theme';
 import { DeleteFavoriteEndpoint, DeleteReadLaterEndpoint, getRouteToken, getAllReport, getProfile, 
-  ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint } from '../Utils/Utils';
+  ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint, subscription } from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import colors from '../../assets/colors';
 import {connect} from 'react-redux';
@@ -28,6 +28,8 @@ import DropdownAlert from 'react-native-dropdownalert';
       favorite_button_text:'',
       read_later_button_text:'',
       isFetching: false,
+      restoring:true,
+      isActive:false,
 
     }
   }
@@ -52,16 +54,13 @@ import DropdownAlert from 'react-native-dropdownalert';
   hideLoadingDialogue =()=> {
     this.setState({
       showLoading: false,
+      restoring: false,
     });
   }
 
-  showNotification = (message, title) => {
-    this.setState({ 
-      showLoading : false,
-      title : title,
-      message : message,
-      showAlert : true,
-    }); 
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   }
 
   handleCloseNotification = () => {
@@ -71,7 +70,6 @@ import DropdownAlert from 'react-native-dropdownalert';
   }
 
   onRefresh() {
-    console.log('refreshing');
     this.setState({ isFetching: true }, function() {
       this.handleGetAllReport();
     });
@@ -79,11 +77,10 @@ import DropdownAlert from 'react-native-dropdownalert';
 
   allReport = async() =>{
     const {token} = this.state;
-    this.showLoadingDialogue();
     await getRouteToken(getAllReport, token)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message);
+          return this.showNotification('error', 'Message', res.message);
         }   
         else {          
           this.setState({
@@ -94,47 +91,55 @@ import DropdownAlert from 'react-native-dropdownalert';
           return this.hideLoadingDialogue();
         }
       }
-    ).catch(error=>this.showNotification(error.toString(), 'Message'));
+    ).catch(error=>this.showNotification('error', 'Message', error.toString()));
+  
   }
 
   handleGetAllReport = async() => {
-    this.showLoadingDialogue();
-
     try {
       return await this.allReport()
     }
     catch(error) {
-      return this.showNotification(error.toString());
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
 
   handleGetProfile = async() => {
     const{token} = this.state;
-    this.showLoadingDialogue();
-
     await getRouteToken(ProfileEndpoint, token)
       .then((res) => {
-        console.log({res})
         if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message);
+          return this.showNotification('error', 'Message', res.message);
         }
   
         else {
           saveUserDetail(res.data, token);
           this.props.setProfile(res.data);
+          this.setState({
+            isActive : res.data.subscription == 'Active' ? true : false,
+          });
+          subscription(res.data.subscription);
           return this.handleGetAllReport();
         }
       })
     .catch((error) => {
-      return this.showNotification(error.toString());
+      return this.showNotification('error', 'Message', error.toString());
     });
   }
 
 
   handleFullReport = async(id)=>{
-  
-   this.props.navigation.navigate('FullReport', {id});
-   //return this.props.getReport(index);
+    if(this.state.isActive === true) {
+      return await this.props.navigation.navigate('FullReport', {id});
+    }
+    else {
+       await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+       return await setTimeout(() => {
+         this.props.navigation.navigate('Subscription');
+       }, 3000);
+      
+
+    }
   }
 
   addFavorite = async(id, index) =>{
@@ -156,20 +161,16 @@ import DropdownAlert from 'react-native-dropdownalert';
         let targetPost = await data[index];
         targetPost.is_favorite =  await !targetPost.is_favorite;
         await this.setState({ data });
-        // await this.handleCloseNotification()
-        await this.hideLoadingDialogue();
-        return await this.dropDownAlertRef.alertWithType('success', 'Success', 'Report Added To Favorite');
+        return this.showNotification('success', 'Success', 'Report Added to Favorite');
 
       }
       else {
-        await this.hideLoadingDialogue();
-        return await this.dropDownAlertRef.alertWithType('error', 'Alert', 'Report Could Not be Added to Favorite');
-        // return this.showNotification('Report Could Not be Added to Favorite',  'Message');
+        return this.showNotification('error', 'Message', 'Failed To Add Report');
       }
 
     }
     catch(error) {
-      return this.showNotification(error.toString(), 'Message');
+      return this.showNotification('error', 'Message', error.toString());
     }
   } 
   // Called onPress to add favorite to list of favorite 
@@ -178,7 +179,7 @@ import DropdownAlert from 'react-native-dropdownalert';
     return await this.addFavorite(id, index)
     }
     catch(error) {
-      return this.showNotification(error.toString());
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
 
@@ -201,20 +202,15 @@ import DropdownAlert from 'react-native-dropdownalert';
         let targetPost = await data[index];
         targetPost.is_future_saved =  await !targetPost.is_future_saved;
         await this.setState({ data });
-        
-        // return await this.showNotification('Report Added to Read Later', 'Success');
-        await this.hideLoadingDialogue();
-        return await this.dropDownAlertRef.alertWithType('success', 'Success', 'Report Added To Read Later');
+        return this.showNotification('success', 'Success', 'Report Added Successfully');
 
       }
       else {
-        await this.hideLoadingDialogue();
-        return await this.dropDownAlertRef.alertWithType('error', 'Alert', 'Report Could Not be Added to Read Later');
-        // return this.showNotification('Failed to Add Report', 'Message');
+        return this.showNotification('error', 'Message', 'Failed to Add Report');
       }
     }
     catch(error) {
-      return this.showNotification(error.toString(), 'Message')
+      return this.showNotification('error', 'Message', error.toString());
     }
   } 
 
@@ -224,7 +220,7 @@ import DropdownAlert from 'react-native-dropdownalert';
       await this.readLater(id, index)
     }
     catch(error) {
-      return this.showNotification(error.toString());
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
   // search filter 
@@ -264,18 +260,13 @@ import DropdownAlert from 'react-native-dropdownalert';
         let targetPost = await  data[index];
         targetPost.is_favorite = await !targetPost.is_favorite;
         await this.setState({ data });
-        // return await this.showNotification('Successfully Removed Favorite', 'Success');   
-        await this.hideLoadingDialogue();
-        return await this.dropDownAlertRef.alertWithType('success', 'Success', 'Report Removed From Favorite');
+        return this.showNotification('success', 'Success', 'Report removal successful');
 
       }
-      await this.hideLoadingDialogue();
-      return await this.dropDownAlertRef.alertWithType('error', 'Alert', 'Failed to Remove Report');
-
-      // return await this.showNotification('Failed to Removed Report', 'Message');   
+      return this.showNotification('error', 'Message', 'Failed to Remove Report');
     } 
     catch(error){
-     return this.showNotification(error.toString(), 'Message'); 
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
 
@@ -300,38 +291,50 @@ import DropdownAlert from 'react-native-dropdownalert';
         let targetPost = await data[index];
         targetPost.is_future_saved = await !targetPost.is_future_saved;
         await this.setState({ data });
-        // return await this.showNotification('Successfully Removed Report from Read Later', 'Success'); 
-        await this.hideLoadingDialogue();
-        return await this.dropDownAlertRef.alertWithType('success', 'Success', 'Report Removed From Read Later');
+        return this.showNotification('success', 'Success', 'Report Removal Successful');
 
       }
-      await this.hideLoadingDialogue();
-      return await this.dropDownAlertRef.alertWithType('success', 'Success', 'Failed to Remove Report');
-
-      // return await this.showNotification('Failed to Remove Report', 'Message');   
+      return this.showNotification('error', 'Message', 'Failed to Remove Report');
     } 
     catch(error){
-     return this.showNotification(error.toString(), 'Message'); 
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
 
-  addDeleteReadlater = (id, title, index) =>{
-    this.showLoadingDialogue();
-    if(title.includes('Remove')){
-      return this.deleteReadLater(id, index);
+  addDeleteReadlater = async(id, title, index) =>{
+    if(this.state.isActive === false) {
+      await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+      return await setTimeout(() => {
+        this.props.navigation.navigate('Subscription');
+      }, 3000);   
     }
     else {
-      return this.handleReadLater(id, index);
+      await this.showLoadingDialogue();
+      if(title.includes('Remove')){
+        return await this.deleteReadLater(id, index);
+      }
+      else {
+        return await this.handleReadLater(id, index);
+      }
     }
   }
 
-  addDeleteFavorite = (id, title, index) =>{
-    this.showLoadingDialogue();
-    if(title.includes('Remove')) {
-      return this.deleteFavorite(id, index);
+  addDeleteFavorite = async(id, title, index) =>{
+    if(this.state.isActive === false) {
+       await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+      return await setTimeout(() => {
+        this.props.navigation.navigate('Subscription');
+      }, 3000);    
     }
     else {
-      return this.handleAddFavorite(id, index);
+        set
+      this.showLoadingDialogue();
+      if(title.includes('Remove')) {
+        return await this.deleteFavorite(id, index);
+      }
+      else {
+        return await this.handleAddFavorite(id, index);
+      }
     }
   }
 
@@ -415,7 +418,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 
 
   render () {
-    const { showLoading, title,  message, showAlert, } = this.state;
+    const { showLoading, title,  message, showAlert, restoring } = this.state;
     return(
       <SafeAreaView style={styles.container}> 
        <StatusBar barStyle="default"/>

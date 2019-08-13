@@ -1,10 +1,12 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, SafeAreaView, StatusBar, FlatList, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, SingleButtonAlert} from '../../components';
+import {DisplayText,} from '../../components';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import { getRoute, GetCategoryEndpoint } from '../Utils/Utils';
 import styles from './styles';
+import DropdownAlert from 'react-native-dropdownalert';
+
 
 export default class Category extends Component {
   constructor(props) {
@@ -22,11 +24,10 @@ export default class Category extends Component {
     await this.handleGetCatefories();
   }
   allCategories=async()=>{
-    this.showLoadingDialogue();
     await getRoute(GetCategoryEndpoint)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message, 'Message');
+          return this.showNotification('error', 'Message', res.message);
         }   
         else {          
           this.setState({
@@ -35,16 +36,14 @@ export default class Category extends Component {
           return this.hideLoadingDialogue();
         }
       }
-    ).catch(error=>this.showNotification(error.toString(), 'Message'))
+    ).catch(error=>this.showNotification('error', 'Message', error.toString()))
   }
   handleGetCatefories=async()=>{
-    this.showLoadingDialogue();
-
     try {
       await this.allCategories()
     }
     catch(error) {
-      return this.showNotification(error.toString());
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
 
@@ -60,13 +59,9 @@ export default class Category extends Component {
     });
   }
 
-  showNotification = (message, title) => {
-    this.setState({ 
-      showLoading : false,
-      title : title,
-      message : message,
-      showAlert : true,
-    }); 
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   }
 
   handleCloseNotification = () => {
@@ -130,12 +125,8 @@ export default class Category extends Component {
         title="Processing"
         message="Please wait..."
       />
-      <SingleButtonAlert
-        title = {title} 
-        message = {message}
-        handleCloseNotification = {this.handleCloseNotification}
-        visible = {showAlert}
-      />
+      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
     </SafeAreaView>
     
    )

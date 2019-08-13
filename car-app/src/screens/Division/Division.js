@@ -25,7 +25,7 @@ export default class Devision extends Component {
   }
 
   allDivisions=async()=>{
-    this.showLoadingDialogue();
+   // this.showLoadingDialogue();
     await getRoute(GetDivisionEndpoint)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
@@ -41,7 +41,7 @@ export default class Devision extends Component {
     );
   }
   handleGetDivisions=async()=>{
-    this.showLoadingDialogue();
+    //this.showLoadingDialogue();
 
     try {
       await this.allDivisions()

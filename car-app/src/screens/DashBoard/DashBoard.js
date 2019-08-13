@@ -1,27 +1,10 @@
 'use strict';
 import React, {Component} from 'react';
-import { 
-  View, 
-  ScrollView, 
-  TextInput,
-  SafeAreaView, 
-  StatusBar, 
-  Image, 
-  Text,
-  StyleSheet,
-  AsyncStorage,
-  TouchableOpacity,
-  } from 'react-native';
-import { createMaterialTopTabNavigator, createAppContainer, StackActions, NavigationActions } from 'react-navigation';
-import {DisplayText, InputField,SingleButtonAlert, SubmitButton} from '../../components';
+import {  View, SafeAreaView, StatusBar, Image, StyleSheet, TouchableOpacity, } from 'react-native';
+import {DisplayText, InputField} from '../../components';
 import styles from './styles';
-import { ProgressDialog } from 'react-native-simple-dialogs';
-// import {getRoute, getProfile, saveUserDetail} from '../Utils/Utils'
 import theme from '../../assets/theme';
-import AllReports from '../../screens/AllReports/AllReports';
-import Citation from '../../screens/Citation/Citation';
-import Category from '../../screens/Category/Category';
-import Division from '../Division/Division';
+
 
 export default class DashBoard extends Component {
   constructor(props) {
@@ -42,13 +25,9 @@ export default class DashBoard extends Component {
        showAlert : false
      })
   }
-  toggleDrawer = () => {
-    //Props to open/close the drawer
-    // this.props.navigation.toggleDrawer();
-  };
+ 
 
   render () {
-    const { showLoading, title, message, showAlert, } = this.state;
 
     return (
       <SafeAreaView style={styles.container}> 
@@ -100,63 +79,3 @@ export default class DashBoard extends Component {
     )
   }
 } 
-// const AppTabNavigation = createAppContainer( createMaterialTopTabNavigator({
-//   AllReports: {
-//     screen: AllReports,
-//     navigationOptions: {
-//       tabBarLabel: 'Reports',
-//     }
-//   },
-//   Citation: {
-//     screen: Citation,
-//     navigationOptions: {
-//       tabBarLabel: 'Citation',
-//     }
-//   },
-//   Category: {
-//     screen: Category,
-//     navigationOptions: {
-//       tabBarLabel: 'Category',
-      
-//     }
-//   },
-//   Division: {
-//     screen: Division,
-//     navigationOptions: {
-//       tabBarLabel: 'Division',
-//     }
-//   },
-// }
-//   ,{
-//     initialRouteName: 'AllReports',
-//     tabBarPosition: 'top',
-//     swipeEnabled: true,
-//     tabBarOptions: {
-//       activeTintColor: theme.colorAccent,
-//       inactiveTintColor: theme.textGray,
-//       labelStyle: {
-//         fontSize: 11,
-//       },
-//       // tabStyle: {
-//       //   width: 100,
-//       // },
-//       style: {
-//         backgroundColor: theme.primaryColor,
-//         borderBottomWidth: 0.5,
-//         borderBottomColor: theme.primaryColor,
-//         shadowOffset: {width: 0, height: 1},
-//         shadowColor: 'gray',
-//         shadowOpacity: 0.25,
-//         elevation: 1,
-//         fontFamily: theme.secondaryFont,
-//         height: 50,
-//         width : '100%',
-//       },
-//       indicatorStyle: {
-//         height: 1,
-//         backgroundColor: theme.colorAccent
-//       },
-//       showIcon: false
-//     }
-//   }
-// ))

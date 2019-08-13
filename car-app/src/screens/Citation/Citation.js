@@ -2,10 +2,10 @@
 import React, {Component} from 'react';
 import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView, 
   TouchableOpacity,StatusBar, Image, Text, StyleSheet,} from 'react-native';
-import {DisplayText, CustomToast,SingleButtonAlert, SubmitButton} from '../../components';
+import {DisplayText, SubmitButton} from '../../components';
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import filter from 'lodash.filter';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import { 
   DeleteFavoriteEndpoint, 
@@ -14,7 +14,8 @@ import {
   getAllReport, 
   getProfile, 
   AddReadLaterEndPoint, 
-  AddFavoriteEndPoint 
+  AddFavoriteEndPoint ,
+  getSubscription
 } from '../Utils/Utils';
 
 
@@ -35,17 +36,18 @@ export default class Citation extends Component {
       secondFilter: [],
       numberCitatio: '',
       alphabetCitation: '',
+      isActive : false,
     }
   }
   async componentDidMount(){
     (Platform.OS === 'android') ? UIManager.setLayoutAnimationEnabledExperimental(true) : null
     
     let profile = await getProfile();
-    this.setState({
+    let subscription = await getSubscription();
+     await this.setState({
       token : profile.access_token,
       expires : profile.expires,
-      showLoading:true,
-      // data:this.reports
+      isActive : subscription,
     });
     await this.handleGetAllReport();
   }
@@ -61,13 +63,9 @@ export default class Citation extends Component {
     });
   }
 
-  showNotification = (message, title) => {
-    this.setState({ 
-      showLoading : false,
-      title : title,
-      message : message,
-      showAlert : true,
-    }); 
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   }
 
   handleCloseNotification = () => {
@@ -117,19 +115,26 @@ export default class Citation extends Component {
     });
   }
 
-  handleFullReport=(item)=>{
-    return this.props.navigation.navigate('FullReport', {
-      id: item.id, 
-    });
+  handleFullReport=async(item)=>{
+    if(this.state.isActive === false) {
+      await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+      return await setTimeout(() => {
+        this.props.navigation.navigate('Subscription');
+      }, 3000);    
+    }
+    else {
+      return await this.props.navigation.navigate('FullReport', {
+        id: item.id, 
+      });
+    }
   }
 
   allReport = async() => {
     const {token} = this.state;
-    this.showLoadingDialogue();
     await getRouteToken(getAllReport, token)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message);
+          return this.showNotification('error', 'Message', res.message);
         }   
         else {          
 
@@ -140,17 +145,15 @@ export default class Citation extends Component {
           return this.hideLoadingDialogue();
         }
       }
-    );
+    ).catch(error=>this.showNotification('error', 'Message', error.toString()));
   }
 
   handleGetAllReport = async() => {
-    this.showLoadingDialogue();
-
     try {
       await this.allReport()
     }
     catch(error) {
-      return this.showNotification(error.toString(), 'Message');
+     return this.showNotification('error', 'Message', error.toString());    
     }
   }
   
@@ -164,13 +167,21 @@ export default class Citation extends Component {
   }
 
 
-  addDeleteReadlater = (id, title, index) =>{
-    this.showLoadingDialogue();
-    if(title.includes('Remove')){
-      return this.deleteReadLater(id, index);
+  addDeleteReadlater = async(id, title, index) =>{
+    if(this.state.isActive === false) {
+      await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+      return await setTimeout(() => {
+        this.props.navigation.navigate('Subscription');
+      }, 3000);    
     }
     else {
-      return this.handleReadLater(id, index);
+      await this.showLoadingDialogue();
+      if(title.includes('Remove')){
+        return await this.deleteReadLater(id, index);
+      }
+      else {
+        return await this.handleReadLater(id, index);
+      }
     }
   }
 
@@ -179,7 +190,7 @@ export default class Citation extends Component {
       await this.readLater(id, index)
     }
     catch(error) {
-      return this.showNotification(error.toString());
+      return this.showNotification('error', 'Message', error.toString());    
     }
   }
 
@@ -202,15 +213,15 @@ export default class Citation extends Component {
         let targetPost = await data[index];
         targetPost.is_future_saved =  await !targetPost.is_future_saved;
         await this.setState({ data });
-        return await this.showNotification('Report Added to Read Later', 'Success');
-
+        return await this.showNotification('success', 'Success', 'Report Added Successfully');    
       }
       else {
-        return this.showNotification('Failed to Add Report', 'Message');
+        return this.showNotification('error', 'Message', 'Failed to Add Report');    
+
       }
     }
     catch(error) {
-      return this.showNotification(error.toString(), 'Message')
+      return this.showNotification('error', 'Message', error.toString());    
     }
   } 
 
@@ -235,32 +246,40 @@ export default class Citation extends Component {
         let targetPost = await data[index];
         targetPost.is_future_saved = await !targetPost.is_future_saved;
         await this.setState({ data });
-        return await this.showNotification('Successfully Removed Report from Read Later', 'Success'); 
-
+        return await this.showNotification('success', 'Success', 'Report Removal Successful');    
       }
-      return await this.showNotification('Failed to Remove Report', 'Message');   
+      return await this.showNotification('error', 'Message', 'Failed to Remove Report');    
+   
     } 
     catch(error){
-     return this.showNotification(error.toString(), 'Message'); 
+      return this.showNotification('error', 'Message', error.toString());    
     }
   }
 
-  addDeleteFavorite = (id, title, index) =>{
-    this.showLoadingDialogue();
-    if(title.includes('Remove')) {
-      return this.deleteFavorite(id, index);
+  addDeleteFavorite = async(id, title, index) =>{
+    if(this.state.isActive === false) {
+       await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+      return await  setTimeout(() => {
+        this.props.navigation.navigate('Subscription');
+      }, 3000);   
     }
     else {
-      return this.handleAddFavorite(id, index);
+       await this.showLoadingDialogue();
+      if(title.includes('Remove')) {
+        return await this.deleteFavorite(id, index);
+      }
+      else {
+        return await this.handleAddFavorite(id, index);
+      }
     }
   }
 
   handleAddFavorite = async(id, index) =>{
     try {
-    return await this.addFavorite(id, index)
+      return await this.addFavorite(id, index)
     }
     catch(error) {
-      return this.showNotification(error.toString());
+      return this.showNotification('error', 'Message', error.toString());    
     }
   }
 
@@ -283,16 +302,14 @@ export default class Citation extends Component {
         let targetPost = await data[index];
         targetPost.is_favorite =  await !targetPost.is_favorite;
         await this.setState({ data });
-        return await this.showNotification('Report Added To Favorite', 'Success');
-        
+        return await this.showNotification('success', 'Success', 'Report Added Successfully');    
       }
       else {
-        return this.showNotification('Report Could Not be Added to Favorite',  'Message');
+        return this.showNotification('error', 'Message', 'Failed to Add Report');    
       }
-
     }
     catch(error) {
-      return this.showNotification(error.toString(), 'Message');
+      return this.showNotification('error', 'Message', error.toString());    
     }
   } 
 
@@ -316,12 +333,14 @@ export default class Citation extends Component {
         let targetPost = await  data[index];
         targetPost.is_favorite = await !targetPost.is_favorite;
         await this.setState({ data });
-        return await this.showNotification('Successfully Removed Favorite', 'Success');   
+        return await this.showNotification('success', 'Success', 'Report Removal Successful');    
+        ;   
       }
-      return await this.showNotification('Failed to Removed Report', 'Message');   
+      return await this.showNotification('error', 'Message', 'Failed to Remove Report');    
+  
     } 
     catch(error){
-     return this.showNotification(error.toString(), 'Message'); 
+      return this.showNotification('error', 'Message', error.toString());    
     }
   }
 
@@ -477,13 +496,6 @@ export default class Citation extends Component {
             </View>
           </View>
 
-        {/* button */}
-        {/* <SubmitButton
-          title={'Apply'}
-          onPress={this.handleApply}
-          titleStyle={styles.btnText}
-          btnStyle = {styles.btnStyle}/> */}
-
         </View>
         <View style = {styles.viewBody}>
           <FlatList          
@@ -493,15 +505,6 @@ export default class Citation extends Component {
             keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
           />
-          <SingleButtonAlert
-            title = {title} 
-            message = {message}
-            handleCloseNotification = {this.handleCloseNotification}
-            visible = {showAlert}
-          />
-          <View style = {styles.taostView}>
-            <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          
-          </View> 
         </View>  
         </ScrollView>
           <ProgressDialog
@@ -509,12 +512,8 @@ export default class Citation extends Component {
             title="Processing"
             message="Please wait..."
           />
-          <SingleButtonAlert
-            title = {title} 
-            message = {message}
-            handleCloseNotification = {this.handleCloseNotification}
-            visible = {showAlert}
-          />
+          <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
       </SafeAreaView>
       )
     }

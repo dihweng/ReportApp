@@ -1,9 +1,8 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, Text, ScrollView, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
+import { View, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
 import {DisplayText } from '../../components';
 import styles from './styles';
-import theme from '../../assets/theme';
 
 export default class Ratios extends Component {
   constructor(props) {
@@ -35,8 +34,7 @@ export default class Ratios extends Component {
   }
 
   render () {
-    const { title, message, showAlert, showLoading } = this.state
-
+    
     return(
       <SafeAreaView style={styles.container}> 
         <StatusBar barStyle="default" /> 

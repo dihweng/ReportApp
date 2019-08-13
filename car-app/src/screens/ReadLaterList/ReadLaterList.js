@@ -1,14 +1,13 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList,ScrollView, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
+import { View, FlatList,SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
 import styles from './styles';
 import theme from '../../assets/theme';
-import {DisplayText, CustomToast,SingleButtonAlert, InputField, Alert } from '../../components';
+import {DisplayText, InputField,  } from '../../components';
 import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import {GetReadLaterEndpoint, getProfile, getRouteToken, DeleteReadLaterEndpoint} from '../Utils/Utils';
-
-
+import DropdownAlert from 'react-native-dropdownalert';
 
 export default class ReadLaterList extends Component {
   constructor(props) {
@@ -31,15 +30,18 @@ export default class ReadLaterList extends Component {
       token : profile.access_token,
       expires : profile.expires,
       showLoading:true,
-      // data:this.reports
     });
     await this.handleGetReadLater();
+
+  this.focusListener =  await this.props.navigation.addListener('didFocus', () => {
+      this.handleGetReadLater();
+    }); 
   }
 
+  componentWillUnmount(){
+    this.focusListener.remove();
 
-  // handlePlainReport = () => {
-  //   return this.props.navigation.navigate('PlainReport');
-  // }
+  }
   handleFavoriteList = () => {
     return this.props.navigation.navigate('FavoriteList');
   }
@@ -63,13 +65,9 @@ export default class ReadLaterList extends Component {
     });
   }
 // Show Dialog message
-  showNotification = message => {
-    this.setState({ 
-      showLoading : false,
-      title : 'Error!',
-      message : message,
-      showAlert : true,
-    }); 
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   }
 // Hide Dialog message
   handleCloseNotification = () => {
@@ -84,16 +82,21 @@ export default class ReadLaterList extends Component {
     await getRouteToken(GetReadLaterEndpoint, token)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message);
+          return this.showNotification('error', 'Message', res.message);
         }   
-        else {          
-          this.setState({
-            data: res.data,
-            filterData: res.data,
-            id: res.data.id,
-          });
-          // return this.Toast('Successful')
-          return this.hideLoadingDialogue();
+        else {    
+          if(res.data.length){
+           return this.setState({
+              data: res.data,
+              filterData: res.data,
+              id: res.data.id,
+              showLoading: false
+            });
+          }
+          this.showNotification('error', 'Message', 'No Record Found');
+          // setTimeout(()=>{
+          //   this.props.navigation.navigate('DashBoard');
+          // },3000)
 
         }
       }
@@ -107,7 +110,7 @@ export default class ReadLaterList extends Component {
       await this.AllReadLater()
     }
     catch(error) {
-      return this.showNotification(error.toString());
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
   // search filter 
@@ -157,12 +160,12 @@ export default class ReadLaterList extends Component {
       let res = await response;
       if(res.status >= 200 && res.status < 300) {
         // this.handleGetReadLater();
-        return await this.showNotification('Successfully Removed Report from Read Later');   
+        return this.showNotification('success', 'Success', 'Report Removal Successful');
       }
-      return await this.showNotification(res.message.toString());   
+      return await this.showNotification('error', 'Message', 'Failed to Remove Report');
     } 
     catch(error){
-     return this.showNotification(error.toString()); 
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
 renderHeader = () => {
@@ -193,9 +196,7 @@ renderHeader = () => {
 //With the Params id, content and except
 handleFullReport=async(item)=>{
   this.props.navigation.navigate('FullReport', {
-    id: item.id,
-    content: item.content,
-    excerpt: item.excerpt,  
+    id: item.id, 
   });
 }
 
@@ -267,15 +268,6 @@ handleFullReport=async(item)=>{
           </View>
         </View> 
         <View style = {styles.cards}>
-          {/* <TouchableOpacity
-            onPress = {this.handlePlainReport}  
-            style = {styles.customTabTp2}>
-              <DisplayText
-              text={'Plain Report'}
-              onPress = {this.handlePlainReport}  
-              styles = {StyleSheet.flatten(styles.txtTabHeader)}
-            />
-          </TouchableOpacity> */}
           <TouchableOpacity
             onPress = {this.handleFavoriteList}  
             style = {styles.customTabTp2}>
@@ -300,24 +292,18 @@ handleFullReport=async(item)=>{
             data={this.state.data}          
             renderItem={this.renderRow}          
             ListHeaderComponent={this.renderHeader}     
-            keyExtractor={ data=> data.id.toString()}   
+            keyExtractor={ data=> data.id.toString()}  
+            extraData={this.state} 
             showsVerticalScrollIndicator={false}
           />
-          <View style = {styles.taostView}>
-            <CustomToast ref = "defaultToastBottom" backgroundColor='#4CAF50' position = "bottom"/>          
-          </View> 
         </View>  
         <ProgressDialog
           visible={showLoading}
           title="Processing"
           message="Please wait..."
         />
-        <SingleButtonAlert
-          title = {title} 
-          message = {message}
-          handleCloseNotification = {this.handleCloseNotification}
-          visible = {showAlert}
-        />
+        <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
       </SafeAreaView> 
     )
   }

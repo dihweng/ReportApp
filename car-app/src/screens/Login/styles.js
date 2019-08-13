@@ -98,8 +98,9 @@ export default styles = StyleSheet.create({
     // backgroundColor: colors.green_background
   },
   logoIcon : {
-    height : 90,
-    width : 80,
+    resizeMode : 'contain',
+    height : '100%',
+    width : '100%',
   },
   logoIcon2: {
     height : 90,

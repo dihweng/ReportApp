@@ -227,6 +227,24 @@ export const saveUserDetail = async( data, token,  ) => {
   };
   return await AsyncStorage.setItem('details', JSON.stringify(details))
 }
+
+export const subscription = async(status) => {
+  let subscription = {status};
+  await AsyncStorage.removeItem('subscription');
+  return await AsyncStorage.setItem('subscription', JSON.stringify(subscription))
+}
+
+export const getSubscription = async()=> {
+  return await AsyncStorage.getItem('details')
+    .then((value) => {
+      if (value == 'active') {
+        return true
+      } else {
+        return false;
+      }
+  });
+}
+
 export const getUserDetails = async() => {
   return await AsyncStorage.getItem('details')
     .then((value) => {
