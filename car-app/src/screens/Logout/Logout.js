@@ -26,6 +26,9 @@ export default class Profile extends Component {
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
 
+      <Image
+        source={require('../../assets/images/splash.png')}
+        style={StyleSheet.flatten(styles.logoIcon)}/> 
     </SafeAreaView>
     
    )
