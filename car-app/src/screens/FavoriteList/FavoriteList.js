@@ -6,7 +6,7 @@ import styles from './styles';
 import theme from '../../assets/theme';
 import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import {GetFavoriteEndpoint, getProfile,getRouteToken, DeleteFavoriteEndpoint} from '../Utils/Utils';
+import {GetFavoriteEndpoint, getProfile,getRouteToken, getSubscription, DeleteFavoriteEndpoint} from '../Utils/Utils';
 import DropdownAlert from 'react-native-dropdownalert';
 
 
@@ -22,14 +22,17 @@ export default class FavoriteList extends Component {
       data: [],
       filterData: [],
       token: '',
+      isActive:false,
     }
   }
   async componentDidMount(){
     let profile = await getProfile();
+    let subscription = await getSubscription();
     this.setState({
       token : profile.access_token,
       expires : profile.expires,
       showLoading:true,
+      isActive: subscription,
       // data:this.reports
     });
     await this.handleGetFavorite();
@@ -43,10 +46,6 @@ export default class FavoriteList extends Component {
 
   }
 
-
-  // handlePlainReport = () => {
-  //   return this.props.navigation.navigate('PlainReport');
-  // }
   handleFavoriteList = () => {
     return this.props.navigation.navigate('FavoriteList');
   }
@@ -100,10 +99,6 @@ export default class FavoriteList extends Component {
             });
           }
           this.showNotification('error', 'Message', 'No Record Found');
-          // setTimeout(()=>{
-          //   this.props.navigation.navigate('DashBoard');
-          // },3000)
-
         }
       }
     );
@@ -120,31 +115,41 @@ export default class FavoriteList extends Component {
   }
 
   deleteFavorite=async(id)=> {
-    const { token } = this.state
-    this.showLoadingDialogue();
+    if(this.state.isActive === false) {
+      await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+      return await setTimeout(() => {
+        this.props.navigation.navigate('Subscription');
+      }, 3000);    
+    }
+    else {
+      const { token, data } = this.state
+      this.showLoadingDialogue();
 
-    let endpoint = `${DeleteFavoriteEndpoint}${id}/${'favorite'}`      
+      let endpoint = `${DeleteFavoriteEndpoint}${id}/${'favorite'}`      
 
-    const settings = {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,   
+      const settings = {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,   
 
-      },
-    };
+        },
+      };
 
-    try {
-      let response = await fetch(endpoint, settings);
-      let res = await response;
-      if(res.status >= 200 && res.status < 300) {
-        return this.showNotification('success', 'Success', 'Report Removal Successful');
+      try {
+        let response = await fetch(endpoint, settings);
+        let res = await response;
+        if(res.status >= 200 && res.status < 300) {
+          let newData = data.filter(item => item.id !==  id);
+          this.setState({data:newData});
+          return this.showNotification('success', 'Success', 'Report Removal Successful');
+        }
+        return await this.showNotification('error', 'Message', 'Failed to Remove Report');
+      } 
+      catch(error){
+        return this.showNotification('error', 'Message', error.toString());
       }
-      return await this.showNotification('error', 'Message', 'Failed to Remove Report');
-    } 
-    catch(error){
-      return this.showNotification('error', 'Message', error.toString());
     }
 
   }
@@ -167,11 +172,17 @@ export default class FavoriteList extends Component {
   // On pressing a report will navigate you to Full Report
 //With the Params id, content and except
 handleFullReport=async(item)=>{
-  this.props.navigation.navigate('FullReport', {
-    id: item.id,
-    content: item.content,
-    excerpt: item.excerpt,  
-  });
+  if(this.state.isActive === false) {
+    await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+    return await setTimeout(() => {
+      this.props.navigation.navigate('Subscription');
+    }, 3000);    
+  }
+  else {
+    this.props.navigation.navigate('FullReport', {
+      id: item.id, 
+    });
+  }
 }
 
 renderHeader = () => {
@@ -208,29 +219,29 @@ renderHeader = () => {
             onLongPress={()=>this.deleteFavorite(item.id)}
             onPress = {()=>this.handleFullReport(item)}
             style = {styles.cardView}>
-              <DisplayText
-                numberOfLines = { 2 } 
-                ellipsizeMode = 'middle'
-                text = {item.title}
-                onPress = {()=>this.handleFullReport(item)}
-                styles = {StyleSheet.flatten(styles.reportName)}
-              />
+            <DisplayText
+              numberOfLines = { 2 } 
+              ellipsizeMode = 'middle'
+              text = {item.title}
+              onPress = {()=>this.handleFullReport(item)}
+              styles = {StyleSheet.flatten(styles.reportName)}
+            />
 
-              <DisplayText
-                numberOfLines = { 2 } 
-                ellipsizeMode = 'middle'
-                text = {item.citation}
-                onPress = {()=>this.handleFullReport(item)}
-                styles = {StyleSheet.flatten(styles.headerText)}
-              />
+            <DisplayText
+              numberOfLines = { 2 } 
+              ellipsizeMode = 'middle'
+              text = {item.citation}
+              onPress = {()=>this.handleFullReport(item)}
+              styles = {StyleSheet.flatten(styles.headerText)}
+            />
 
-              <DisplayText
-                numberOfLines = { 4 } 
-                ellipsizeMode = 'middle'
-                text = {item.excerpt.toLowerCase()}
-                onPress = {()=>this.handleFullReport(item)}
-                styles = {StyleSheet.flatten(styles.reportInfo)}
-                />
+            <DisplayText
+              numberOfLines = { 4 } 
+              ellipsizeMode = 'middle'
+              text = {item.excerpt.toLowerCase()}
+              onPress = {()=>this.handleFullReport(item)}
+              styles = {StyleSheet.flatten(styles.reportInfo)}
+            />
           </TouchableOpacity>
           <TouchableOpacity                  
             style = {styles.deleteBtn}>

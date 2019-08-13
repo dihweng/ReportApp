@@ -6,7 +6,7 @@ import theme from '../../assets/theme';
 import {DisplayText, InputField,  } from '../../components';
 import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import {GetReadLaterEndpoint, getProfile, getRouteToken, DeleteReadLaterEndpoint} from '../Utils/Utils';
+import {GetReadLaterEndpoint, getProfile, getRouteToken, getSubscription, DeleteReadLaterEndpoint} from '../Utils/Utils';
 import DropdownAlert from 'react-native-dropdownalert';
 
 export default class ReadLaterList extends Component {
@@ -20,16 +20,20 @@ export default class ReadLaterList extends Component {
       id : '',
       data: [],
       filterData: [],
-      token: ''
+      token: '',
+      isActive: false,
+
     }
   }
 
   async componentDidMount(){
     let profile = await getProfile();
+    let subscription = await getSubscription();
     this.setState({
       token : profile.access_token,
       expires : profile.expires,
       showLoading:true,
+      isActive:subscription,
     });
     await this.handleGetReadLater();
 
@@ -94,10 +98,7 @@ export default class ReadLaterList extends Component {
             });
           }
           this.showNotification('error', 'Message', 'No Record Found');
-          // setTimeout(()=>{
-          //   this.props.navigation.navigate('DashBoard');
-          // },3000)
-
+          
         }
       }
     );
@@ -105,7 +106,6 @@ export default class ReadLaterList extends Component {
   //Call AllReadLater function
   handleGetReadLater = async() => {
     this.showLoadingDialogue();
-
     try {
       await this.AllReadLater()
     }
@@ -130,42 +130,41 @@ export default class ReadLaterList extends Component {
     });
   }
 
-  Toast=(message)=>{
-    this.refs.defaultToastBottom.ShowToastFunction(message);
-  }
-// Handle delete of report on long press 
-
-
-  // handleFullReport=()=>{
-  //   alert('hello will sooon handle you');
-  // }
-
   deleteReadLater=async(id)=> {
-    const { token } = this.state
-    let endpoint = `${DeleteReadLaterEndpoint}${id}/${'future'}`      
-    this.showLoadingDialogue();
+    if(this.state.isActive === false) {
+      await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+      return await setTimeout(() => {
+        this.props.navigation.navigate('Subscription');
+      }, 3000);    
+    }
+    else {
+      const { token, data } = this.state
+      let endpoint = `${DeleteReadLaterEndpoint}${id}/${'future'}`      
+      this.showLoadingDialogue();
 
-    const settings = {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,   
+      const settings = {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,   
 
-      },
-    };
+        },
+      };
 
-    try {
-      let response = await fetch(endpoint, settings);
-      let res = await response;
-      if(res.status >= 200 && res.status < 300) {
-        // this.handleGetReadLater();
-        return this.showNotification('success', 'Success', 'Report Removal Successful');
+      try {
+        let response = await fetch(endpoint, settings);
+        let res = await response;
+        if(res.status >= 200 && res.status < 300) {
+          let newData = data.filter(item => item.id !==  id);
+          this.setState({data:newData});
+          return this.showNotification('success', 'Success', 'Report Removal Successful');
+        }
+        return await this.showNotification('error', 'Message', 'Failed to Remove Report');
+      } 
+      catch(error){
+        return this.showNotification('error', 'Message', error.toString());
       }
-      return await this.showNotification('error', 'Message', 'Failed to Remove Report');
-    } 
-    catch(error){
-      return this.showNotification('error', 'Message', error.toString());
     }
   }
 renderHeader = () => {
@@ -195,9 +194,17 @@ renderHeader = () => {
   // On pressing a report will navigate you to Full Report
 //With the Params id, content and except
 handleFullReport=async(item)=>{
-  this.props.navigation.navigate('FullReport', {
-    id: item.id, 
-  });
+  if(this.state.isActive === false) {
+    await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+    return await setTimeout(() => {
+      this.props.navigation.navigate('Subscription');
+    }, 3000);    
+  }
+  else {
+    this.props.navigation.navigate('FullReport', {
+      id: item.id, 
+    });
+  }
 }
 
   renderRow = ({item}) => {
@@ -245,7 +252,7 @@ handleFullReport=async(item)=>{
   }
 
   render () {
-    const { title, message, showAlert, showLoading } = this.state
+    const {showLoading } = this.state
 
     return(
       <SafeAreaView style={styles.container}> 
