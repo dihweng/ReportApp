@@ -1,12 +1,13 @@
 
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList, SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
+import { View, Modal, ScrollView, TouchableHighlight,Text,SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
 import {DisplayText, SubmitButton, SingleButtonAlert, InputField} from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import { postWithToken, CreateSupport, getProfile, AllListofSupport } from '../Utils/Utils';
+import {Input, Icon} from 'native-base'
 
 export default class CreateIssue extends Component {
   constructor(props) {
@@ -20,7 +21,11 @@ export default class CreateIssue extends Component {
       showLoading : false,
       messageIssue : '',
       isValidIssue : false,
-      userId : ''
+      userId: '',
+      channel: 'Channel',
+      channelModalVisible: false,
+      isValidChannel: false
+
     }
   }
 
@@ -64,21 +69,41 @@ export default class CreateIssue extends Component {
        showAlert : false
      })
   }
-
-  handleCreateTicket = () => {
-    const {messageIssue, token} = this.state;
-
+  setChannelPicker = (newValue) => {
     this.setState({
-      showLoading : true
+      channel: newValue,
+      isValidChannel: true
     });
+    this.closeChannelModal();
+  }
+
+  handleChannel = () => {
+    this.toggleChannelModal(true);
+  };
+
+  toggleChannelModal = (visible) => {
+    this.setState({ channelModalVisible : visible });
+  };
+
+  closeChannelModal = () => {
+    this.toggleChannelModal(!this.state.channelModalVisible);
+  };
+
+  
+
+  handleCreateTicket = async() => {
+    const {messageIssue, channel, token} = this.state;
+
+    await this.showLoadingDialogue();
 
     let data = { 
       'subject': messageIssue,
-      'channel': 'Report Error'
+      'channel': channel,
       };
 
     postWithToken (CreateSupport, data, token)
     .then((res) => {
+      console.log({responseMessage: res})
       if (typeof res.message !== 'undefined' ) {  
         return  this.setState({ 
           showLoading : false,
@@ -128,9 +153,16 @@ export default class CreateIssue extends Component {
     }
   }
 
-
   render () {
-    const { showAlert, showLoading, message, title} = this.state;
+    const pickerChannel = [
+      {title: 'Payments', value: 'Payments'},
+      {title: 'Report', value: 'Report'},
+      {title: 'Subscriptions', value: 'Subscriptions'},
+      {title: 'Suggestions', value: 'Suggestions'},
+      {title: 'Others', value: 'Others'},
+
+    ];
+    const { showAlert, showLoading, message, title, channel} = this.state;
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
@@ -181,9 +213,53 @@ export default class CreateIssue extends Component {
 
           />
         </View>
-        <View>
-          {/* Flatlist here */}
+        <View style = {styles.formContainer}>
+          <DisplayText
+            text={'Channel *'}
+            styles = {styles.formHeaderTxt}
+          />
+          <TouchableOpacity 
+            underlayColor={colors.white}
+            onPress = {this.handleChannel}
+            style = {styles.textBoder}>
+            <View style = {styles.viewTxtChannel}>
+              <Text style = {styles.channelTxt}>
+                {channel}
+              </Text>
+              <Icon
+                active
+                name='md-arrow-dropdown'
+                style={styles.iconStyle}
+              />
+            </View>
+          </TouchableOpacity>
         </View>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible = {this.state.channelModalVisible}
+          onRequestClose={() => {console.log('Request was closed')}}>
+          <View style={styles.modalContainer}> 
+            <View style={styles.modalStyle}>
+              <ScrollView 
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ padding: 16}}>
+                <View style={{ justifyContent: 'center'}}>
+                  <DisplayText
+                    style={styles.textHeaderStyle}
+                    text ={'Channel'} 
+                    />
+                    {pickerChannel.map((value, index) => {
+                      return <TouchableHighlight key={index} onPress={() => this.setChannelPicker(value.value)}>
+                        <Text style={styles.modalTxt}>{value.title}</Text>
+                      </TouchableHighlight>;
+                    })
+                    }                    
+                  </View>
+                </ScrollView>
+              </View>
+            </View>
+          </Modal>
         </View> 
           <View style = {styles.btnView}>
             <SubmitButton

@@ -11,7 +11,7 @@ export default styles = StyleSheet.create({
   navBar: {
     flexDirection : 'row',
     // paddingTop : (Platform.OS === "ios") ? 16 : 14,
-    height : (Platform.OS === "ios") ? 40 : 60,
+    height : (Platform.OS === "ios") ? 50 : 60,
     backgroundColor: theme.toolBarColor,
     width: '100%',
     alignItems: 'center',
@@ -99,5 +99,75 @@ export default styles = StyleSheet.create({
     color: colors.white,
     fontFamily: 'Roboto-Regular',
     alignSelf: 'center',    
+  },
+  //modal channel
+  formContainer : {
+    width : '78%',
+    flexDirection: 'column',
+    marginTop: 4,
+  },
+  formHeaderTxt: {
+    fontSize: theme.SmallFont,
+    color: colors.darkSilver,
+    fontFamily: theme.LightRoboto,
+  },
+  textBoder: {
+    backgroundColor : colors.field_color,
+    height: 40,
+    paddingLeft: 8,
+    width:'100%',
+    borderRadius : 4,
+    paddingRight : 8,
+    justifyContent : 'center',
+  },
+  dateGenderView: {
+    width : '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  iconStyle: {
+    color: theme.primaryColor,
+    fontSize: 20,
+  },
+  viewTxtChannel : {
+    width : '100%',
+    flexDirection : 'row',
+    justifyContent : 'space-between',
+
+  },
+  
+  channelTxt : {
+    fontFamily : theme.primaryFont,    
+    color: theme.primaryTextColor,
+    fontSize: 16,
+
+  },
+  modalContainer: {
+    flex: 1, 
+    // justifyContent: 'center', 
+    alignItems: 'center',
+    marginTop: (Platform.OS === 'ios') ? '50%': '33%',
+  },
+  modalStyle: {
+    backgroundColor: colors.whiteShade, 
+    borderColor: colors.gray,
+    height: '50%', 
+    width: '90%',
+    padding: 16,  
+    borderRadius: 4
+
+  },
+  modalTxt:{
+    fontSize: 18,
+    color: colors.text_color,
+    marginVertical: 6,
+    fontFamily : theme.primaryFont
+  },
+  textHeaderStyle: {
+    fontSize:  22,
+    fontFamily : theme.primaryFont,
+    marginTop: 8,
+    color: colors.green
+
   },
 });

@@ -248,7 +248,7 @@ render () {
     {title: 'Female', value: 'Female'},
     {title: 'Male', value: 'Male'},
   ];
-  const {showLoading, flag, name, email, phone, gender, nationality  } = this.state;
+  const {showLoading, flag, name, email, phone, gender } = this.state;
 
   return(
     <SafeAreaView style={styles.container}> 
