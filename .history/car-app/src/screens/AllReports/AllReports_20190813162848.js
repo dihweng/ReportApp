@@ -116,8 +116,7 @@ import DropdownAlert from 'react-native-dropdownalert';
         else {
           saveUserDetail(res.data, token);
           this.props.setProfile(res.data);
-          console.log({res})
-          if(res.data.subscription !== null){
+          if(typeof res.data.subscription.status !== 'undefined'){
             status = res.data.subscription.status;     
           }
           this.setState({
