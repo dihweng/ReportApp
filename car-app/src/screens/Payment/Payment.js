@@ -30,7 +30,9 @@ export default class Payment extends Component {
     if(webViewState.title === 'Payment Successful') {
 
       setTimeout(()=>{
-        this.props.navigation.navigate('ManageSubscription');
+        this.props.navigation.navigate('ManageSubscription', {
+          'paid':true
+        });
       }, 3000);
     }
  }

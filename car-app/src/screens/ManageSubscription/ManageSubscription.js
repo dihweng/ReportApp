@@ -2,9 +2,11 @@
 import React, {Component} from 'react';
 import { View, SafeAreaView, StatusBar, Image, FlatList, TouchableOpacity, StyleSheet,} from 'react-native';
 import {DisplayText, SingleButtonAlert } from '../../components';
-import { getUserDetails, GetAllSubscription, getRouteToken} from '../Utils/Utils';
+import { getUserDetails, GetAllSubscription, subscription, getRouteToken} from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import styles from './styles';
+import DropdownAlert from 'react-native-dropdownalert';
+import moment from 'moment';
 
 export default class ManageSubscription extends Component {
   constructor(props) {
@@ -17,104 +19,34 @@ export default class ManageSubscription extends Component {
       showLoading: false,
       message : '',
       title: '',
+      name: '',
     }
   }
-  subscription = [
-    {    
-      "_id": "5d1c92249b0b080017036e53",
-      "reportName": "Online Payment-2Months",
-      "date" : "19/06/2019",
-      "name": "Tunde Anwo",
-      "expires" : "19/07/2019",
-      "amount" : "350",
-      "Status" : "Active"
-    },
-    {    
-      "_id": "5d1c90249b0b080017036e53",
-      "reportName": "Online Payment-2Months",
-      "date" : "19/05/2018",
-      "name": "Tunde Anwo",
-      "expires" : "19/07/2018",
-      "amount" : "350",
-      "Status" : "Expire"
-    },
-    {    
-      "_id": "541c92249b0b080017036e53",
-      "reportName": "Online Payment-2Months",
-      "date" : "19/06/2016",
-      "name": "Tunde Anwo",
-      "expires" : "19/07/2016",
-      "amount" : "350.12",
-      "Status" : "Expire"
-    },
-    {    
-      "_id": "5d1cn2249b0b080017036e53",
-      "reportName": "Online Payment-2Months",
-      "date" : "19/06/2016",
-      "name": "Tunde Anwo",
-      "expires" : "19/07/2016",
-      "amount" : "350.23",
-      "Status" : "Expire"
-    },
-    {    
-      "_id": "5d1c92g49b0b080017036e53",
-      "reportName": "Online Payment-2Months",
-      "date" : "19/06/2016",
-      "name": "Tunde Anwo",
-      "expires" : "19/07/2016",
-      "amount" : "350.12",
-      "Status" : "Expire"
-    },
-    {    
-      "_id": "5d1c92249b0b082017036e53",
-      "reportName": "Online Payment-2Months",
-      "date" : "19/06/2016",
-      "name": "Tunde Anwo",
-      "expires" : "19/07/2016",
-      "amount" : "350.12",
-      "Status" : "Expire"
-    },
-    {    
-      "_id": "5d1c92249b0b0800170g6e53",
-      "reportName": "Online Payment-2Months",
-      "date" : "19/06/2016",
-      "name": "Tunde Anwo",
-      "expires" : "19/07/2016",
-      "amount" : "350",
-      "Status" : "Expire"
-    },
-    {    
-      "_id": "5d1c92249b0b080317036e53",
-      "reportName": "Online Payment-2Months",
-      "date" : "19/06/2016",
-      "name": "Tunde Anwo",
-      "expires" : "19/07/2016",
-      "amount" : "350",
-      "Status" : "Expire"
-    },
-    {    
-      "_id": "5d1c92249b0b083017036e53",
-      "reportName": "Online Payment-2Monthz",
-      "date" : "19/06/2016",
-      "name": "Tunde Anwo",
-      "expires" : "19/07/2016",
-      "amount" : "350",
-      "Status" : "Expire"
-    },
- 
-];
 
   async componentDidMount(){
     let userDetails = await getUserDetails();
     const id = userDetails.data.id,
+      name = userDetails.data.name,
       token = userDetails.token;
+      let payment = this.props.navigation.getParam('paid');
 
       this.setState({
       id,
       token,
+      name,
     });
     await this.handleGetSubscription();
 
+    this.focusListener =  await this.props.navigation.addListener('didFocus', () => {
+      this.handleGetSubscription();
+      if(payment !== null) {
+        subscription('active');
+      }
+    }); 
+  }
+
+  componentWillUnmount(){
+    this.focusListener.remove();
   }
 
   allSubscription = async() => {
@@ -124,16 +56,16 @@ export default class ManageSubscription extends Component {
     await getRouteToken(endpoint, token)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
-          return this.showNotification(res.message);
+          return this.showNotification('error', 'Message', res.message);
         }   
-        else {          
+        else {   
           this.setState({
             data: res.data,
           });
           return this.hideLoadingDialogue();
         }
       }
-    );
+    ).catch(error=>this.showNotification('error', 'Message', error.toString()));
   }
 
   handleGetSubscription = async() => {
@@ -143,7 +75,7 @@ export default class ManageSubscription extends Component {
       await this.allSubscription()
     }
     catch(error) {
-      return this.showNotification(error.toString());
+      return this.showNotification('error', 'Message', error.toString());
     }
   }
   handleBackPress = () => {
@@ -162,15 +94,11 @@ export default class ManageSubscription extends Component {
     });
   }
 
-  showNotification = message => {
-    this.setState({ 
-      showLoading : false,
-      title : 'Error!',
-      message : message,
-      showAlert : true,
-    }); 
-  }
 
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
+  }
   handleCloseNotification = () => {
     return this.setState({
        showAlert : false,
@@ -199,6 +127,13 @@ export default class ManageSubscription extends Component {
 
  
   renderRow = ({item}) => {
+    let newDate = moment(item.expires_at, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY');
+    let paymentDate = moment(item.created_at, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY');
+    let expiryLabel = item.status == 'active' ? 'Expires' : 'Expired';
+    let dur1 = item.plan.name.split(' ')[0];
+    let dur2 = item.plan.name.split(' ')[1];
+
+
     return (
       <View style = {styles.listViewItem}>    
         <TouchableOpacity 
@@ -218,47 +153,55 @@ export default class ManageSubscription extends Component {
           </View>
           <View style = {styles.subView}>
             <DisplayText
-                text = {item.plan.name}
-                styles = {StyleSheet.flatten(styles.subscriberName)}
+                text = {`${item.payment.gateway.toUpperCase()} - ${dur1.toUpperCase()} ${dur2.toUpperCase()}`}
+                styles = {StyleSheet.flatten(styles.expireTxt)}
               />
             <DisplayText
-              text = {item.plan.amount.toString()}
+              text = {paymentDate}
               styles = {StyleSheet.flatten(styles.amount)}
             />
           </View>
-          {/* <View style = {styles.subView}>
+          <View style = {styles.subView}>
             <DisplayText
-                text = {"Expires-" + item.expires}
+                text = {this.state.name}
+                styles = {StyleSheet.flatten(styles.subscriberName)}
+              />
+            <DisplayText
+              text = {`N${item.plan.amount.toString()}`}
+              styles = {StyleSheet.flatten(styles.amount)}
+            />
+          </View>
+          <View style = {styles.subView}>
+            <DisplayText
+                text = {`${expiryLabel} - ${newDate}`}
                 styles = {StyleSheet.flatten(styles.expireTxt)}
               />
             
             {
-              (item.Status === 'Active') ?
+              (item.status === 'Active') ?
                 <DisplayText
-                  text = {item.Status.toUpperCase()}
+                  text = {item.status.toUpperCase()}
                   styles = {StyleSheet.flatten(styles.statusTxtActive)}
                 />
               :
                 <DisplayText
-                  text = {item.Status.toUpperCase()}
+                  text = {item.status.toUpperCase()}
                   styles = {StyleSheet.flatten(styles.statusTxtExpire)}
                 />
             }
-          </View> */}
+          </View>
         </TouchableOpacity>
       </View>
     );
   }
 
   render () {
-    const {
-      showLoading, 
-      title, 
-      message, 
-      showAlert, } = this.state;
+    const { showLoading } = this.state;
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
+      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
       <View style = {styles.navBar}>
         <TouchableOpacity
           onPress={this.handleBackPress} 
@@ -311,7 +254,7 @@ export default class ManageSubscription extends Component {
           <FlatList          
             data={this.state.data}          
             renderItem={this.renderRow}          
-            keyExtractor={ data=> data._id}   
+            keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
           />
         </View>
@@ -321,12 +264,7 @@ export default class ManageSubscription extends Component {
         title="Processing"
         message="Please wait..."
       />
-      <SingleButtonAlert
-        title = {title} 
-        message = {message}
-        handleCloseNotification = {this.handleCloseNotification}
-        visible = {showAlert}
-      />
+      
     </SafeAreaView>
     )
   }
