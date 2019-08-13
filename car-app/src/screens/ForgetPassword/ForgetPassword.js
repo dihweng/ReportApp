@@ -22,7 +22,6 @@ export default class ForgetPassword extends Component {
     }
   }
 
-
   showLoadingDialogue =()=> {
     this.setState({
       showLoading: true,
@@ -75,7 +74,7 @@ export default class ForgetPassword extends Component {
             this.props.navigation.navigate('Login');
            }, 3000);
         }
-      });
+      }).catch(error=>this.showNotification('error', 'Message', error.toString()));
     }
 
   handleCloseNotification = () => {
