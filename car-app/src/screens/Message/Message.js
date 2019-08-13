@@ -7,14 +7,11 @@ import AutogrowInput from 'react-native-autogrow-input';
 import colors from '../../assets/colors';
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import {DisplayText, SingleButtonAlert} from '../../components';
-import { postWithToken, TicketMessageEndpoint, getUserDetails, GetAllMessageEndPoint, getRoute, getRouteToken } from '../Utils/Utils'
+import {DisplayText} from '../../components';
+import { TicketMessageEndpoint, getUserDetails, GetAllMessageEndPoint, getRouteToken } from '../Utils/Utils'
 import moment from 'moment';
+import DropdownAlert from 'react-native-dropdownalert';
 
-//used to make random-sized messages
-// function getRandomInt(min, max) {
-//     return Math.floor(Math.random() * (max - min + 1)) + min;
-// }
 
 export default class Message extends Component {
 
@@ -27,19 +24,6 @@ export default class Message extends Component {
     // var numberOfMessages = 20;
 
     var messages = [];
-
-    // for(var i = 0; i < numberOfMessages; i++) {
-    //   var messageLength = getRandomInt(10, 120);
-
-    //   var direction = getRandomInt(1, 2) === 1 ? 'right' : 'left';
-
-    //   message = loremIpsum.substring(0, messageLength);
-
-    //   messages.push({
-    //     direction: direction,
-    //     text: message
-    //   })
-    // }
 
     this.state = {
       messages: messages,
@@ -67,10 +51,7 @@ export default class Message extends Component {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide.bind(this));
 
     clearInterval(this.Clock);
-
   }
-
-
 
   componentWillUnmount() {
     this.mounted = false
@@ -91,14 +72,7 @@ export default class Message extends Component {
 
   //scroll to bottom when first showing the view
   async componentDidMount() {
-    //Getting the current date-time with required format and UTC   
-    // var hours = new Date().getHours(); //Current Hours
-    // var min = new Date().getMinutes(); //Current Minutes
-
-    // this.setState({
-    //   //Setting the value of the date time
-    //   time: hours + ':' + min,
-    // });
+    
     this.mounted = true
     // this.Clock = setInterval( () => this.GetTime(), 1000 );
 
@@ -129,6 +103,23 @@ export default class Message extends Component {
     }.bind(this))
   }
 
+  showLoadingDialogue =()=> {
+    this.setState({
+      showLoading: true,
+    });
+  }
+  // Hide Loading Spinner
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+    });
+  }
+
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
+  }
+
   _sendMessage() {
     const {messages, id, inputBarText, token} = this.state;
     messages.push({direction: "right", text: inputBarText});
@@ -154,38 +145,24 @@ export default class Message extends Component {
     })
     .then((res) => {
       if (typeof res.message !== 'undefined' ) {
-        return this.setState({
-          showLoading : false,
-          title : 'Alert',
-          message : res.message,
-          showAlert : true,
-        });
+        return this.showNotification('error', 'Message', res.message);
       }
       else {
-        this.setState({
-          showLoading : false,
-        });
+        return  this.hideLoadingDialogue();
       }
-    })
-
- 
+    }).catch(error=>this.showNotification('error', 'Message', error.toString()))
   }
 
-  handleGetAllMessage = () => {
+  handleGetAllMessage = async() => {
     const{token, id} = this.state;
     this.setState({
       showLoading: true
     });
     let endPoint = `${GetAllMessageEndPoint}/${id}/${"messages"}`;
-      getRouteToken(endPoint, token)
+      await getRouteToken(endPoint, token)
       .then((res) => {
-        if (typeof res.message !== 'undefined' || typeof res.message === '') { 
-          return  this.setState({ 
-            showLoading : false,
-            title : 'Alert',
-            message : res.message,
-            showAlert : true,
-          }); 
+        if (typeof res.message !== 'undefined') { 
+          return this.showNotification('error', 'Message', res.message);
         }
         else {
           const dataResponse = res.data.reverse();
@@ -198,7 +175,7 @@ export default class Message extends Component {
         }
       })
       .catch((error) => {
-        console.log({error: error});
+       return this.showNotification('error', 'Message', error.toString());
     });
   };
   handleConvertData = (dataResponse) => {
@@ -235,7 +212,7 @@ export default class Message extends Component {
   }
   //This is to navigate back to the supportdesk
   handleBackPress = () => {
-    return this.props.navigation.goBack();
+    return this.props.navigation.navigate('SurpportDesk');
   }
   handleCloseNotification = () => {
     return this.setState({
@@ -256,7 +233,7 @@ export default class Message extends Component {
 
 
   render() {
-    const {showLoading, title, message, showAlert, time, status} = this.state;
+    const {showLoading, time, status} = this.state;
 
     var messages = [];
 
@@ -269,6 +246,8 @@ export default class Message extends Component {
     return (
       <SafeAreaView style={styles.outer}>
         <StatusBar barStyle="default" /> 
+        <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
         <View style = {styles.navBar}>
           <TouchableOpacity 
             onPress={this.handleBackPress} 
@@ -314,12 +293,7 @@ export default class Message extends Component {
           visible={showLoading}
           title="Processing"
           message="Please wait..."/>  
-        <SingleButtonAlert
-          title = {title} 
-          message = {message}
-          handleCloseNotification = {this.handleCloseNotification}
-          visible = {showAlert}
-        />         
+             
       </SafeAreaView>
     );
   }
@@ -370,6 +344,7 @@ class InputBar extends Component {
       <View style={styles.inputBar}>
         <AutogrowInput style={styles.textBox}
           ref={(ref) => { this.autogrowInput = ref }} 
+          placeholder='Enter message here'
           multiline={true}
           defaultHeight={50}
           onChangeText={(text) => this.props.onChangeText(text)}

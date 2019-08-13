@@ -135,54 +135,7 @@ const SurpportDesk_StackNavigator = createStackNavigator({
     }
   },
 });
-// const Manage_Sub_StackNavigation  = createStackNavigator({
-//   ManageSubscription: {
-//     screen: ManageSubscription,
-//     navigationOptions: {
-//       header : null
-//     }
-//   },
-// });
-// const ViewPlan_StackNavigator = createStackNavigator({
-//   ViewPlan : {
-//     screen : ViewPlan,
-//     navigationOptions: {
-//       header: null,
-//     }
-//   },
-// });
-// const Subscribe_StackNavigator = createStackNavigator({
-//   Subscribe : {
-//     screen : Subscribe,
-//     navigationOptions: {
-//       header: null,
-//     }
-//   },
-// });
-// const Full_Report_StackNavigator = createStackNavigator({
-//   FullReport : {
-//     screen : FullReport,
-//     navigationOptions: {
-//       header: null,
-//     }
-//   },
-// });
-// const Ratios_StackNavigator = createStackNavigator({
-//   Ratios : {
-//     screen : Ratios,
-//     navigationOptions: {
-//       header: null,
-//     }
-//   },
-// });
-// const Cited_Authorities_StackNavigator = createStackNavigator({
-//   CitedAuthorities : {
-//     screen : CitedAuthorities,
-//     navigationOptions: {
-//       header: null,
-//     }
-//   },
-// });
+
 const PlainReport_StackNavigation = createStackNavigator({
   PlainReport: {
     screen: PlainReport,

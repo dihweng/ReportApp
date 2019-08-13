@@ -2,12 +2,14 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, FlatList, SafeAreaView, StatusBar, Image, Text,TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, SubmitButton, SingleButtonAlert, InputField} from '../../components';
+import {DisplayText, SubmitButton} from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import { getRouteToken, getUserDetails, AllListofSupport } from '../Utils/Utils';
 import moment from 'moment';
+import DropdownAlert from 'react-native-dropdownalert';
+
 
 export default class SurpportDesk extends Component {
   constructor(props) {
@@ -35,6 +37,14 @@ export default class SurpportDesk extends Component {
       userId,
     });
     this.handleGetAllTicket()
+
+    this.focusListener =  await this.props.navigation.addListener('didFocus', () => {
+      this.handleGetAllTicket();
+    }); 
+  }
+
+  componentWillUnmount(){
+    this.focusListener.remove();
   }
  // Show Loading Spinner
  showLoadingDialogue =()=> {
@@ -48,59 +58,41 @@ hideLoadingDialogue =()=> {
     showLoading: false,
   });
 }
-// Show Dialog message
-showNotification = message => {
-  this.setState({ 
-    showLoading : false,
-    title : 'Error!',
-    message : message,
-    showAlert : true,
-  }); 
+showNotification = (type, title, message,) => {
+  this.hideLoadingDialogue();
+  return this.dropDownAlertRef.alertWithType(type, title, message);
 }
   toggleDrawer = () => {
     //Props to open/close the drawer
     this.props.navigation.toggleDrawer();
   };
-  handleCloseNotification = () => {
-    return this.setState({
-       showAlert : false
-     })
-  }
-
+  
   handleCreateTicket = () => { 
     return this.props.navigation.navigate('CreateIssue');
   }
 
-  handleGetAllTicket = () => {
+  handleGetAllTicket = async() => {
+    this.showLoadingDialogue();
     const{token, userId} = this.state;
-    console.log({user: userId, tokenssssisuse: token});
-    this.setState({
-      showLoading: true
-    });
+    
     let endPoint = `${AllListofSupport}/${userId}/${"support"}`;
-      getRouteToken(endPoint, token)
-      .then((res) => {
-        console.log({response: res});
-        if ( res.status >= 400 && res.status <= 500 ) { 
-          return  this.setState({ 
-            showLoading : false,
-            title : 'Alert',
-            message : res.message,
-            showAlert : true,
-          }); 
+      await getRouteToken(endPoint, token)
+      .then((res) => {      
+        if(typeof res.message !== 'undefined') {
+          return this.showNotification('error', 'Message', res.message); 
         }
         else {
-          const data = res.data;
-          console.log({response: data});
-          this.setState({ 
+          return this.setState({ 
             showLoading : false, 
-            data : data,
+            data : res.data,
           }); 
         }
+
       })
       .catch((error) => {
-        console.log(error);
-    });
+        return this.showNotification('error', 'Message', error.toString());
+
+      });
   };
 
   handleFlatlist = (item) => {
@@ -126,10 +118,7 @@ showNotification = message => {
           onPress = {() => this.handleFlatlist(item)}
           style = {styles.cardView}>
             
-            <Text  onPress = {() => this.handleFlatlist(item)} 
-              // numberOfLines = { 1 } 
-              // ellipsizeMode = 'middle'
-               style = {styles.textStyle}>
+            <Text onPress = {() => this.handleFlatlist(item)} style = {styles.textStyle}>
               {`#TICKETS: ${id}`}
             </Text>
 
@@ -153,8 +142,6 @@ showNotification = message => {
     
             </View>
         </TouchableOpacity>
-        {/* <View style = {{ color: index % 2 === 0 ? colors.green_background : colors.orange, width : 10, height: '100%' } }>
-        </View> */}
       
       </View>
     );
@@ -162,10 +149,12 @@ showNotification = message => {
 
 
   render () {
-    const {title, message, showAlert, data, showLoading} = this.state;
+    const { data, showLoading} = this.state;
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
+      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
         <View style = {styles.navBar}>
           <TouchableOpacity 
             onPress={this.toggleDrawer} 
@@ -204,12 +193,6 @@ showNotification = message => {
               visible={showLoading}
               title="Processing"
               message="Please wait..."/>
-            <SingleButtonAlert
-              title = {title} 
-              message = {message}
-              handleCloseNotification = {this.handleCloseNotification}
-              visible = {showAlert}
-            />
     
           </View> 
           <View style = {{paddingTop : 16, paddingBottom : 80}} >
@@ -218,11 +201,12 @@ showNotification = message => {
               renderItem={this.renderRow}          
               keyExtractor={ data=> data.id.toString()}  
               ItemSeparatorComponent={this.renderSeparator} 
-              // ListHeaderComponent={this.renderHeader}     
+              extraData={this.state}
               ListFooterComponent={this.renderFooter}
               showsVerticalScrollIndicator={false}                                  
             />
           </View>
+
       </View>
     </SafeAreaView>
     

@@ -38,7 +38,6 @@ export default class DivisionDetails extends Component {
     const {navigation} = this.props,
       id = navigation.getParam('id'),
       name = navigation.getParam('name');
-
     await this.setState({
       token: profile.access_token,
       expires: profile.expires,

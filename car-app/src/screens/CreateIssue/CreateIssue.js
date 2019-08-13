@@ -2,12 +2,13 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, Modal, ScrollView, TouchableHighlight,Text,SafeAreaView, StatusBar, Image, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, SubmitButton, SingleButtonAlert, InputField} from '../../components';
+import {DisplayText, SubmitButton, InputField} from '../../components';
 import styles from './styles';
 import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import { postWithToken, CreateSupport, getProfile, AllListofSupport } from '../Utils/Utils';
+import { postWithToken, CreateSupport, getProfile, } from '../Utils/Utils';
 import {Input, Icon} from 'native-base'
+import DropdownAlert from 'react-native-dropdownalert';
 
 export default class CreateIssue extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ export default class CreateIssue extends Component {
       messageIssue : '',
       isValidIssue : false,
       userId: '',
-      channel: 'Channel',
+      channel: 'Payment',
       channelModalVisible: false,
       isValidChannel: false
 
@@ -42,6 +43,7 @@ export default class CreateIssue extends Component {
   handleBack = () => {
     return this.props.navigation.goBack();
   }
+
    // Show Loading Spinner
    showLoadingDialogue =()=> {
     this.setState({
@@ -55,14 +57,10 @@ export default class CreateIssue extends Component {
     });
   }
 // Show Dialog message
-  showNotification = message => {
-    this.setState({ 
-      showLoading : false,
-      title : 'Error!',
-      message : message,
-      showAlert : true,
-    }); 
-  }
+  showNotification = (type, title, message,) => {
+  this.hideLoadingDialogue();
+  return this.dropDownAlertRef.alertWithType(type, title, message);
+}
 
   handleCloseNotification = () => {
     return this.setState({
@@ -89,8 +87,6 @@ export default class CreateIssue extends Component {
     this.toggleChannelModal(!this.state.channelModalVisible);
   };
 
-  
-
   handleCreateTicket = async() => {
     const {messageIssue, channel, token} = this.state;
 
@@ -101,27 +97,19 @@ export default class CreateIssue extends Component {
       'channel': channel,
       };
 
-    postWithToken (CreateSupport, data, token)
+    await postWithToken (CreateSupport, data, token)
     .then((res) => {
-      console.log({responseMessage: res})
       if (typeof res.message !== 'undefined' ) {  
-        return  this.setState({ 
-          showLoading : false,
-          title : 'Alert',
-          message : res.message,
-          showAlert : true,
-        }); 
+        return this.showNotification('error', 'Message', res.message);
       }
       else {
-        this.setState({ 
-          showLoading : false, 
-        });   
+       this.hideLoadingDialogue(); 
         return this.props.navigation.navigate('Message', {
           'id' : res.data.id
         });
 
       }
-    });
+    }).catch(error=>this.showNotification('error', 'Message', error.toString()));
   }
 
 
@@ -162,10 +150,12 @@ export default class CreateIssue extends Component {
       {title: 'Others', value: 'Others'},
 
     ];
-    const { showAlert, showLoading, message, title, channel} = this.state;
+    const {showLoading,channel} = this.state;
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
+      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
         <View style = {styles.navBar}>
           <TouchableOpacity 
             onPress={this.handleBack} 
@@ -273,13 +263,7 @@ export default class CreateIssue extends Component {
               visible={showLoading}
               title="Processing"
               message="Please wait..."/>
-            <SingleButtonAlert
-              title = {title} 
-              message = {message}
-              handleCloseNotification = {this.handleCloseNotification}
-              visible = {showAlert}
-            />
-    
+            
           </View> 
       </View>
     </SafeAreaView>

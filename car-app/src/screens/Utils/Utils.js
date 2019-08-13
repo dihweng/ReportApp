@@ -229,13 +229,13 @@ export const saveUserDetail = async( data, token,  ) => {
 }
 
 export const subscription = async(status) => {
-  let subscription = {status};
+  //let subscription = {status};
   await AsyncStorage.removeItem('subscription');
-  return await AsyncStorage.setItem('subscription', JSON.stringify(subscription))
+  return await AsyncStorage.setItem('subscription', status)
 }
 
 export const getSubscription = async()=> {
-  return await AsyncStorage.getItem('details')
+  return await AsyncStorage.getItem('subscription')
     .then((value) => {
       if (value == 'active') {
         return true
