@@ -91,7 +91,7 @@ export default class Login extends Component {
     const { password, email,  } = this.state,
       grant_type = 'password',
       client_id = '2',
-      client_secret = 'nHcDeuwa5RVdgRsS26cEkUJRjtuuuIyC0FWdmKVp';
+      client_secret = '63Gdkvw5d02SISDpwj8TQlWw337OOLzCiDtD0vJC';
 
     let body = await {
       username : email, 

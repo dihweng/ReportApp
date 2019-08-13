@@ -15,7 +15,7 @@ import {
   AddReadLaterEndPoint, 
   getSubscription,
   AddFavoriteEndPoint, 
-  subscription} from '../Utils/Utils';
+  } from '../Utils/Utils';
 
 export default class DivisionDetails extends Component {
   constructor(props) {

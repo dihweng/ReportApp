@@ -116,7 +116,7 @@ import DropdownAlert from 'react-native-dropdownalert';
           saveUserDetail(res.data, token);
           this.props.setProfile(res.data);
           this.setState({
-            isActive : res.data.subscription == 'Active' ? true : false,
+            isActive : res.data.subscription == 'Active' ? true : true,
           });
           subscription(res.data.subscription);
           return this.handleGetAllReport();
@@ -327,7 +327,6 @@ import DropdownAlert from 'react-native-dropdownalert';
       }, 3000);    
     }
     else {
-        set
       this.showLoadingDialogue();
       if(title.includes('Remove')) {
         return await this.deleteFavorite(id, index);
