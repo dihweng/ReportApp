@@ -123,7 +123,6 @@ export default class ManageSubscription extends Component {
     this.showLoadingDialogue();
     await getRouteToken(endpoint, token)
       .then((res) => {
-        console.log({responManage: res})
         if (typeof res.message !== 'undefined') {  
           return this.showNotification(res.message);
         }   
@@ -203,10 +202,9 @@ export default class ManageSubscription extends Component {
     return (
       <View style = {styles.listViewItem}>    
         <TouchableOpacity 
-          onPress = {()=>this.handlePeopleMain(item)}
           style = {styles.cardView}>
           <View style ={styles.subView}>
-            <DisplayText
+            {/* <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
               text = {item.reportName.toUpperCase()}
@@ -215,20 +213,20 @@ export default class ManageSubscription extends Component {
             <DisplayText
               text = {item.date}
               styles = {StyleSheet.flatten(styles.subDate)}
-            />
+            /> */}
 
           </View>
           <View style = {styles.subView}>
             <DisplayText
-                text = {item.name}
+                text = {item.plan.name}
                 styles = {StyleSheet.flatten(styles.subscriberName)}
               />
             <DisplayText
-              text = {item.amount}
+              text = {item.plan.amount.toString()}
               styles = {StyleSheet.flatten(styles.amount)}
             />
           </View>
-          <View style = {styles.subView}>
+          {/* <View style = {styles.subView}>
             <DisplayText
                 text = {"Expires-" + item.expires}
                 styles = {StyleSheet.flatten(styles.expireTxt)}
@@ -246,7 +244,7 @@ export default class ManageSubscription extends Component {
                   styles = {StyleSheet.flatten(styles.statusTxtExpire)}
                 />
             }
-          </View>
+          </View> */}
         </TouchableOpacity>
       </View>
     );
