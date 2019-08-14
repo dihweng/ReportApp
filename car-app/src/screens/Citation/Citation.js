@@ -76,13 +76,14 @@ export default class Citation extends Component {
 
  //filter citation numberts
   handleCitationPress = (citation) => {
-    const {filterData} = this.state;
-    const newData = filterData.filter(item => {
-      const itemData = `${item.citation.toUpperCase()}`;
-      const textData = citation;
+    console.log({number: citation});
 
-      return itemData.indexOf(textData) > -1;
+    const {filterData} = this.state;
+    const newData = filterData.filter(item => {const itemData = item.citation.split('-')[3].substring(0, 1) === citation;
+
+      return itemData;
     });
+    console.log({newdataa: newData});
     return this.setState({
       data: newData,
       secondFilter: newData,
@@ -90,33 +91,27 @@ export default class Citation extends Component {
   }
   // Filter by citation alphabets
   handleCitationAlph = (citationAlph) => {
-    
     const {filterData, secondFilter} = this.state;
     if(secondFilter.length > 0 ){
-      const newData = secondFilter.filter(item => {
-        const itemData = `${item.citation.toUpperCase()}`;
-        const textData = citationAlph;
-  
-        return itemData.indexOf(textData) > -1;
+      const newData = secondFilter.filter(item => { 
+        const itemData = item.title.substring(0, 1).toUpperCase() === citationAlph.toUpperCase();
+        return itemData;
       });
       return this.setState({
         data: newData,
       });  
     }
     
-    const newData = filterData.filter(item => {
-      const itemData = `${item.citation.toUpperCase()}`;
-      const textData = citationAlph;
-
-      return itemData.indexOf(textData) > -1;
+    const newData = filterData.filter(item => { 
+      const itemData = item.title.substring(0, 1).toUpperCase() === citationAlph.toUpperCase();
+      return itemData;
     });
     return this.setState({
       data: newData,
     });
   }
 
-  handleFullReport=async(item)=>{
-    console.log({hello: item.id})
+  handleFullReport=async(id)=>{
     if(this.state.isActive === false) {
       await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
       return await setTimeout(() => {
@@ -125,7 +120,7 @@ export default class Citation extends Component {
     }
     else {
       return await this.props.navigation.navigate('FullReport', {
-        id: item.id, 
+        id: id, 
       });
     }
   }
@@ -134,11 +129,11 @@ export default class Citation extends Component {
     const {token} = this.state;
     await getRouteToken(getAllReport, token)
       .then((res) => {
-        if (typeof res.message !== 'undefined') {  
+        if (typeof res.message !== 'undefined') {
           return this.showNotification('error', 'Message', res.message);
         }   
         else {          
-
+          // console.log({responseData: res.data.id})
           this.setState({
             data: res.data,
             filterData: res.data,
@@ -166,7 +161,6 @@ export default class Citation extends Component {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     this.setState({ expandalph: !this.state.expandalph });
   }
-
 
   addDeleteReadlater = async(id, title, index) =>{
     if(this.state.isActive === false) {
@@ -348,23 +342,24 @@ export default class Citation extends Component {
   renderRow = ({item, index}) => {
     let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
     let favorite_button_text = item.is_favorite == true ? 'Remove Favorite' : 'Add Favorite';
+    
     return (
        <View style = {styles.listViewItem}>    
         <TouchableOpacity 
-          onPress = {()=>this.handleFullReport(item)}
+          onPress = {()=>this.handleFullReport(item.id)}
           style = {styles.cardView}>
           <DisplayText
             numberOfLines = { 2 } 
             ellipsizeMode = 'middle'
             text = {item.title}
-            onPress = {()=>this.handleFullReport(item)}
+            onPress = {()=>this.handleFullReport(item.id)}
             styles = {StyleSheet.flatten(styles.reportName)}
           />
           <DisplayText
             numberOfLines = { 2 } 
             ellipsizeMode = 'middle'
             text = {item.citation}
-            onPress = {()=>this.handleFullReport(item)}
+            onPress = {()=>this.handleFullReport(item.id)}
             styles = {StyleSheet.flatten(styles.headerText)}
           />
           <DisplayText
@@ -398,29 +393,29 @@ export default class Citation extends Component {
     const { showLoading, title, message, showAlert, } = this.state;
 
     var citationsAlph = ['A','B','C','D','E','F','G','H','I','J','K','L', 'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-    var citations = ['1', '2', '3', '4', '6','7', '8', '9'];
+    var citations = ['0','1', '2', '3', '4','5','6','7', '8', '9'];
     var citationList = citations.map((citation, index) => {
-      return <TouchableOpacity 
+      return  <TouchableOpacity 
                 key = {index}
                 style = {styles.citisionTp}
                 onPress={()=>this.handleCitationPress(citation)}>
-              <Text 
-                style={styles.text}
-                key = {index}>
-                {citation}
-              </Text> 
+                <Text 
+                  style={styles.text}
+                  key = {index}>
+                  {citation}
+                </Text> 
               </TouchableOpacity>
     });
     var citationListAlhp = citationsAlph.map((citationAlph, index) => {
-      return <TouchableOpacity 
+      return  <TouchableOpacity 
                 key = {index}
                 style = {styles.citisionTp}
                 onPress={()=>this.handleCitationAlph(citationAlph)}>
-              <Text 
-                style={styles.text}
-                key = {index}>
-                {citationAlph}
-              </Text> 
+                <Text 
+                  style={styles.text}
+                  key = {index}>
+                  {citationAlph}
+                </Text> 
               </TouchableOpacity>
     })
    return(

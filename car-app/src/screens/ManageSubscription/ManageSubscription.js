@@ -179,7 +179,7 @@ export default class ManageSubscription extends Component {
               />
             
             {
-              (item.status === 'Active') ?
+              (item.status === 'active') ?
                 <DisplayText
                   text = {item.status.toUpperCase()}
                   styles = {StyleSheet.flatten(styles.statusTxtActive)}

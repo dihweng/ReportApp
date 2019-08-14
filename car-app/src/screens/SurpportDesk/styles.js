@@ -87,7 +87,7 @@ export default styles = StyleSheet.create({
     justifyContent : 'center',
   },
   btnStyle : {
-    backgroundColor : colors.orange,
+    backgroundColor : theme.primaryColor,
     width : '40%',
     justifyContent: 'center',
     alignItems : 'center',
@@ -127,14 +127,14 @@ export default styles = StyleSheet.create({
     paddingTop : 8,
   },
   textStyleHeader: {
-    color: colors.green_background,
+    color: theme.primaryColor,
     fontFamily : 'Roboto-Medium',
     fontSize : 20,
   },
   textStyle : {
     fontSize : 18,
     fontFamily : 'Roboto-Medium',
-    color : colors.green_background,
+    color : theme.primaryColor,
   },
   dateStyle : {
     fontSize : 14,
@@ -146,5 +146,6 @@ export default styles = StyleSheet.create({
     color: colors.darkGray,
     fontFamily : 'Roboto-Regular',
     fontSize : 16,
+    textTransform: 'capitalize'
   },  
 });

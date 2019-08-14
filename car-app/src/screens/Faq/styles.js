@@ -3,6 +3,7 @@ const window = Dimensions.get('window');
 import Constants from 'expo-constants'
 import colors from '../../assets/colors';
 import theme from '../../assets/theme';
+
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -154,7 +155,7 @@ export default styles = StyleSheet.create({
   
     Panel_Button_Text: {
       textAlign: 'center',
-      color: colors.green_background,
+      color: theme.primaryTextColor,
       fontSize: 18,
       fontFamily: 'Roboto-Regular',
     },

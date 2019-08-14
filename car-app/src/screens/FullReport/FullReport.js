@@ -122,7 +122,6 @@ export default class FullReport extends Component {
       id: id,
       // excerpt: excerpt,
     });
-
   }
   handleFullReport = () => {
     return this.props.navigation.navigate('FullReport');

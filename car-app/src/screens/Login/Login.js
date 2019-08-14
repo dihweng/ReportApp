@@ -193,7 +193,7 @@ export default class Login extends Component {
                 text = {'COURT OF APPEAL'}
                 styles = {StyleSheet.flatten(styles.logoText)}/> 
               <DisplayText
-                text = {'REPORT NIGERIA'}
+                text = {'REPORTS NIGERIA'}
                 styles = {StyleSheet.flatten(styles.logoText)}/> 
             </View>
           </View>
@@ -275,7 +275,7 @@ export default class Login extends Component {
             />
           
             <DisplayText
-              text={'Forget Password?'}
+              text={'Forgot Password?'}
               styles = {styles.forgetPwd}
               onPress = {this.handleForgetPassword}
             />

@@ -116,7 +116,7 @@ export default class CategoryDetails extends Component {
     }
   }
 
-  handleFullReport=async(item)=>{
+  handleFullReport=async(id)=>{
     if(this.state.isActive === false) {
       await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
       return await setTimeout(() => {
@@ -125,7 +125,7 @@ export default class CategoryDetails extends Component {
     }
     else {
        return await this.props.navigation.navigate('FullReport', {
-        id: item.id, 
+        id: id, 
       });
     }
   }
@@ -315,13 +315,13 @@ export default class CategoryDetails extends Component {
     return (
       <View style = {styles.listViewItem}>    
         <TouchableOpacity 
-          onPress = {()=>this.handleFullReport(item)}
+          onPress = {()=>this.handleFullReport(item.id)}
           style = {styles.cardView}>
           <DisplayText
             numberOfLines = { 2 } 
             ellipsizeMode = 'middle'
             text = {item.title}
-            onPress = {()=>this.handleFullReport(item)}
+            onPress = {()=>this.handleFullReport(item.id)}
             styles = {StyleSheet.flatten(styles.reportName)}
           />
 
@@ -329,7 +329,7 @@ export default class CategoryDetails extends Component {
             numberOfLines = { 2 } 
             ellipsizeMode = 'middle'
             text = {item.citation}
-            onPress = {()=>this.handleFullReport(item)}
+            onPress = {()=>this.handleFullReport(item.id)}
             styles = {StyleSheet.flatten(styles.headerText)}
           />
           <DisplayText

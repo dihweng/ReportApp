@@ -109,6 +109,7 @@ import DropdownAlert from 'react-native-dropdownalert';
     let status = 'expired';
     await getRouteToken(ProfileEndpoint, token)
       .then((res) => {
+        console.log({reportProfile: res});
         if (typeof res.message !== 'undefined') {  
           return this.showNotification('error', 'Message', res.message);
         }

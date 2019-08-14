@@ -143,7 +143,7 @@ export default class ForgetPassword extends Component {
                 <InputField
                   placeholder ={'Email Address'}
                   placeholderTextColor = {colors.text}
-                  textColor={colors.green_background}
+                  textColor={colors.textInuputColor}
                   inputType={'name'}
                   keyboardType={'default'}
                   onChangeText = {this.handleEmailChange}

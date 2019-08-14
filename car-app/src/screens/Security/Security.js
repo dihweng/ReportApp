@@ -78,7 +78,7 @@ export default class Security extends Component {
     this.showLoadingDialogue();
     const {newPassword, confirmPassword} = this.state;
     if( newPassword !== confirmPassword){
-      return  await this.showNotification('error', 'Message', 'Passwords Donot Match');
+      return  await this.showNotification('error', 'Message', 'Passwords Do not Match');
     } else if (newPassword < 8){
       return  await this.showNotification('error', 'Message','Password cannot be Less than 8 Characters');
     }
@@ -174,7 +174,6 @@ render () {
 
   return(
     <SafeAreaView style={styles.container}> 
-      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
 
       <StatusBar barStyle="default" /> 
         <View style = {styles.navBar}>
@@ -193,6 +192,8 @@ render () {
               styles = {StyleSheet.flatten(styles.txtHeader)}/>
           </View>
         </View> 
+      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
         <View style = {styles.cards}>
           <View style = {styles.cardImageView}>
             <Image

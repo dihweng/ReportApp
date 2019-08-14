@@ -110,7 +110,7 @@ export default class DivisionDetails extends Component {
     }
   }
 
-  handleFullReport=async(item)=>{
+  handleFullReport=async(id)=>{
     if(this.state.isActive === false) {
       await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
       return await setTimeout(() => {
@@ -119,7 +119,7 @@ export default class DivisionDetails extends Component {
     }
     else {
        await this.props.navigation.navigate('FullReport', {
-        id: item.id, 
+        id: id, 
       });
     }
   }

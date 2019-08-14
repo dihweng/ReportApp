@@ -9,6 +9,7 @@ import { ProgressDialog } from 'react-native-simple-dialogs';
 import { getRouteToken, getUserDetails, AllListofSupport } from '../Utils/Utils';
 import moment from 'moment';
 import DropdownAlert from 'react-native-dropdownalert';
+import theme from '../../assets/theme';
 
 
 export default class SurpportDesk extends Component {
@@ -125,7 +126,7 @@ showNotification = (type, title, message,) => {
               <DisplayText
                 text= {`${subject.toString()}`}
                 onPress = {() => this.handleFlatlist(item)}
-                styles = {[styles.textStyleHeader, {fontStyle:'normal', color:colors.green_background}]}
+                styles = {[styles.textStyleHeader, {fontStyle:'normal', color:theme.primaryColor}]}
               />
             <View style = {{flexDirection: 'row', justifyContent : 'space-between'}}>
 
