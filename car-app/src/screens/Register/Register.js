@@ -714,43 +714,117 @@ class Register extends Component {
                     <View style={styles.horizonLine} />
                     <ScrollView contentContainerStyle= {styles.scrollview}>
                       <View style={{flexDirection: 'column',padding: 4,}}>
-                        <Text style ={styles.titleText}>
-                          {'TERMS TO INVEST IN SETH MINING CROWD FUNDING'}
-                        </Text>
-                        <Text 
+                      <Text 
                           style ={styles.contentText}>
-                          {'Please read this Agreement carefully before accessing the Seth mining crowd Website. Which states As a condition to and in consideration of receiving and accessing Seth Website, the User agrees to be bound by the terms of this Agreement. Use of or access to this constitute, acceptance of and concurrence to be bound by this Agreement. If you do not wish to be bound by this Agreement, do not access Seth Website. If you have any questions about this Agreement, please contact us via mail us at support@seth-mining-invest.com This Website is not for use by any minors (defined as those who are not at least 18 years of age), and you must not use this Website if you a child. This Agreement is entered between Seth (hereafter referred to as SETH MINING CROWDFUNDING ") and any individual, corporation, association, agency, the company, or other entity (hereafter referred to as " THE USER or YOU ") who accesses or uses Page\'s Website (also referred to as This Website SETH Website, is provided without charge to you, is a public website on the Internet Designed to allow Page to communicate with vice versa. This Website is owned and operated by SETH ENERGY & Mineral LLC & SETH ENERGY & MINERAL LTD It contains information, communications,opinions, text, graphics, links, electronic art animations, audio, video, Software,photos,music,sounds and other material and data (collectively referred to herein as Content") formatted, organized and collated in a variety of forms that are generally accessible to Users including directories and databases,and areas On SETH Website that can be modified by Users, such as posting classifieds, uploading multimedia files, registering user profiles, and creating auto notify, personalized pages, and customized project areas, which cannot be done on Seth crowd-funding website'}
+                            {'The Electronic Court of Appeal Reports (E-C.A.R.), a service provided   byLaurels and Prizes Law Publications Ltd. presents the reconditepronouncements of the Court of Appeal of Nigeria, and it is aimed at satisfyingthe needs of fast paced, technology savvy legal professionals and intellectuals.Thus, it is an essential tool for legal practitioners on the bench and in the bar,law   faculties   and   law   students,   scholars   in   other   fields   of   education   andintellectuals, generally, who have interests in legal matters. Please read ourterms of service carefully to understand how we intend to serve you. You agreeto our terms of service by installing, registering, subscribing or otherwise usingthe app. '}
                         </Text>
                         <Text 
                           style ={styles.titleText}>
-                          {'ACCEPTANCE OF TERMS'}
-                        </Text>
-                        <Text 
-                          style ={styles.contentText}>
-                          {'The services that Seth Energy and Mineral Ltd provide to User is subject to the following Terms of Use ("TOU"). Seth Energy and Mineral Ltd & Seth Energy and Mineral LLC reserve the right to update the TOU at any time without notice to User. The most current version of the TOU can be review by clicking on the "Terms of Use" hypertext link located at the bottom of our Web pages.\nThis Agreement, which incorporates by reference other provisions applicable to use of www.seth-mining-invest.com, including, but not limited to, supplemental terms and conditions set forth hereof ("Supplemental Terms") governing the use of particular specific material contained in www.seth-mining-invest.com, sets forth the terms and conditions that apply to use of www.seth-mining-invest.com by User. By using Seth Energy (other than to read this Agreement for the first time), User agrees to comply with all of the terms and conditions hereof. The right to use www.seth-mining-invest.com is personal to User and is not transferable to any other person or entity. User is responsible for all use of User\'s Account (under any screen name or password) and for ensuring that all use of User\'s Account complies fully with the provisions of this Agreement. User shall be responsible for protecting the confidentiality of User\'s password(s) if any.\nSeth Mining Crowd Funding shall have the right at any time to change or discontinue any aspect or feature of www.seth-mining-invest.com, including, but not limited to, content, hours of availability, and equipment needed for access or use.'}
+                          {'TERMS AND CONDITIONS'}
                         </Text>
                         <Text 
                           style ={styles.titleText}>
-                          {'CHANGED TERMS'}
+                          {'End User License Agreement'}
                         </Text>
                         <Text 
                           style ={styles.contentText}>
-                          {'Seth shall have the right at any time to change or modify the terms and conditions applicable to User\'s use of www.seth-mining-invest.com, or any part thereof, or to impose new conditions, including, but do not or cannot add, any fees for use. Such changes, modifications, additions or deletions shall be effective immediately upon notice thereof, which may be given by means including, but not limited to, posting on www.seth-mining-invest.com, or by electronic or conventional mail, or by any other means by which User obtains notice thereof. Any use of www.seth-mining-invest.com by User after such notice shall be deemed to constitute acceptance by User of such changes, modifications or additions.'}
+                            {'This is a legal agreement between you (“Licensee”) and Laurels and Prizes Law Publications Ltd. (“Licensor”) regarding your use of the E-C.A.R. app ("the app"). By installing, registering, subscribing or otherwise using the app, you agree to be bound by the terms of this agreement.'}
                         </Text>
                         <Text 
                           style ={styles.titleText}>
-                          {'DESCRIPTION OF SERVICES'}
+                          {'Grant of License'}
                         </Text>
                         <Text 
                           style ={styles.contentText}>
-                          {'Through its Web property, Seth provides User with access to a variety of resources, including download areas, communication forums and product information (collectively "Services"). The Services, including any updates, enhancements, new features, and the addition of any new Web properties, are subject to the TOU. Updates via emails and recent development via website blog or app projects update.'}
+                            {'Licensee is hereby granted the permission to install and use the app on asupported device in accordance with the terms and conditions stipulated inthis agreement. Licensor reserves all rights not expressly granted the Licenseein this agreement.'}
+                        </Text>
+                        <Text 
+                          style ={styles.titleText}>
+                          {'Restrictions on Use of the app'}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {'Licensee shall not reverse engineer, decompile or disassemble the app. Licensorassumes no responsibility for any damages that occur if the app is usedincorrectly'}
+                        </Text>
+                        <Text 
+                          style ={styles.titleText}>
+                          {'Registration'}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {'You must register for our services by creating a user account which involvescreating your username and password, and supplying your current emailaddress and mobile telephone number. A first-time user of our service will beable to trial the app for free for the first 2 (two) weeks, after registration. At theexpiration of that 2 (two) weeks, to continue to enjoy our services, you mustsubscribe.   If   you   change   your   name   or   mobile   telephone   number   aftersupplying them during registration, you must update as soon as is reasonably possible, through our in-app update feature. You agree to receive emails, withat least one hyperlink included, to register and create a new account or tocreate a new password, as the case may be. Except for first-time users (for thetrial period only) registration does not grant automatic access to the reportedcases.'}
+                        </Text>
+                        <Text 
+                          style ={styles.titleText}>
+                          {'Subscription required'}
+                        </Text>
+                    
+                        <Text 
+                          style ={styles.contentText}>
+                            {'After registration, you must pay for subscription to access the reported cases,in accordance with the subscription-plans we have stipulated (unless you afirst-time user who is entitled to 2 (two) weeks of free trial). Access to thereported cases will cease when your subscription expires. You agree to receivenotices, in-app and by email, to inform you of an imminent expiration of yoursubscription, and to remind you to re-subscribe'}
+                        </Text>
+                        
+                        <Text 
+                          style ={styles.titleText}>
+                          {'Subscription Plans'}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {'You can subscribe to either the individual plan: for personal use, or the corporate plan: for multiple users in firms or organizations. The individual planconsists of.... The corporate plan consists of three categories: Premium .... '}
+                        </Text>
+                        <Text 
+                          style ={styles.titleText}>
+                          {'Appropriate Devices and Software '}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {'You must possess appropriate devices, software and data connection to use theapp, and we do not provide any of those. You agree to download and install updates to the app whenever updates are made available.'}
+                        </Text>
+                        <Text 
+                          style ={styles.titleText}>
+                          {'Third-party advertisements forbidden '}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {'We do not permit third-parties to advertise on the app, thereby ensuring that you enjoy distractions-free usage of the app.'}
+                        </Text>
+                        <Text 
+                          style ={styles.titleText}>
+                          {'Existing users:'}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {'If you are already registered, and have an account, on our website -https://courtofappealreportsnigeria.com/  - at the time the app became waslaunched, you can use the same log-in details you use for the website to accessthe app. '}
+                        </Text>
+                        <Text 
+                          style ={styles.titleText}>
+                          {'Availability of our services'}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {'You may experience interruptions while using the app, including interruptions caused by, or for updates, upgrades, repairs, maintenance, or due to network or equipment failures, factors beyond our control and other force majeureevents. We may modify or discontinue certain features or services on the app atany time, including its user-interface and graphic presentation, or discontinuesupport for any device or platform at any time. We may amend or update theseterms as need arises. However, you will be provided notice of such modifications, discontinuance, amendments or updates before they are implemented. Your continued use of the app after such notices are provided,and implementations effected, confirms your acceptance of our terms ofservice, as so amended.'}
+                        </Text>
+                        <Text 
+                          style ={styles.titleText}>
+                          {'Termination of License'}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                          {'Licensor reserves the right to modify, suspend or terminate access to the app ifLicensee is found in violation of this agreement. When access to the app is soterminated, all rights granted to Licensee under this agreement shall immediately cease'}
+                        </Text>
+                        <Text 
+                          style ={styles.titleText}>
+                          {'Disclaimers'}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {'You use the app on an ‘as is’ basis without any express or implied warranties,including,   but   not   limited   to,   warranties   of   merchantability,   fitness   for   aparticular purpose, title, non-infringement, and freedom from computer virusor other harmful code. We do not warrant that our services will be operational,error-free, secure or safe, or that our services will function without disruptions,delays or imperfections. We do not warrant that all information provided by usare accurate, useful and complete'}
                         </Text>
                         
                         <Text 
                           style ={styles.titleText}>
                           {''}
                         </Text>
-                        
                       </View>
                     </ScrollView>
                   </View>
