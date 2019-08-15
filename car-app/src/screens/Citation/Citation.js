@@ -76,14 +76,12 @@ export default class Citation extends Component {
 
  //filter citation numberts
   handleCitationPress = (citation) => {
-    console.log({number: citation});
 
     const {filterData} = this.state;
     const newData = filterData.filter(item => {const itemData = item.citation.split('-')[3].substring(0, 1) === citation;
-
       return itemData;
     });
-    console.log({newdataa: newData});
+
     return this.setState({
       data: newData,
       secondFilter: newData,

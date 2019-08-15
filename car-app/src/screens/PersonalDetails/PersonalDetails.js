@@ -252,8 +252,6 @@ render () {
 
   return(
     <SafeAreaView style={styles.container}> 
-      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
-
       <StatusBar barStyle="default" /> 
       <View style = {styles.navBar}>
         <TouchableOpacity 
@@ -271,6 +269,8 @@ render () {
             styles = {StyleSheet.flatten(styles.txtHeader)}/>
         </View>
       </View> 
+      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
       {/* Personal Details Card */}
       <View style = {styles.cards}>
         <View style = {styles.cardImageView}>

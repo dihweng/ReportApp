@@ -24,6 +24,7 @@ import {DisplayText, InputField, SingleButtonAlert, SubmitButton} from '../../co
 import { UpdateUserEndpoint, updateUserDetails, getUserDetails } from '../Utils/Utils';
 import {connect} from 'react-redux';
 import { setProfile } from '../../redux/actions/ProfileActions';
+import DropdownAlert from 'react-native-dropdownalert';
 
 const defaultFlag = data.filter(
   obj => obj.name === 'Nigeria'
@@ -73,13 +74,17 @@ const defaultFlag = data.filter(
     });
   }
 
-  showNotification = (message, title) => {
-    this.setState({ 
-      showLoading : false,
-      title : title,
-      message : message,
-      showAlert : true,
-    }); 
+  // showNotification = (message, title) => {
+  //   this.setState({ 
+  //     showLoading : false,
+  //     title : title,
+  //     message : message,
+  //     showAlert : true,
+  //   }); 
+  // }
+  showNotification = (type, title, message) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
   }
 
   handleCloseNotification = () => {
@@ -112,16 +117,16 @@ const defaultFlag = data.filter(
       let res =  await response.json();
       if(typeof res.errors !== 'undefined') {
         const value = Object.values(res.errors);
-        return this.showNotification(value[0].toString(), 'Error');
+        return this.showNotification('error','Error', value[0].toString());
       }
       else {
         this.props.setProfile(res.data);
         updateUserDetails(res.data, token);
-        return this.showNotification('Contact Updated Successfully', 'Success');    
+        return this.showNotification('success', 'Success', 'Contact Updated Successfully');
       }
     }
     catch(error) {
-      return this.showNotification(error.toString(), 'Message');
+      return this.showNotification('error', 'Error', error.toString());
     }
    
   }
@@ -175,11 +180,39 @@ const defaultFlag = data.filter(
   handdleBackPress = () => {
     return this.props.navigation.goBack();
   };
-  handleCloseNotification = () => {
-    return this.setState({
-      showAlert : false
-    });
+
+  
+  selectNationality = async(country) => {
+    // Get data from Countries.js  
+    const countryData = await data
+    try {
+      //get country  name
+      const countryName = await countryData.filter(
+        obj => obj.name === country
+      )[0].name
+      // Update the state then hide the Modal
+      this.setState({ 
+        country : countryName,
+      })
+      await this.hideNationalityModal()
+    }
+    catch (err) {
+      (err)
+    }
   }
+
+  showNationalityModal = ()=> {
+    this.setState({ 
+      nationalityModalVisible: true 
+    })
+  }
+  hideNationalityModal =()=> {
+    this.setState({ 
+      nationalityModalVisible: false 
+    })
+    
+  }
+
 
 
   render () {
@@ -189,6 +222,7 @@ const defaultFlag = data.filter(
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
+
         <View style = {styles.navBar}>
           <TouchableOpacity 
             onPress = {this.handdleBackPress}
@@ -205,6 +239,8 @@ const defaultFlag = data.filter(
               styles = {StyleSheet.flatten(styles.txtHeader)}/>
           </View>
         </View> 
+        <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
           {/* Card Contact Details */}
           <View style = {styles.cards}>
           <View style = {styles.cardImageView}>
