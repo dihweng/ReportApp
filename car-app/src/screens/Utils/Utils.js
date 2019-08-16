@@ -1,6 +1,6 @@
 const Baseurl = 'http://45.76.189.218/';
 import { AsyncStorage } from 'react-native';
-const LoginEndpoint = `${Baseurl}oauth/token`,
+const LoginEndpoint = `${Baseurl}api/login`,
   RegisterEndpoint = `${Baseurl}api/users`,
   ProfileEndpoint = `${Baseurl}api/users/me`,
   UpdateProfileEndoint = `${Baseurl}profile`,
