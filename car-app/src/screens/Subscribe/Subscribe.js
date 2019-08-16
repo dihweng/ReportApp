@@ -137,7 +137,10 @@ export default class Subscribe extends Component {
     this.handleBankPayment();
   }
   handleBankPayment=()=>{
-    alert('Pay in the bank');
+    return this.props.navigation.navigate('Payment', {
+      'id': id,
+      'plan_id': plan_id
+    })
   }
 
   onCheckPlan = async(plan) => {

@@ -53,7 +53,10 @@ export default class TermsConditions extends Component {
             <View style={styles.horizonLine} />
             <ScrollView contentContainerStyle= {styles.scrollview}>
               <View style={{flexDirection: 'column',padding: 4,}}>
-
+                <Text 
+                  style ={styles.titleHeader}>
+                  {'THE ELECTRONIC COURT OF APPEAL REPORTS NIGERIA WEBSITE AND MOBILE APP \n(TERMS & CONDITIONS)\n'}
+                </Text>
                 <Text 
                   style ={styles.contentText}>
                     {'The Electronic Court of Appeal Reports (E-C.A.R.), a service provided   byLaurels and Prizes Law Publications Ltd. presents the reconditepronouncements of the Court of Appeal of Nigeria, and it is aimed at satisfyingthe needs of fast paced, technology savvy legal professionals and intellectuals.Thus, it is an essential tool for legal practitioners on the bench and in the bar,law   faculties   and   law   students,   scholars   in   other   fields   of   education   andintellectuals, generally, who have interests in legal matters. Please read ourterms of service carefully to understand how we intend to serve you. You agreeto our terms of service by installing, registering, subscribing or otherwise usingthe app. '}

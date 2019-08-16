@@ -705,125 +705,141 @@ class Register extends Component {
                 <View style={ styles.modalStyle}>
                   <View style = {styles.termsView}>
                     <View style={styles.sethLogoModal}>
-                      <Text 
+                      {/* <Text 
                         style ={styles.termsContHeader}>
                         {'Terms & Conditions'}
-                      </Text>
+                      </Text> */}
                     </View>
                     
                     <View style={styles.horizonLine} />
                     <ScrollView contentContainerStyle= {styles.scrollview}>
                       <View style={{flexDirection: 'column',padding: 4,}}>
-                      <Text 
-                          style ={styles.contentText}>
-                            {'The Electronic Court of Appeal Reports (E-C.A.R.), a service provided   byLaurels and Prizes Law Publications Ltd. presents the reconditepronouncements of the Court of Appeal of Nigeria, and it is aimed at satisfyingthe needs of fast paced, technology savvy legal professionals and intellectuals.Thus, it is an essential tool for legal practitioners on the bench and in the bar,law   faculties   and   law   students,   scholars   in   other   fields   of   education   andintellectuals, generally, who have interests in legal matters. Please read ourterms of service carefully to understand how we intend to serve you. You agreeto our terms of service by installing, registering, subscribing or otherwise usingthe app. '}
+                        <Text 
+                          style ={styles.titleHeader}>
+                          {'THE ELECTRONIC COURT OF APPEAL REPORTS NIGERIA WEBSITE AND MOBILE APP \n(TERMS & CONDITIONS)\n'}
                         </Text>
                         <Text 
                           style ={styles.titleText}>
-                          {'TERMS AND CONDITIONS'}
-                        </Text>
-                        <Text 
-                          style ={styles.titleText}>
-                          {'End User License Agreement'}
+                          {'PLEASE READ THESE TERMS AND CONDITIONS CAREFULLY'}
                         </Text>
                         <Text 
                           style ={styles.contentText}>
-                            {'This is a legal agreement between you (“Licensee”) and Laurels and Prizes Law Publications Ltd. (“Licensor”) regarding your use of the E-C.A.R. app ("the app"). By installing, registering, subscribing or otherwise using the app, you agree to be bound by the terms of this agreement.'}
+                            {'The Electronic Court of Appeal Reports (E-C.A.R.), is a service provided by Laurels and Prizes Law Publications which presents the recondite judgments and pronouncements of the 16 divisions of the Court of Appeal of Nigeria and it is aimed at satisfying the fast paced needs of technology savvy legal practitioners and intellectuals. Thus, it is an essential tool for legal practitioners on the bench and in the bar, law faculties and law students, scholars in other fields of education and intellectuals, generally. Please read our terms of service carefully to understand how we intend to serve you. You agree to our terms of service by installing, registering, subscribing or using the website or App otherwise.  '}
                         </Text>
                         <Text 
                           style ={styles.titleText}>
-                          {'Grant of License'}
+                          {'AGREEMENT TO TERMS'}
                         </Text>
                         <Text 
                           style ={styles.contentText}>
-                            {'Licensee is hereby granted the permission to install and use the app on asupported device in accordance with the terms and conditions stipulated inthis agreement. Licensor reserves all rights not expressly granted the Licenseein this agreement.'}
+                            {'These Terms and Conditions constitute a legally binding agreement made between you, whether personally or on behalf of an entity (“Licensee”) and Laurels and Prizes Law Publications Ltd. (“Licensor”), concerning your access to and use of the Electronic Court of Appeal Reports through the courtofappealreportsnigeria.com website or Electronic Court of Appeal Reports Mobile App as well as any other media form, media channel, mobile website or mobile application related, linked, or otherwise connected thereto. You agree that by accessing the Website, you have read, understood, and agree to be bound by all of these Terms and Conditions.  IF YOU DO NOT AGREE WITH ALL OF THESE TERMS and CONDITIONS, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SITE AND YOU MUST DISCONTINUE USE IMMEDIATELY.\nSupplemental terms and conditions or documents that may be posted on the Website or Mobile Application from time to time are hereby expressly incorporated herein by reference. We reserve the right, in our sole discretion, to make changes or modifications to these Terms and Conditions at any time and for any reason.  We will alert you about any changes by updating the “Last updated” date of these Terms and Conditions and you waive any right to receive specific notice of each such change. It is your responsibility to periodically review these Terms and Conditions to stay informed of updates.  You will be subject to, and will be deemed to have been made aware of and to have accepted, the changes in any revised Terms and Conditions by your continued use of the Website and Mobile App after the date such revised Terms are posted.\nThe information provided on the Website and Mobile App is not intended for distribution to or use by any person or entity in any jurisdiction or country where such distribution or use would be contrary to law or regulation or which would subject us to any registration requirement within such jurisdiction or country. Accordingly, those persons who choose to access the Site from other locations do so on their own initiative and are solely responsible for compliance with local laws, if and to the extent local laws are applicable.'}
                         </Text>
                         <Text 
                           style ={styles.titleText}>
-                          {'Restrictions on Use of the app'}
+                          {'USE LICENSE'}
                         </Text>
                         <Text 
                           style ={styles.contentText}>
-                            {'Licensee shall not reverse engineer, decompile or disassemble the app. Licensorassumes no responsibility for any damages that occur if the app is usedincorrectly'}
+                            {'Licensee is hereby granted the permission to access the Electronic Court of Appeal Reports through the Court of Appeal Reports Nigeria Website and the Mobile Application (App) in accordance with the terms and conditions stipulated in this agreement. Licensor reserves all rights not expressly granted the Licensee.'}
                         </Text>
                         <Text 
                           style ={styles.titleText}>
-                          {'Registration'}
+                          {'User License For The Mobile Application'}
                         </Text>
                         <Text 
                           style ={styles.contentText}>
-                            {'You must register for our services by creating a user account which involvescreating your username and password, and supplying your current emailaddress and mobile telephone number. A first-time user of our service will beable to trial the app for free for the first 2 (two) weeks, after registration. At theexpiration of that 2 (two) weeks, to continue to enjoy our services, you mustsubscribe.   If   you   change   your   name   or   mobile   telephone   number   aftersupplying them during registration, you must update as soon as is reasonably possible, through our in-app update feature. You agree to receive emails, withat least one hyperlink included, to register and create a new account or tocreate a new password, as the case may be. Except for first-time users (for thetrial period only) registration does not grant automatic access to the reportedcases.'}
+                            {'If you access the Electronic Court of Appeal Reports via the mobile application, then we grant you a revocable, non-exclusive, non-transferable, limited right to install and use the mobile application on wireless electronic devices owned or controlled by you, and to access and use the mobile application on such devices strictly in accordance with the terms and conditions of this mobile application license contained in these Terms of Use. You shall not: (1) decompile, reverse engineer, disassemble, attempt to derive the source code of, or decrypt the application; (2) make any modification, adaptation, improvement, enhancement, translation, or derivative work from the application; (3) violate any applicable laws, rules, or regulations in connection with your access or use of the application; (4) remove, alter, or obscure any proprietary notice (including any notice of copyright or trademark) posted by us or the licensors of the application; (5) use the application for any revenue generating endeavor, commercial enterprise, or other purpose for which it is not designed or intended; (6) make the application available over a network or other environment permitting access or use by multiple devices or users at the same time; (7) use the application for creating a product, service, or software that is, directly or indirectly, competitive with or in any way a substitute for the application; (8) use the application to send automated queries to any website or to send any unsolicited commercial e-mail; or (9) use any proprietary information or any of our interfaces or our other intellectual property in the design, development, manufacture, licensing, or distribution of any applications, accessories, or devices for use with the application.'}
                         </Text>
                         <Text 
                           style ={styles.titleText}>
-                          {'Subscription required'}
+                          {'Apple and Android Devices'}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {'The following terms apply when you obtain the mobile application from either the Apple Store or Google Play (each an “App Distributor”) to access the Content: (1) the license granted to you for our mobile application is limited to a non-transferable license to use the application on a device that utilizes the Apple iOS or Android operating systems, as applicable, and in accordance with the usage rules set forth in the applicable App Distributor’s terms of service; (2) we are responsible for providing any maintenance and support services with respect to the mobile application as specified in the terms and conditions of this mobile application license contained in these Terms of Use or as otherwise required under applicable law, and you acknowledge that each App Distributor has no obligation whatsoever to furnish any maintenance and support services with respect to the mobile application.'}
+                        </Text>
+                        <Text 
+                          style ={styles.titleText}>
+                          {'INTELLECTUAL PROPERTY RIGHTS'}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {'Unless otherwise indicated, the Website  and Mobile App is our proprietary property and all source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics on the Website and Mobile App (collectively, the “Content”) and the trademarks, service marks, and logos contained therein (the “Marks”) are owned or controlled by us or licensed to us, and are protected by copyright and trademark laws and various other intellectual property rights and unfair competition laws of the Federal Republic of Nigeria, foreign jurisdictions, and international conventions.  The Content and the Marks are provided on the Website and Mobile App “AS IS” for your information and personal use only.  Except as expressly provided in these Terms of Use, no part of the Website  or Mobile App and no Content or Marks may be copied, reproduced, aggregated, republished, uploaded, posted, publicly displayed, encoded, translated, transmitted, distributed, sold, licensed, or otherwise exploited for any commercial purpose whatsoever, without our express prior written permission.\nProvided that you are eligible to use the Site, you are granted a limited license to access and use the Website or Mobile App and to download or print a copy of any portion of the Content to which you have properly gained access solely for your personal, non-commercial use. We reserve all rights not expressly granted to you in and to the Website or Mobile App, Content and the Marks.'}
+                        </Text>
+                        <Text 
+                          style ={styles.titleText}>
+                          {'USER REPRESENTATIONS'}
                         </Text>
                     
                         <Text 
                           style ={styles.contentText}>
-                            {'After registration, you must pay for subscription to access the reported cases,in accordance with the subscription-plans we have stipulated (unless you afirst-time user who is entitled to 2 (two) weeks of free trial). Access to thereported cases will cease when your subscription expires. You agree to receivenotices, in-app and by email, to inform you of an imminent expiration of yoursubscription, and to remind you to re-subscribe'}
+                            {'By using the Website/Mobile App, you represent and warrant that: (1) all registration information you submit will be true, accurate, current, and complete; (2) you will maintain the accuracy of such information and promptly update such registration information as necessary;] (3) you have the legal capacity and you agree to comply with these Terms of Use; (4) you will not access the Website or Mobile App through automated or non-human means, whether through a bot, script or otherwise; (5) you will not use the Website or Mobile App for any illegal or unauthorized purpose;  and (6) your use of the Website or Mobile App will not violate any applicable law or regulation.\nIf you provide any information that is untrue, inaccurate, not current, or incomplete, we have the right to suspend or terminate your account and refuse any and all current or future use of the Website or Mobile App (or any portion thereof).'}
                         </Text>
                         
+                        <Text 
+                          style ={styles.titleText}>
+                          {'USER REGISTRATION'}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {'You are required to register with the Website or Mobile App. To register, you are required to create a user account which involves creating your username and password, and supplying your current email address and mobile telephone number. If you change your email address or mobile telephone number, you must update it as soon as is reasonably possible through our in-app/website change-number feature. You agree to receive emails, text messages or phone calls, from us or our third-party providers, with codes to register for our services (or with instructions to create a new password, as the case may be). Registration does not grant automatic access to the reported cases. Subscription is required to enable you access reported cases.\nYou agree to keep your password confidential and will be responsible for all use of your account and password. We reserve the right to remove, reclaim, or change a username you select if we determine, in our sole discretion, that such username is inappropriate, obscene, or otherwise objectionable.'}
+                        </Text>
+                        <Text 
+                          style ={styles.titleText}>
+                          {'SUBSCRIPTION'}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {'After registration, you are required to pay for subscription to access the reported cases, in accordance with the subscription-plans we have stipulated. Access to the reported cases will cease when your subscription expires. However, immediately after expiration of subscription, you have 7 (seven) days window period before access to the reported cases is denied. You agree that prompts will be regularly sent to you within those 7 (seven) days, by email, to remind you to re-subscribe.'}
+                        </Text>
                         <Text 
                           style ={styles.titleText}>
                           {'Subscription Plans'}
                         </Text>
                         <Text 
                           style ={styles.contentText}>
-                            {'You can subscribe to either the individual plan: for personal use, or the corporate plan: for multiple users in firms or organizations. The individual planconsists of.... The corporate plan consists of three categories: Premium .... '}
+                            {'You can access the Electronic Court of Appeal Reports in the Website/Mobile App by subscribing to either the Individual plan for personal use or the Corporate plan, for firms or organizations. The individual plan consists of the Monthly, Six Months and Yearly Plans. The corporate plan consists of the Basic, Premium and Unlimited Plans.'}
                         </Text>
                         <Text 
                           style ={styles.titleText}>
-                          {'Appropriate Devices and Software '}
+                          {'Existing Users/Subscribers:'}
                         </Text>
                         <Text 
                           style ={styles.contentText}>
-                            {'You must possess appropriate devices, software and data connection to use theapp, and we do not provide any of those. You agree to download and install updates to the app whenever updates are made available.'}
+                            {'If you are already registered, and have an account, on our website - https://courtofappealreportsnigeria.com/ - at the time the Mobile app was launched, you can use the same log-in details you use for the website to access the Mobile App.'}
                         </Text>
                         <Text 
                           style ={styles.titleText}>
-                          {'Third-party advertisements forbidden '}
+                          {'APPROPRIATE DEVICES AND SOFTWARE'}
                         </Text>
                         <Text 
                           style ={styles.contentText}>
-                            {'We do not permit third-parties to advertise on the app, thereby ensuring that you enjoy distractions-free usage of the app.'}
+                            {'You must possess appropriate devices, software and data connections to use the Website and Mobile App, and we provide none of those. You agree to download and install updates to the app whenever updates are required.'}
                         </Text>
                         <Text 
                           style ={styles.titleText}>
-                          {'Existing users:'}
+                          {'PROHIBITED ACTIVITIES'}
                         </Text>
                         <Text 
                           style ={styles.contentText}>
-                            {'If you are already registered, and have an account, on our website -https://courtofappealreportsnigeria.com/  - at the time the app became waslaunched, you can use the same log-in details you use for the website to accessthe app. '}
+                            {'You may not access or use the Website for any purpose other than that for which we make the Website or Mobile App available. The Website or Mobile App may not be used in connection with any commercial endeavors except those that are specifically endorsed or approved by us. As a user of the Website or Mobile App, you agree not to:\n 1.  systematically retrieve data or other content from the Website or Mobile App to create or compile, directly or indirectly, a collection, compilation, database, or directory without written permission from us. \n2.  make any unauthorized use of the Website or Mobile App, including collecting usernames and/or email addresses of users by electronic or other means for the purpose of sending unsolicited email, or creating user accounts by automated means or under false pretenses. \n3.  use a buying agent or purchasing agent to make purchases on the Website and Mobile App. \n4.  use the Website or Mobile App to advertise or offer to sell goods and services \n5.  circumvent, disable, or otherwise interfere with security-related features of the Website, including features that prevent or restrict the use or copying of any Content or enforce limitations on the use of the Website or Mobile App and/or the Content contained therein. \n6.  engage in unauthorized framing of or linking to the Website. \n7.  trick, defraud, or mislead us and other users, especially in any attempt to learn sensitive account information such as user passwords; \n8.  make improper use of our support services or submit false reports of abuse or misconduct. \n9.  engage in any automated use of the system, such as using scripts to send comments or messages, or using any data mining, robots, or similar data gathering and extraction tools. \n10.  interfere with, disrupt, or create an undue burden on the Website/Mobile App or the networks or services connected to the Website/Mobile App. \n11.  attempt to impersonate another user or person or use the username of another user. \n12.  sell or otherwise transfer your profile. \n 13.  use any information obtained from the Website/Mobile App in order to harass, abuse, or harm another person. \n14.  use the Website/Mobile App as part of any effort to compete with us or otherwise use the Website/Mobile App and/or the Content for any revenue-generating endeavor or commercial enterprise.'}
                         </Text>
                         <Text 
                           style ={styles.titleText}>
-                          {'Availability of our services'}
+                          {''}
                         </Text>
                         <Text 
                           style ={styles.contentText}>
-                            {'You may experience interruptions while using the app, including interruptions caused by, or for updates, upgrades, repairs, maintenance, or due to network or equipment failures, factors beyond our control and other force majeureevents. We may modify or discontinue certain features or services on the app atany time, including its user-interface and graphic presentation, or discontinuesupport for any device or platform at any time. We may amend or update theseterms as need arises. However, you will be provided notice of such modifications, discontinuance, amendments or updates before they are implemented. Your continued use of the app after such notices are provided,and implementations effected, confirms your acceptance of our terms ofservice, as so amended.'}
-                        </Text>
-                        <Text 
-                          style ={styles.titleText}>
-                          {'Termination of License'}
-                        </Text>
-                        <Text 
-                          style ={styles.contentText}>
-                          {'Licensor reserves the right to modify, suspend or terminate access to the app ifLicensee is found in violation of this agreement. When access to the app is soterminated, all rights granted to Licensee under this agreement shall immediately cease'}
-                        </Text>
-                        <Text 
-                          style ={styles.titleText}>
-                          {'Disclaimers'}
-                        </Text>
-                        <Text 
-                          style ={styles.contentText}>
-                            {'You use the app on an ‘as is’ basis without any express or implied warranties,including,   but   not   limited   to,   warranties   of   merchantability,   fitness   for   aparticular purpose, title, non-infringement, and freedom from computer virusor other harmful code. We do not warrant that our services will be operational,error-free, secure or safe, or that our services will function without disruptions,delays or imperfections. We do not warrant that all information provided by usare accurate, useful and complete'}
+                            {''}
                         </Text>
                         
                         <Text 
                           style ={styles.titleText}>
                           {''}
+                        </Text>
+                        <Text 
+                          style ={styles.contentText}>
+                            {''}
                         </Text>
                       </View>
                     </ScrollView>

@@ -76,23 +76,30 @@ export default styles = StyleSheet.create({
     paddingRight : 10,
     backgroundColor: 'rgba(235,235,235,0.97)',
     },
-    termsView: {
-      flex: 1,
-      paddingTop : 8
-    },
-    termsContHeader: {
-      fontSize: 20,
-      color: colors.white,
-      alignSelf: 'center',  
-      fontFamily: 'Roboto-Medium',
-      // width : '100%',
-      marginRight : 16,
-    },
-    horizonLine: {
-      width: '100%',
-      height: 0.5, 
-      backgroundColor: colors.lightGray
-    },
+  termsView: {
+    flex: 1,
+    paddingTop : 8
+  },
+  termsContHeader: {
+    fontSize: 20,
+    color: colors.white,
+    alignSelf: 'center',  
+    fontFamily: 'Roboto-Medium',
+    // width : '100%',
+    marginRight : 16,
+  },
+  horizonLine: {
+    width: '100%',
+    height: 0.5, 
+    backgroundColor: colors.lightGray
+  },
+  titleHeader: {
+    fontSize:21,
+    fontFamily : 'Roboto-Medium',
+    color: colors.darkGray,
+    textAlign: 'center',
+    marginBottom: 4,
+  },
   titleText: {
     fontSize:18,
     fontFamily : 'Roboto-Medium',

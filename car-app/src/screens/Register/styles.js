@@ -304,47 +304,54 @@ export default styles = StyleSheet.create({
     color: colors.whiteShade,
     fontFamily: theme.primaryFont,
   },
-  iconStyle: {
-    color: theme.primaryColor,
-    fontSize: 20,
-    marginRight: (Platform.OS === 'ios') ? 4 : 2
-  },
+iconStyle: {
+  color: theme.primaryColor,
+  fontSize: 20,
+  marginRight: (Platform.OS === 'ios') ? 4 : 2
+},
 
-  toastView: {
+toastView: {
+  width: '100%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginTop: (Platform.OS == 'ios') ? 20 : 0,
+},
+scrollview: { 
+  flexDirection:'row',
+  padding: 8,
+},
+modalStyle: {
+  flex :1,
+  backgroundColor: 'rgba(235,235,235,0.97)',
+  },
+  termsView: {
+    flex: 1,
+    paddingTop : 8
+  },
+  termsContHeader: {
+    fontSize: 20,
+    color: colors.darkGray,
+    alignSelf: 'center',  
+    fontFamily: theme.primaryFont,
+    // width : '100%',
+    marginRight : 16,
+  },
+  horizonLine: {
     width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: (Platform.OS == 'ios') ? 20 : 0,
+    height: 0.5, 
+    backgroundColor: colors.lightGray
   },
-  scrollview: { 
-    flexDirection:'row',
-    padding: 8,
+  titleHeader: {
+    fontSize:21,
+    fontFamily : 'Roboto-Medium',
+    color: colors.darkGray,
+    textAlign: 'center',
+    marginBottom: 4,
   },
-  modalStyle: {
-    flex :1,
-    backgroundColor: 'rgba(235,235,235,0.97)',
-    },
-    termsView: {
-      flex: 1,
-      paddingTop : 8
-    },
-    termsContHeader: {
-      fontSize: 20,
-      color: colors.darkGray,
-      alignSelf: 'center',  
-      fontFamily: theme.primaryFont,
-      // width : '100%',
-      marginRight : 16,
-    },
-    horizonLine: {
-      width: '100%',
-      height: 0.5, 
-      backgroundColor: colors.lightGray
-    },
   titleText: {
     fontSize:18,
     fontFamily: theme.primaryFont,
-    color: colors.darkGray,
+    color: theme.primaryTextColor,
     textAlign:'left',
     marginBottom: 4,
   },

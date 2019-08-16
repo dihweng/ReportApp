@@ -86,18 +86,12 @@ export default class Login extends Component {
   } 
   handleSignIn = async () =>{
     this.showLoadingDialogue();
-    const { password, email,  } = this.state,
-      grant_type = 'password',
-      client_id = '2',
-      client_secret = '63Gdkvw5d02SISDpwj8TQlWw337OOLzCiDtD0vJC';
+    const { password, email,  } = this.state;
 
     let body = await {
-      username : email, 
+      email : email, 
       password : password, 
-      grant_type : grant_type,
-      client_id : client_id,
-      client_secret : client_secret,
-      scope : '*',
+      
     };
     try {
       await this.login(body)

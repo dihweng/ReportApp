@@ -113,6 +113,9 @@ import DropdownAlert from 'react-native-dropdownalert';
         if (typeof res.message !== 'undefined') {  
           return this.showNotification('error', 'Message', res.message);
         }
+        else if(typeof res.message == 'Unauthenticated'){
+          console.log('logout a user thanks')
+        }
   
         else {
           saveUserDetail(res.data, token);
@@ -132,7 +135,6 @@ import DropdownAlert from 'react-native-dropdownalert';
     });
   }
 
-
   handleFullReport = async(id)=>{
     if(this.state.isActive === true) {
       return await this.props.navigation.navigate('FullReport', {id});
@@ -142,8 +144,6 @@ import DropdownAlert from 'react-native-dropdownalert';
        return await setTimeout(() => {
          this.props.navigation.navigate('ManageSubscription');
        }, 3000);
-      
-
     }
   }
 
