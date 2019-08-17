@@ -256,10 +256,10 @@ const defaultFlag = data.filter(
             />
           </View>
           <TouchableOpacity 
-            onPress = {this.handleContactDetails}
+            onPress = {this.handdleBackPress}
             style = {styles.angleView}>
             <Image
-              onPress = {this.handleContactDetails}
+              onPress = {this.handdleBackPress}
               source = {require('../../assets/images/angle_back.png')}
               style = {StyleSheet.flatten(styles.angleBack)}
             />

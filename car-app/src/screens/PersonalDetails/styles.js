@@ -257,10 +257,9 @@ export default styles = StyleSheet.create({
     alignSelf: 'center',
   },
   btnView: {
-    // backgroundColor : colors.background_color,
     alignItems : 'center',
     width : '100%',
-    paddingBottom : 15
+    paddingTop : 15
   },
   btnStyle : {
     backgroundColor : theme.primaryColor,

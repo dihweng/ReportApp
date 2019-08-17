@@ -140,7 +140,7 @@ export default class Devision extends Component {
               <DisplayText
                 numberOfLines = { 3 } 
                 ellipsizeMode = 'middle'
-                text = {'An inhibitory postsynaptic potential is a kind of synaptic potential that makes a postsynaptic neuron less likely to generate an action potential'}
+                text = {'Filter Reports from the 16 Divisions of the Court of Appeal'}
                 styles = {StyleSheet.flatten(styles.citationBody)}
               />
             </View>

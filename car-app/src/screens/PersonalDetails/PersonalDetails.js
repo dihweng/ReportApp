@@ -286,10 +286,10 @@ render () {
           />
         </View>
         <TouchableOpacity
-          onPress = {this.handlePersonalDetail} 
+          onPress = {this.handdleBackPress} 
           style = {styles.angleView}>
           <Image
-            onPress = {this.handlePersonalDetail}
+            onPress = {this.handdleBackPress}
             source = {require('../../assets/images/angle_back.png')}
             style = {StyleSheet.flatten(styles.angleBack)}
           />
@@ -441,31 +441,22 @@ render () {
                 />
               </View>
             </View>
+            <View style = {styles.btnView}>
+              <ProgressDialog
+                visible={showLoading}
+                title="Processing"
+                message="Please wait..."
+              />
+              <SubmitButton
+                title={'Update'}
+                onPress={this.handleUpdate}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnStyle}
+              />
+            </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      <View style = {styles.signupLinkView}>
-        <View style = {styles.btnView}>
-          <ProgressDialog
-            visible={showLoading}
-            title="Processing"
-            message="Please wait..."
-          />
-          <SubmitButton
-            title={'Update'}
-            onPress={this.handleUpdate}
-            titleStyle={styles.btnText}
-            btnStyle = {styles.btnStyle}
-          />
-          {/* <SingleButtonAlert
-            title = {title} 
-            message = {message}
-            handleCloseNotification = {this.handleCloseNotification}
-            visible = {showAlert}
-          /> */}
-
-
-        </View>
-      </View>
+        
     </SafeAreaView>
     )
   }

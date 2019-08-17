@@ -439,13 +439,13 @@ export default class Citation extends Component {
             <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
-              text = {'CITATION 1 - 9'}
+              text = {'CITATION 0 - 9'}
               styles = {StyleSheet.flatten(styles.citationNumber)}
             />
             <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
-              text = {'An inhibitory postsynaptic potential is a kind of synaptic potential that makes a postsynaptic neuron less likely to generate an action potential'}
+              text = {'Filter Reports by Citation'}
               styles = {StyleSheet.flatten(styles.citationBody)}
             />
           </View>
@@ -473,13 +473,13 @@ export default class Citation extends Component {
                 <DisplayText
                   numberOfLines = { 3 } 
                   ellipsizeMode = 'middle'
-                  text = {'Filter Reports by Aphabet'}
+                  text = {'Reports A - Z'}
                   styles = {StyleSheet.flatten(styles.citationNumber)}
                 />
                 <DisplayText
                   numberOfLines = { 3 } 
                   ellipsizeMode = 'middle'
-                  text = {'An inhibitory postsynaptic potential is a kind of synaptic potential that makes a postsynaptic neuron less likely to generate an action potential'}
+                  text = {'Filter Reports by Aphabet'}
                   styles = {StyleSheet.flatten(styles.citationBody)}
                 />
               </View>

@@ -208,10 +208,10 @@ render () {
             />
           </View>
           <TouchableOpacity
-            onPress = {this.handlePersonalDetail} 
+            onPress = {this.handdleBackPress} 
             style = {styles.angleView}>
             <Image
-              onPress = {this.handlePersonalDetail}
+              onPress = {this.handdleBackPress}
               source = {require('../../assets/images/angle_back.png')}
               style = {StyleSheet.flatten(styles.angleBack)}
             />

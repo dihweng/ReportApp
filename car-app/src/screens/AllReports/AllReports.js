@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, Image, StyleSheet,} from 'react-native';
+import { View, FlatList, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, Image, RefreshControl, StyleSheet,} from 'react-native';
 import {DisplayText, SubmitButton, SingleButtonAlert, InputField,CustomToast} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
@@ -30,6 +30,8 @@ import DropdownAlert from 'react-native-dropdownalert';
       isFetching: false,
       restoring:true,
       isActive:false,
+      refreshing: false,
+
 
     }
   }
@@ -60,6 +62,9 @@ import DropdownAlert from 'react-native-dropdownalert';
 
   showNotification = (type, title, message,) => {
     this.hideLoadingDialogue();
+    this.setState({
+      refreshing: false,
+    })
     return this.dropDownAlertRef.alertWithType(type, title, message);
   }
 
@@ -69,12 +74,10 @@ import DropdownAlert from 'react-native-dropdownalert';
      })
   }
 
-  onRefresh() {
-    this.setState({ isFetching: true }, function() {
-      this.handleGetAllReport();
-    });
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.handleGetProfile();
   }
-
   allReport = async() =>{
     const {token} = this.state;
     await getRouteToken(getAllReport, token)
@@ -120,6 +123,7 @@ import DropdownAlert from 'react-native-dropdownalert';
           return this.showNotification('error', 'Message', res.message);
         }
         else {
+          console.log('resssssssss')
           saveUserDetail(res.data, token);
           this.props.setProfile(res.data);
           if(res.data.subscription !== null){
@@ -127,6 +131,7 @@ import DropdownAlert from 'react-native-dropdownalert';
           }
           this.setState({
             isActive : status == 'active' ? true : false,
+            refreshing: false,
           }); 
           subscription(status);
           return this.handleGetAllReport();
@@ -428,12 +433,20 @@ import DropdownAlert from 'react-native-dropdownalert';
     return(
       <SafeAreaView style={styles.container}> 
        <StatusBar barStyle="default"/>
-       <ScrollView style={styles.containerScroll}>
+       <ScrollView 
+          refreshControl = {
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+        showsVerticalScrollIndicator={false}
+        style={styles.containerScroll}>
 
         <View style = {styles.viewBody}>
           <FlatList   
-            onRefresh={() => this.onRefresh()}
-            refreshing={this.state.isFetching}       
+            // onRefresh={() => this.onRefresh()}
+            // refreshing={this.state.isFetching}       
             data={this.state.data}      
             extraData={this.state}    
             renderItem={this.renderRow}          
