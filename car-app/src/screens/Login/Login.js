@@ -52,18 +52,15 @@ export default class Login extends Component {
       showLoading: true,
     });
   }
-
   hideLoadingDialogue =()=> {
     this.setState({
       showLoading: false,
     });
   }
-
   showNotification = (type, title, message,) => {
     this.hideLoadingDialogue();
     return this.dropDownAlertRef.alertWithType(type, title, message);
   }
-
   login = async(body) =>{
     await postRoute(LoginEndpoint, body)
       .then((res) => {
