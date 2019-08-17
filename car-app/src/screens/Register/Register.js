@@ -195,7 +195,7 @@ class Register extends Component {
         }  
         else if(res.data) {
           this.hideLoadingDialogue();
-          this.showNotification('success', 'Success', 'Registration Sucessful');
+          this.showNotification('success', 'Success', 'Registration Successful');
           return setTimeout(() => {
             this.props.navigation.navigate('Login');
           }, 3000);

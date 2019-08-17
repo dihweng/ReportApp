@@ -200,11 +200,9 @@ export const putRoute = (endpoint, body, token) => {
   });
 }
 
-export const saveProfile = async( access_token, refresh_token, expires_in ) => {
+export const saveProfile = async( access_token) => {
   let profile = {
     'access_token' : access_token,
-    'refresh_token' : refresh_token,
-    'expires' : expires_in
   };
   return await AsyncStorage.setItem('profile', JSON.stringify(profile))
 }

@@ -30,7 +30,6 @@ export default class FavoriteList extends Component {
     let subscription = await getSubscription();
     this.setState({
       token : profile.access_token,
-      expires : profile.expires,
       showLoading:true,
       isActive: subscription,
       // data:this.reports

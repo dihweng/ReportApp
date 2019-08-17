@@ -26,7 +26,6 @@ export default class FullReport extends Component {
     let profile = await getProfile();
     await this.setState({
       token : profile.access_token,
-      expires : profile.expires,
       showLoading:true,
     });
     await this.handleGetReport();

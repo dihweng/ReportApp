@@ -41,7 +41,6 @@ export default class CategoryDetails extends Component {
 
     await this.setState({
       token: profile.access_token,
-      expires: profile.expires,
       showLoading: true,
       isActive:subscription,
       id,

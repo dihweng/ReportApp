@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, StyleSheet, StatusBar,TouchableOpacity, SafeAreaView, Image, KeyboardAvoidingView,ScrollView } from 'react-native';
+import { View, StyleSheet, StatusBar,TouchableOpacity, SafeAreaView, Image, KeyboardAvoidingView, } from 'react-native';
 import {DisplayText, InputField,SubmitButton, AuthBackground} from '../../components';
 import styles from './styles';
 import { getProfile, LoginEndpoint, postRoute, saveProfile} from '../Utils/Utils';
@@ -37,7 +37,7 @@ export default class Login extends Component {
 
   checkLogin =  async() => {
     let profile = await getProfile();
-    if(typeof profile.expires !== 'undefined' ) {
+    if(typeof profile.access_token !== 'undefined' ) {
       
       return this.props.navigation.navigate('Menu');
     }
@@ -64,15 +64,14 @@ export default class Login extends Component {
   login = async(body) =>{
     await postRoute(LoginEndpoint, body)
       .then((res) => {
+
         if (typeof res.message !== 'undefined') {  
           return this.showNotification('error', 'Message', res.message);
         }   
         else {
           this.hideLoadingDialogue();
           saveProfile(
-            res.access_token,
-            res.refresh_token,
-            res.expires_in
+            res.token,
           );
           this.hideLoadingDialogue();
           return this.props.navigation.navigate('Menu');

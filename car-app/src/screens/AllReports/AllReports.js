@@ -37,9 +37,9 @@ import DropdownAlert from 'react-native-dropdownalert';
   async componentDidMount(){
 
     let profile = await getProfile();
+    console.log({profile})
     this.setState({
       token : profile.access_token,
-      expires : profile.expires,
       showLoading:true,
     });
     await this.handleGetProfile();
@@ -109,14 +109,16 @@ import DropdownAlert from 'react-native-dropdownalert';
     let status = 'expired';
     await getRouteToken(ProfileEndpoint, token)
       .then((res) => {
-        console.log({reportProfile: res});
         if (typeof res.message !== 'undefined') {  
+          if(typeof res.message == 'Unauthenticated'){
+            this.showNotification('error', 'Message', 'Session Expired, Please Login Again');
+            return setTimeout(()=>{
+              this.props.navigation.navigate('AuthLoading');
+            }, 3000);
+
+          }
           return this.showNotification('error', 'Message', res.message);
         }
-        else if(typeof res.message == 'Unauthenticated'){
-          console.log('logout a user thanks')
-        }
-  
         else {
           saveUserDetail(res.data, token);
           this.props.setProfile(res.data);

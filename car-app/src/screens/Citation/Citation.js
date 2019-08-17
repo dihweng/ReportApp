@@ -46,7 +46,6 @@ export default class Citation extends Component {
     let subscription = await getSubscription();
      await this.setState({
       token : profile.access_token,
-      expires : profile.expires,
       isActive : subscription,
     });
     await this.handleGetAllReport();
