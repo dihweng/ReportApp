@@ -51,7 +51,8 @@
         "resizeMode": "contain",
         "mdpi": "./assets/splash.png",
         "hdpi": "./assets/splash.png",
-        "xhdpi": "./assets/splash.png"
+        "xhdpi": "./assets/splash.png",
+        "backgroundColor": "#2D002B"
       },
       "config": {
         "fabric": {
