@@ -5,6 +5,7 @@ import styles from './styles';
 import {  getProfile, GetReportEndpoint } from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import {DisplayText, SingleButtonAlert} from '../../components';
+import DropdownAlert from 'react-native-dropdownalert';
 
 export default class Ratios extends Component {
   constructor(props) {
@@ -52,7 +53,6 @@ export default class Ratios extends Component {
       let response = await fetch(endpoint, settings);
       let res = await response.json();
       if (res.data) {
-        console.log({res:res})
          await this.setState({
           content:res.data.content,
           id:res.data.id,

@@ -75,9 +75,7 @@ export default class FullReport extends Component {
         'Authorization': `Bearer ${token}`,
       }
     }
-
     try {
-
       let response = await fetch(endpoint, settings);
       let res = await response.json();
       if (res.data) {
@@ -116,17 +114,19 @@ export default class FullReport extends Component {
 
 
   handleRatio = async() => {
-    const {id, excerpt} = this.state
+    const { id } = this.state
     return await this.props.navigation.navigate('Ratios', {
       id: id,
-      // excerpt: excerpt,
     });
   }
   handleFullReport = () => {
     return this.props.navigation.navigate('FullReport');
   }
   handleCitedAuthorities = () =>{
-    return this.props.navigation.navigate('CitedAuthorities')
+    const { id } = this.state
+    return this.props.navigation.navigate('CitedAuthorities', {
+      id: id
+    })
   }
   
   handleOnBackPress = () => {

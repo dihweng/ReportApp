@@ -123,7 +123,6 @@ import DropdownAlert from 'react-native-dropdownalert';
           return this.showNotification('error', 'Message', res.message);
         }
         else {
-          console.log('resssssssss')
           saveUserDetail(res.data, token);
           this.props.setProfile(res.data);
           if(res.data.subscription !== null){

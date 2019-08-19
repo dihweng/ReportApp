@@ -36,6 +36,7 @@ const defaultFlag = data.filter(
     this.state ={
       modalGenderVisible: false,
       isValidGender: false,
+      gender: 'Gender',
       // isOccupationValid: false,
       flag : defaultFlag,
       modalVisible : false,
@@ -47,7 +48,6 @@ const defaultFlag = data.filter(
       id : '',
       token : '',
       name : '',
-      gender: 'Gender',
       email : '',
       phone : '',
       title : '',

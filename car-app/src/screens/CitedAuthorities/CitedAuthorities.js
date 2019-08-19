@@ -1,9 +1,12 @@
 'use strict';
 import React, {Component} from 'react';
 import { View, Text, ScrollView, SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText } from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
+import {  getProfile, GetReportEndpoint } from '../Utils/Utils';
+import { ProgressDialog } from 'react-native-simple-dialogs';
+import {DisplayText, SingleButtonAlert} from '../../components';
+import DropdownAlert from 'react-native-dropdownalert';
 
 
 export default class CitedAuthorities extends Component {
@@ -14,8 +17,87 @@ export default class CitedAuthorities extends Component {
       showLoading : false,
       message: '',
       title: '',
+      cited_authorities: '',
+      reportTitle: '',
+      id: '',
+      token: ''
     }
   }
+
+  async componentDidMount(){
+    let profile = await getProfile();
+    await this.setState({
+      token : profile.access_token,
+      showLoading:true,
+    });
+    await this.handleGetReport();
+  }
+  handleGetReport = async() => {
+    const{navigation} = this.props;
+    let reportId = await navigation.getParam('id');
+    return await this.getReportById(reportId);
+      
+  }
+  getReportById = async(reportId)=> {
+    await this.showLoadingDialogue();
+    const {token} = this.state;
+    let endpoint = `${GetReportEndpoint}${reportId}`;
+     const  settings ={
+      method : "GET",
+      headers : {
+        "Accept" : "application/json",
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      }
+    }
+
+    try {
+
+      let response = await fetch(endpoint, settings);
+      let res = await response.json();
+      if (res.data) {
+        console.log({res:res})
+         await this.setState({
+          cited_authorities:res.data.cited_authorities,
+          id:res.data.id,
+          reportTitle: res.data.title
+        });
+        return await this.hideLoadingDialogue();
+      }
+      else {
+        return await this.showNotification(res.message,  'Message');
+      }
+
+    }
+    catch(error) {
+      return this.showNotification(error.toString(), 'Message');
+    }
+  }
+
+  showLoadingDialogue =()=> {
+    this.setState({
+      showLoading: true,
+    });
+  }
+
+  hideLoadingDialogue =()=> {
+    this.setState({
+      showLoading: false,
+      restoring: false,
+    });
+  }
+
+  showNotification = (type, title, message,) => {
+    this.hideLoadingDialogue();
+    return this.dropDownAlertRef.alertWithType(type, title, message);
+  }
+
+  handleCloseNotification = () => {
+    return this.setState({
+       showAlert : false,
+     })
+  }
+
 
   handleRatio = () => {
     return this.props.navigation.navigate('Ratios');
@@ -31,14 +113,8 @@ export default class CitedAuthorities extends Component {
     this.props.navigation.navigate('DashBoard');
   };
  
-  handleConfirm = () => {
-    alert('confirm coming soon');
-  }
-
-  
-
   render () {
-    const { title, message, showAlert, showLoading } = this.state
+    const { title, message, showAlert, showLoading, reportTitle, cited_authorities } = this.state
 
     return(
       <SafeAreaView style={styles.container}> 
@@ -89,8 +165,40 @@ export default class CitedAuthorities extends Component {
             />
           </TouchableOpacity>
         </View>
+        <ScrollView
+          style={{flex:1, paddingHorizontal: 16}}
+          showsVerticalScrollIndicator={false}>
+            <DisplayText
+              numberOfLines = { 2 } 
+              ellipsizeMode = 'middle'
+              text = {reportTitle}
+              styles = {StyleSheet.flatten(styles.reportName)}
+            />
+
+            <DisplayText
+              numberOfLines = { 2 } 
+              ellipsizeMode = 'middle'
+              text = {citation}
+              styles = {StyleSheet.flatten(styles.headerText)}
+            />
+            <DisplayText
+              text = {cited_authorities}
+              styles = {StyleSheet.flatten(styles.text)}
+            />
+        </ScrollView>
+        <ProgressDialog
+          visible={showLoading}
+          title="Processing"
+          message="Please wait..."
+          />
+        <SingleButtonAlert
+          title = {title} 
+          message = {message}
+          handleCloseNotification = {this.handleCloseNotification}
+          visible = {showAlert}
+        />
       
-    </SafeAreaView>
+      </SafeAreaView>
     )
   }
 } 
