@@ -57,10 +57,10 @@ export default class CitedAuthorities extends Component {
       let res = await response.json();
       if (res.data) {
         console.log({res:res})
-         await this.setState({
-          cited_authorities:res.data.cited_authorities,
-          id:res.data.id,
-          reportTitle: res.data.title
+          await this.setState({
+            cited_authorities:res.data.cited_authorities,
+            id:res.data.id,
+            reportTitle: res.data.title
         });
         return await this.hideLoadingDialogue();
       }
@@ -100,7 +100,10 @@ export default class CitedAuthorities extends Component {
 
 
   handleRatio = () => {
-    return this.props.navigation.navigate('Ratios');
+    const { id } = this.state
+    return this.props.navigation.navigate('Ratios', {
+      id: id
+    });
   }
   handleFullReport = () => {
     return this.props.navigation.navigate('FullReport');
@@ -175,12 +178,12 @@ export default class CitedAuthorities extends Component {
               styles = {StyleSheet.flatten(styles.reportName)}
             />
 
-            <DisplayText
+            {/* <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
               text = {citation}
               styles = {StyleSheet.flatten(styles.headerText)}
-            />
+            /> */}
             <DisplayText
               text = {cited_authorities}
               styles = {StyleSheet.flatten(styles.text)}

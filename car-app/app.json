@@ -25,13 +25,13 @@
     ],
     "android": {
       "package": "ng.carapp.www",
-      "versionCode":1,
-      "playStoreUrl":"https://play.google.com/store/apps/details?id=",
+      "versionCode": 1,
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=",
       "permissions": [
         "CAMERA",
         "MANAGE_DOCUMENTS",
-        "READ_INTERNAL_STORAGE", 
-        "READ_EXTERNAL_STORAGE", 
+        "READ_INTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
         "READ_PHONE_STATE",
         "VIBRATE",
@@ -47,20 +47,18 @@
         "com.sec.android.provider.badge.permission.WRITE",
         "com.sonyericsson.home.permission.BROADCAST_BADGE"
       ],
-    
-      "splash":{ 
+      "splash": {
         "resizeMode": "contain",
-        "mdpi": "./assets/splash.png", 
-        "hdpi": "./assets/splash.png", 
+        "mdpi": "./assets/splash.png",
+        "hdpi": "./assets/splash.png",
         "xhdpi": "./assets/splash.png"
       },
-    
       "config": {
         "fabric": {
-          "apiKey":"f4c6d386ecadd3ebe0d71c5769113ac0ecfa76ac",
-          "buildSecret":"3d37edf3c238007caee6d09968c4a3f7334267b9c0015bdc604f2169abf01831"
+          "apiKey": "f4c6d386ecadd3ebe0d71c5769113ac0ecfa76ac",
+          "buildSecret": "3d37edf3c238007caee6d09968c4a3f7334267b9c0015bdc604f2169abf01831"
         }
-      }  
+      }
     },
     "ios": {
       "supportsTablet": true

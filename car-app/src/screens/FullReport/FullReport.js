@@ -20,7 +20,6 @@ export default class FullReport extends Component {
       excerpt:'',
       id: '',
     }
-
   }
   async componentDidMount(){
     let profile = await getProfile();

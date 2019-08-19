@@ -278,4 +278,16 @@ export default styles = StyleSheet.create({
     fontSize: 16,
 
   },
+  reportName: {
+    fontSize: theme.MediumFont,
+    color: theme.primaryTextColor,
+    fontFamily: theme.primaryFont,
+    marginTop: 16,   
+  },
+  text: {
+    fontSize: theme.SmallFont,
+    color: theme.primaryTextColor,
+    fontFamily: theme.secondaryFont,
+    marginTop: 8,   
+  }
 });
