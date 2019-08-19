@@ -1,12 +1,14 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, SafeAreaView, StatusBar, Image, FlatList, TouchableOpacity, StyleSheet,} from 'react-native';
-import {DisplayText, SingleButtonAlert } from '../../components';
+import { View, SafeAreaView, StatusBar, Image, Dimensions,
+  FlatList, TouchableOpacity, StyleSheet,} from 'react-native';
+import {DisplayText} from '../../components';
 import { getUserDetails, GetAllSubscription, subscription, getRouteToken} from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import styles from './styles';
 import DropdownAlert from 'react-native-dropdownalert';
 import moment from 'moment';
+import ProgressBarAnimated from 'react-native-progress-bar-animated';
 
 export default class ManageSubscription extends Component {
   constructor(props) {
@@ -20,6 +22,9 @@ export default class ManageSubscription extends Component {
       message : '',
       title: '',
       name: '',
+      loggedInDevices:1,
+      planType : '',
+       activePercent:0,
     }
   }
 
@@ -27,14 +32,18 @@ export default class ManageSubscription extends Component {
     let userDetails = await getUserDetails();
     const id = userDetails.data.id,
       name = userDetails.data.name,
+      total_active_devices = userDetails.data.total_active_sessions,
       token = userDetails.token;
+
       let payment = this.props.navigation.getParam('paid');
 
       this.setState({
-      id,
-      token,
-      name,
-    });
+        id,
+        token,
+        name,
+        loggedInDevices: total_active_devices,
+      });
+
     await this.handleGetSubscription();
 
     this.focusListener =  await this.props.navigation.addListener('didFocus', () => {
@@ -55,13 +64,13 @@ export default class ManageSubscription extends Component {
     this.showLoadingDialogue();
     await getRouteToken(endpoint, token)
       .then((res) => {
-        console.log({responseSub: res})
         if (typeof res.message !== 'undefined') {  
           return this.showNotification('error', 'Message', res.message);
         }   
         else {   
           this.setState({
             data: res.data,
+            planType: res.data[0].plan.category,
           });
           return this.hideLoadingDialogue();
         }
@@ -122,8 +131,19 @@ export default class ManageSubscription extends Component {
     //Props to open/close the drawer
     this.props.navigation.toggleDrawer();
   };
-  handleBackPress = () => {
-    return this.props.navigation.popToTop()
+
+  decideBarWidth =()=>{
+  const {loggedInDevices, planType} = this.state;
+
+    if(planType == 'individual') {
+      let activePercent = (loggedInDevices/3)*100;
+      return this.setState({activePercent})   
+    }
+    else {
+      let activePercent = (loggedInDevices/100)*100;
+      return this.setState({activePercent});
+
+    }
   }
 
  
@@ -133,28 +153,18 @@ export default class ManageSubscription extends Component {
     let expiryLabel = item.status == 'active' ? 'Expires' : 'Expired';
     let dur1 = item.plan.name.split(' ')[0];
     let dur2 = item.plan.name.split(' ')[1];
-
-
+    let gateway = item.payment ? `${item.payment.gateway.toUpperCase()} - ${dur1.toUpperCase()} ${dur2.toUpperCase()}` : 'Trial Account';
+    this.decideBarWidth();
     return (
       <View style = {styles.listViewItem}>    
         <TouchableOpacity 
           style = {styles.cardView}>
           <View style ={styles.subView}>
-            {/* <DisplayText
-              numberOfLines = { 2 } 
-              ellipsizeMode = 'middle'
-              text = {item.reportName.toUpperCase()}
-              styles = {StyleSheet.flatten(styles.subName)}
-            />
-            <DisplayText
-              text = {item.date}
-              styles = {StyleSheet.flatten(styles.subDate)}
-            /> */}
 
           </View>
           <View style = {styles.subView}>
             <DisplayText
-                text = {`${item.payment.gateway.toUpperCase()} - ${dur1.toUpperCase()} ${dur2.toUpperCase()}`}
+                text = {gateway}
                 styles = {StyleSheet.flatten(styles.expireTxt)}
               />
             <DisplayText
@@ -197,7 +207,9 @@ export default class ManageSubscription extends Component {
   }
 
   render () {
-    const { showLoading } = this.state;
+    const { showLoading, activePercent} = this.state;
+    const barWidth = Dimensions.get('screen').width - 50;
+
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
@@ -249,7 +261,11 @@ export default class ManageSubscription extends Component {
       </View>
       <View style = { styles.subscribtionView}>
         <View style = {styles.devices}>
-
+        <ProgressBarAnimated
+            width={barWidth}
+            value={activePercent}
+            backgroundColorOnComplete="#6CC644"
+          />
         </View>
         <View style = {styles.FlatListView}>
           <FlatList          

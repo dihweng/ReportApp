@@ -22,7 +22,7 @@ export default class DashBoard extends Component {
 
   handleCloseNotification = () => {
     return this.setState({
-       showAlert : false
+       showAlert : false,
      })
   }
  

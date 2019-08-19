@@ -227,7 +227,6 @@ export const saveUserDetail = async( data, token,  ) => {
 }
 
 export const subscription = async(status) => {
-  //let subscription = {status};
   await AsyncStorage.removeItem('subscription');
   return await AsyncStorage.setItem('subscription', status)
 }
