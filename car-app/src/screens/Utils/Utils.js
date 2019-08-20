@@ -26,8 +26,9 @@ const LoginEndpoint = `${Baseurl}api/login`,
   GetCategoryEndpoint = `${Baseurl}api/categories/`,
   GetDivisionEndpoint = `${Baseurl}api/divisions/`,
   GetAllSubscription = `${Baseurl}api/users/`,
-  GetReportEndpoint = `${Baseurl}api/reports/`;
-
+  GetReportEndpoint = `${Baseurl}api/reports/`,
+  UserLogoutEndpoint = `${Baseurl}api/logout`;
+  
 
 
 export {
@@ -58,6 +59,7 @@ export {
   GetDivisionEndpoint,
   GetAllSubscription,
   GetReportEndpoint,
+  UserLogoutEndpoint,
 }
 
 

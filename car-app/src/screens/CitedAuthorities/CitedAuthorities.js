@@ -8,7 +8,6 @@ import { ProgressDialog } from 'react-native-simple-dialogs';
 import {DisplayText, SingleButtonAlert} from '../../components';
 import DropdownAlert from 'react-native-dropdownalert';
 
-
 export default class CitedAuthorities extends Component {
   constructor(props) {
     super(props);
