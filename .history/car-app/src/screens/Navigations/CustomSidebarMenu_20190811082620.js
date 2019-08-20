@@ -67,7 +67,7 @@ export default class CustomSidebarMenu extends Component {
       },
       {
         navOptionThumb: terms,
-        navOptionName: 'Terms & Conditions',
+        navOptionName: 'Terms Conditions',
         screenToNavigate: 'TermsConditions',
       },
       {

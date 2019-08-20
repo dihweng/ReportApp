@@ -213,7 +213,7 @@ export default class ManageSubscription extends Component {
     const { showLoading, activePercent, loggedInDevices, total_devices_allowed} = this.state;
     const barWidth = Dimensions.get('screen').width - 50;
     const progressCustomStyles = {
-      backgroundColor: '#2D002B', 
+      //backgroundColor: 'red', 
       borderRadius: 0,
       //borderColor: 'orange',
     };
