@@ -284,7 +284,7 @@ export default class ManageSubscription extends Component {
             <ProgressBarAnimated
               width={barWidth}
               value={activePercent}
-              backgroundColorOnComplete="#2D002B"
+              backgroundColorOnComplete="#6CC644"
             />
           </View>
         </View>

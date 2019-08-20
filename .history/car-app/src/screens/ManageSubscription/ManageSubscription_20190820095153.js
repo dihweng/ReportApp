@@ -9,7 +9,7 @@ import styles from './styles';
 import DropdownAlert from 'react-native-dropdownalert';
 import moment from 'moment';
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
-import numeral from 'numeral';
+
 export default class ManageSubscription extends Component {
   constructor(props) {
     super(props);
@@ -181,7 +181,7 @@ export default class ManageSubscription extends Component {
                 styles = {StyleSheet.flatten(styles.subscriberName)}
               />
             <DisplayText
-              text={`₦${numeral(item.plan.amount).format('0,0.00').toString()}`}
+              text = {`N${item.plan.amount.toString()}`}
               styles = {StyleSheet.flatten(styles.amount)}
             />
           </View>
@@ -264,19 +264,19 @@ export default class ManageSubscription extends Component {
       </View>
       <View style = { styles.subscribtionView}>
         <View style = {styles.devices}>
-          <View style={styles.countView}>
-            
-            <View style={styles.planView}>
+          <View style={styles.planView}>
+            <View>
               <View style={styles.viewCicle}>
                 <View style={styles.innerView}></View>
               </View>
               <DisplayText
                 text={'Devices'}
                 styles = {StyleSheet.flatten(styles.planName)}
-              />      
+              />
             </View>
-            <DisplayText
-              text={`${loggedInDevices}/${total_devices_allowed}`}
+            
+             <DisplayText
+              text={`${loggedInDevices}\\${total_devices_allowed}`}
               styles = {StyleSheet.flatten(styles.planName)}
             />
           </View>
@@ -284,7 +284,7 @@ export default class ManageSubscription extends Component {
             <ProgressBarAnimated
               width={barWidth}
               value={activePercent}
-              backgroundColorOnComplete="#2D002B"
+              backgroundColorOnComplete="#6CC644"
             />
           </View>
         </View>

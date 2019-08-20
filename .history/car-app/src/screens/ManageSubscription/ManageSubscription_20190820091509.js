@@ -9,7 +9,7 @@ import styles from './styles';
 import DropdownAlert from 'react-native-dropdownalert';
 import moment from 'moment';
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
-import numeral from 'numeral';
+
 export default class ManageSubscription extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +25,6 @@ export default class ManageSubscription extends Component {
       loggedInDevices:1,
       planType : '',
       activePercent:0,
-      total_devices_allowed:0,
     }
   }
 
@@ -34,7 +33,6 @@ export default class ManageSubscription extends Component {
     const id = userDetails.data.id,
       name = userDetails.data.name,
       total_active_devices = userDetails.data.total_active_sessions,
-      total_devices_allowed = userDetails.data.subscription.plan.allowed_devices_count,
       token = userDetails.token;
 
       let payment = this.props.navigation.getParam('paid');
@@ -44,7 +42,6 @@ export default class ManageSubscription extends Component {
         token,
         name,
         loggedInDevices: total_active_devices,
-        total_devices_allowed
       });
 
     await this.handleGetSubscription();
@@ -181,7 +178,7 @@ export default class ManageSubscription extends Component {
                 styles = {StyleSheet.flatten(styles.subscriberName)}
               />
             <DisplayText
-              text={`₦${numeral(item.plan.amount).format('0,0.00').toString()}`}
+              text = {`N${item.plan.amount.toString()}`}
               styles = {StyleSheet.flatten(styles.amount)}
             />
           </View>
@@ -210,7 +207,7 @@ export default class ManageSubscription extends Component {
   }
 
   render () {
-    const { showLoading, activePercent, loggedInDevices, total_devices_allowed, planType} = this.state;
+    const { showLoading, activePercent, planType} = this.state;
     const barWidth = Dimensions.get('screen').width - 50;
 
    return(
@@ -264,29 +261,24 @@ export default class ManageSubscription extends Component {
       </View>
       <View style = { styles.subscribtionView}>
         <View style = {styles.devices}>
-          <View style={styles.countView}>
-            
-            <View style={styles.planView}>
-              <View style={styles.viewCicle}>
-                <View style={styles.innerView}></View>
-              </View>
-              <DisplayText
-                text={'Devices'}
-                styles = {StyleSheet.flatten(styles.planName)}
-              />      
+          <View style={styles.planView}>
+            <View style={styles.viewCicle}>
+              <View style={styles.innerView}></View>
             </View>
             <DisplayText
-              text={`${loggedInDevices}/${total_devices_allowed}`}
+              text={'Devices'}
+              styles = {StyleSheet.flatten(styles.planName)}
+            />
+             <DisplayText
+              text={`${}`}
               styles = {StyleSheet.flatten(styles.planName)}
             />
           </View>
-          <View style={styles.barView}>
-            <ProgressBarAnimated
+          <ProgressBarAnimated
               width={barWidth}
               value={activePercent}
-              backgroundColorOnComplete="#2D002B"
+              backgroundColorOnComplete="#6CC644"
             />
-          </View>
         </View>
         <View style = {styles.FlatListView}>
           <FlatList          

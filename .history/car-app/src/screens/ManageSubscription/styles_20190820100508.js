@@ -307,9 +307,9 @@ export default styles = StyleSheet.create({
 
   countView: {
     flexDirection: 'row',
-    justifyContent: "space-between",
-    width:'100%',
-    paddingEnd:20
+    justifyContent: 'center',
+
+
   },
 
   barView: {

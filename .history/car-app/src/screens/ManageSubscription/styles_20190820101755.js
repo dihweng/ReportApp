@@ -346,4 +346,14 @@ export default styles = StyleSheet.create({
     marginLeft: 8,
     textTransform: 'capitalize'
   },
+
+  // planName2: {
+  //   fontFamily: theme.LightRoboto,
+  //   fontSize: theme.SmallFont,
+  //   color: theme.primaryTextColor,
+  //  // marginLeft: 8,
+  //   paddingLeft:8,
+  //   paddingRight:8,
+  //   textTransform: 'capitalize'
+  // },
 });

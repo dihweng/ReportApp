@@ -9,20 +9,21 @@ import { ProgressDialog } from 'react-native-simple-dialogs';
 export default class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state ={
-      token: '',
-      title: '',
-      message: '',
-      showAlert: false,
-      showLoading: false
-    }
+    // this.state ={
+    //   token: '',
+    //   title: '',
+    //   message: '',
+    //   showAlert: false,
+       showLoading: false
+    // }
   }
   async componentDidMount () {
-    let profile = await getProfile();  
-    await this.setState({
-      showLoading:true,
-    });
-    await this.handleLogout(profile.access_token);
+   // let profile = await getProfile();  
+    console.log({'prooooffff': 'userssss'})   
+    // await this.setState({
+    //   showLoading:true,
+    // });
+    // await this.handleLogout(profile.access_token);
   }
 
    handleLogout = async(token) => {
@@ -38,9 +39,16 @@ export default class Profile extends Component {
     try {
       let response = await fetch(UserLogoutEndpoint, settings);
       let res = await response;
+      console.log('res....', res)
       if (res.status == 200) {
+        console.log('res....1')
+
         await AsyncStorage.clear();
+        console.log('res....2')
+
         this.hideLoadingDialogue();
+        console.log('res....3')
+
         return await this.props.navigation.navigate('AuthLoading');
       }
       else {
@@ -83,11 +91,11 @@ export default class Profile extends Component {
       <Image
         source={require('../../assets/images/splash.png')}
         style={StyleSheet.flatten(styles.logoIcon)}/> 
-      {/* <ProgressDialog
+      <ProgressDialog
         visible={this.state.showLoading}
         title="Processing"
         message="Please wait..."
-      /> */}
+      />
       <DropdownAlert ref={ref => this.dropDownAlertRef = ref}/>
 
     </SafeAreaView>

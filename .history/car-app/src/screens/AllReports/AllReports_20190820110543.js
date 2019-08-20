@@ -5,7 +5,7 @@ import {DisplayText, SubmitButton, SingleButtonAlert, InputField,CustomToast} fr
 import styles from './styles';
 import theme from '../../assets/theme';
 import { DeleteFavoriteEndpoint, DeleteReadLaterEndpoint, getRouteToken, getAllReport, getProfile, 
-  ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint, subscription, } from '../Utils/Utils';
+  ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint, subscription } from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import colors from '../../assets/colors';
 import {connect} from 'react-redux';
@@ -115,7 +115,7 @@ import DropdownAlert from 'react-native-dropdownalert';
           if(res.message == 'Unauthenticated.'){
             this.showNotification('error', 'Message', 'Session Expired, Please Login Again');
             return setTimeout(()=>{
-               this.props.navigation.navigate('Logout');
+               this.props.navigation.navigate('Loading');
             }, 3000);
 
           }

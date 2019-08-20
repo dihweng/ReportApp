@@ -200,7 +200,9 @@ export default styles = StyleSheet.create({
   },
   devices : {
     width : '100%',
-    justifyContent: "space-evenly",
+    flex:1,
+    justifyContent: "center",
+    flex:space-evenly,
     shadowColor: theme.primaryTextColor,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
@@ -301,23 +303,7 @@ export default styles = StyleSheet.create({
   planView: {
     marginLeft: 20,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: "center",
-  },
-
-  countView: {
-    flexDirection: 'row',
-    justifyContent: "space-between",
-    width:'100%',
-    paddingEnd:20
-  },
-
-  barView: {
-    //marginLeft: 20,
-    flexDirection: 'row',
-   // alignItems: 'center',
-    justifyContent: "center",
-
+    alignItems: 'center'
   },
 
   innerView: {

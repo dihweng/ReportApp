@@ -83,11 +83,11 @@ export default class Profile extends Component {
       <Image
         source={require('../../assets/images/splash.png')}
         style={StyleSheet.flatten(styles.logoIcon)}/> 
-      {/* <ProgressDialog
+      <ProgressDialog
         visible={this.state.showLoading}
         title="Processing"
         message="Please wait..."
-      /> */}
+      />
       <DropdownAlert ref={ref => this.dropDownAlertRef = ref}/>
 
     </SafeAreaView>

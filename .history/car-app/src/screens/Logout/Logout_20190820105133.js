@@ -17,9 +17,11 @@ export default class Profile extends Component {
       showLoading: false
     }
   }
-  async componentDidMount () {
-    let profile = await getProfile();  
+  async componentWillMount () {
+    let profile = await getProfile();
+    console.log({'hhhhhhhhhhhhhhhhhhhhhh ': profile.access_token})
     await this.setState({
+      token : profile.access_token,
       showLoading:true,
     });
     await this.handleLogout(profile.access_token);
@@ -27,6 +29,9 @@ export default class Profile extends Component {
 
    handleLogout = async(token) => {
     await this.showLoadingDialogue();
+
+   // const{token} = this.state;
+    console.log({'token......': token})
      const  settings ={
       method : "POST",
       headers : {
@@ -38,17 +43,18 @@ export default class Profile extends Component {
     try {
       let response = await fetch(UserLogoutEndpoint, settings);
       let res = await response;
-      if (res.status == 200) {
-        await AsyncStorage.clear();
-        this.hideLoadingDialogue();
-        return await this.props.navigation.navigate('AuthLoading');
+      if (res) {
+        console.log({res:res})
+        return await this.hideLoadingDialogue();
       }
       else {
-        return this.showNotification('error', 'Message', 'Something Went Wrong Try Again');
+      // await AsyncStorage.clear();
+      // this.props.navigation.navigate('Login');
+        return await this.showNotification(res.message,  'Message');
       }
     }
     catch(error) {
-      return this.showNotification('error', 'Message', error.toString());
+      return this.showNotification(error.toString(), 'Message');
     }
   }
   showLoadingDialogue =()=> {
@@ -76,18 +82,17 @@ export default class Profile extends Component {
   }
   
   render () {
-    
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
       <Image
         source={require('../../assets/images/splash.png')}
         style={StyleSheet.flatten(styles.logoIcon)}/> 
-      {/* <ProgressDialog
-        visible={this.state.showLoading}
+      <ProgressDialog
+        visible={showLoading}
         title="Processing"
         message="Please wait..."
-      /> */}
+      />
       <DropdownAlert ref={ref => this.dropDownAlertRef = ref}/>
 
     </SafeAreaView>

@@ -200,7 +200,6 @@ export default styles = StyleSheet.create({
   },
   devices : {
     width : '100%',
-    justifyContent: "space-evenly",
     shadowColor: theme.primaryTextColor,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
@@ -296,54 +295,6 @@ export default styles = StyleSheet.create({
     fontFamily: theme.primaryFont,
     fontSize: theme.SmallFont,
     color: theme.lightTextGRay,
-  },
+  }
 
-  planView: {
-    marginLeft: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: "center",
-  },
-
-  countView: {
-    flexDirection: 'row',
-    justifyContent: "space-between",
-    width:'100%',
-    paddingEnd:20
-  },
-
-  barView: {
-    //marginLeft: 20,
-    flexDirection: 'row',
-   // alignItems: 'center',
-    justifyContent: "center",
-
-  },
-
-  innerView: {
-    height: 10,
-    width: 10,
-    borderWidth: 2,
-    borderRadius: 16,
-    backgroundColor: theme.primaryColor
-  },
-
-  viewCicle: {
-    height: 16,
-    width: 16,
-    borderWidth: 2,
-    borderRadius: 16,
-    padding: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: theme.primaryColor
-  },
-
-  planName: {
-    fontFamily: theme.LightRoboto,
-    fontSize: theme.SmallFont,
-    color: theme.primaryTextColor,
-    marginLeft: 8,
-    textTransform: 'capitalize'
-  },
 });

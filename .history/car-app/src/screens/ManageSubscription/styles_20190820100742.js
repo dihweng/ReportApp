@@ -309,7 +309,9 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: "space-between",
     width:'100%',
-    paddingEnd:20
+    paddingHorizontal:20
+
+
   },
 
   barView: {

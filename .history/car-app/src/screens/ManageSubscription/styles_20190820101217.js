@@ -309,7 +309,6 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: "space-between",
     width:'100%',
-    paddingEnd:20
   },
 
   barView: {
@@ -344,6 +343,16 @@ export default styles = StyleSheet.create({
     fontSize: theme.SmallFont,
     color: theme.primaryTextColor,
     marginLeft: 8,
+    textTransform: 'capitalize'
+  },
+
+  planName2: {
+    fontFamily: theme.LightRoboto,
+    fontSize: theme.SmallFont,
+    color: theme.primaryTextColor,
+   // marginLeft: 8,
+    paddingLeft:8,
+    paddingRightt:8,
     textTransform: 'capitalize'
   },
 });

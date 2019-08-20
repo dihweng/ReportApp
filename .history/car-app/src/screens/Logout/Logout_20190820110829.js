@@ -17,8 +17,10 @@ export default class Profile extends Component {
       showLoading: false
     }
   }
-  async componentDidMount () {
-    let profile = await getProfile();  
+  async componentWillMount () {
+    let profile = await getProfile();
+     AsyncStorage.clear();
+
     await this.setState({
       showLoading:true,
     });
@@ -41,7 +43,7 @@ export default class Profile extends Component {
       if (res.status == 200) {
         await AsyncStorage.clear();
         this.hideLoadingDialogue();
-        return await this.props.navigation.navigate('AuthLoading');
+        return await this.props.navigation.navigate('Login');
       }
       else {
         return this.showNotification('error', 'Message', 'Something Went Wrong Try Again');
@@ -76,18 +78,17 @@ export default class Profile extends Component {
   }
   
   render () {
-    
    return(
     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
       <Image
         source={require('../../assets/images/splash.png')}
         style={StyleSheet.flatten(styles.logoIcon)}/> 
-      {/* <ProgressDialog
-        visible={this.state.showLoading}
+      <ProgressDialog
+        visible={showLoading}
         title="Processing"
         message="Please wait..."
-      /> */}
+      />
       <DropdownAlert ref={ref => this.dropDownAlertRef = ref}/>
 
     </SafeAreaView>

@@ -303,13 +303,13 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: "center",
+
   },
 
   countView: {
     flexDirection: 'row',
-    justifyContent: "space-between",
-    width:'100%',
-    paddingEnd:20
+    justifyContent: 'space-between',
+
   },
 
   barView: {

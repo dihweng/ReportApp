@@ -301,23 +301,7 @@ export default styles = StyleSheet.create({
   planView: {
     marginLeft: 20,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: "center",
-  },
-
-  countView: {
-    flexDirection: 'row',
-    justifyContent: "space-between",
-    width:'100%',
-    paddingEnd:20
-  },
-
-  barView: {
-    //marginLeft: 20,
-    flexDirection: 'row',
-   // alignItems: 'center',
-    justifyContent: "center",
-
+    alignItems: 'center'
   },
 
   innerView: {
