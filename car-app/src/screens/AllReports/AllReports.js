@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList, ScrollView, SafeAreaView, StatusBar, AsyncStorage,TouchableOpacity, Image, RefreshControl, StyleSheet,} from 'react-native';
+import { View, FlatList, ScrollView, SafeAreaView, StatusBar,   ActivityIndicator,TouchableOpacity, Image, RefreshControl, StyleSheet,} from 'react-native';
 import {DisplayText, SubmitButton, SingleButtonAlert, InputField} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
@@ -31,8 +31,8 @@ import DropdownAlert from 'react-native-dropdownalert';
       restoring:true,
       isActive:false,
       refreshing: false,
-
-
+      fetching_from_server: false,
+      fetching_prev_server: false,
     }
   }
 
@@ -348,6 +348,9 @@ import DropdownAlert from 'react-native-dropdownalert';
     }
   }
 
+  loadMoreData=async()=>{
+    await alert('hello');
+  }
   
   renderFooter() {
     return (
@@ -356,27 +359,27 @@ import DropdownAlert from 'react-native-dropdownalert';
         <View style={styles.footer}>
           <TouchableOpacity
             activeOpacity={0.9}
-            // onPress={this.loadMoreBtn}
+            // onPress={this.loadPrevData}
             //On Click of button calling loadMoreData function to load more data
-            style={styles.loadMoreBtn}>
+            style={styles.loadMoreButon}>
             <DisplayText
               styles = {StyleSheet.flatten(styles.btnText)}
-            // onPress={this.loadMoreBtn}
+              // onPress={this.loadPrevData}
               text = {'Prev'}
             />
-            {/* {this.state.fetching_from_server ? (
+            {/* {this.state.fetching_prev_server ? (
               <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
             ) : null} */}
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.9}
-            // onPress={this.loadPrevData}
+            // onPress={this.loadMoreData}
             //On Click of button calling loadMoreData function to load more data
-            style={styles.loadPrevBtn}>
+            style={styles.loadPrevButton}>
             <DisplayText
               styles = {StyleSheet.flatten(styles.btnText)}
-            // onPress={this.loadPrevData}
-            text = {'Next'}
+              // onPress={this.loadMoreData}
+              text = {'Next'}
             />
             {/* {this.state.fetching_from_server ? (
               <ActivityIndicator color="white" style={{ marginLeft: 8 }} />

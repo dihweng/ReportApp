@@ -304,6 +304,43 @@ export default class DivisionDetails extends Component {
     }
   }
 
+  renderFooter() {
+    return (
+    //Footer View with Load More button
+      <View style={styles.footerView}>
+        <View style={styles.footer}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            // onPress={this.loadPrevData}
+            //On Click of button calling loadMoreData function to load more data
+            style={styles.loadMoreButon}>
+            <DisplayText
+              styles = {StyleSheet.flatten(styles.btnText)}
+              // onPress={this.loadPrevData}
+              text = {'Prev'}
+            />
+            {/* {this.state.fetching_prev_server ? (
+              <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
+            ) : null} */}
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            // onPress={this.loadMoreData}
+            //On Click of button calling loadMoreData function to load more data
+            style={styles.loadPrevButton}>
+            <DisplayText
+              styles = {StyleSheet.flatten(styles.btnText)}
+              // onPress={this.loadMoreData}
+              text = {'Next'}
+            />
+            {/* {this.state.fetching_from_server ? (
+              <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
+            ) : null} */}
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 
   renderRow = ({item, index}) => {
     let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
@@ -406,6 +443,7 @@ export default class DivisionDetails extends Component {
             extraData={this.state}       
             keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
+            ListFooterComponent={this.renderFooter}
           />
         {/* </View>   */}
       </View>  

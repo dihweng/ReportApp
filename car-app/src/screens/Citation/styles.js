@@ -258,6 +258,47 @@ export default styles = StyleSheet.create({
       width: '100%',
       justifyContent: 'center',
       alignItems: 'center'
-    }
-  
+    },
+    footer: {
+      padding: 10,
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'row',
+      width: '100%',
+      backgroundColor: theme.colorAccent,
+      paddingHorizontal: 20,
+      borderBottomRightRadius: 8,
+      borderBottomLeftRadius: 8,
+      elevation: 1,
+      shadowOffset: {height: 1, width: 0},
+      shadowColor: theme.primaryTextColor,
+      shadowOpacity: 0.25,
+      shadowRadius: 2.56
+    },
+    footerView: {
+      width: '100%',
+      paddingHorizontal: 20,
+      paddingVertical: 4,
+    },
+    loadMoreButon: {
+      padding: 10,
+      backgroundColor: theme.primaryColor,
+      borderRadius: 4,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    loadPrevButton: {
+      padding: 10,
+      backgroundColor: theme.primaryColor,
+      borderRadius: 4,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    btnText: {
+      color: 'white',
+      fontSize: 15,
+      textAlign: 'center',
+    },
 });

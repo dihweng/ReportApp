@@ -105,6 +105,7 @@ export default class Devision extends Component {
       </View>
     );
   }
+  
 
   render () {
     const {

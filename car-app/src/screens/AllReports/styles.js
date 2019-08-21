@@ -270,7 +270,7 @@ export default styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 4,
   },
-  loadMoreBtn: {
+  loadMoreButon: {
     padding: 10,
     backgroundColor: theme.primaryColor,
     borderRadius: 4,
@@ -278,7 +278,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  loadPrevBtn: {
+  loadPrevButton: {
     padding: 10,
     backgroundColor: theme.primaryColor,
     borderRadius: 4,
