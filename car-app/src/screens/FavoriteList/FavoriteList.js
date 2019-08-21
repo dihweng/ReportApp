@@ -159,7 +159,7 @@ export default class FavoriteList extends Component {
       value: text,
     });
     const newData = filterData.filter(item => {
-      const itemData = `${item.title.toUpperCase()} ${item.citation.toUpperCase()}`;
+      const itemData = `${item.title.toUpperCase()} ${item.citation.toUpperCase()}${item.content.toUpperCase()}`;
       const textData = text.toUpperCase();
 
       return itemData.indexOf(textData) > -1;

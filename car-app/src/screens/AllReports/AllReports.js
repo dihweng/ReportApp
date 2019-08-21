@@ -1,7 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, Image, RefreshControl, StyleSheet,} from 'react-native';
-import {DisplayText, SubmitButton, SingleButtonAlert, InputField,CustomToast} from '../../components';
+import { View, FlatList, ScrollView, SafeAreaView, StatusBar, AsyncStorage,TouchableOpacity, Image, RefreshControl, StyleSheet,} from 'react-native';
+import {DisplayText, SubmitButton, SingleButtonAlert, InputField} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
 import { DeleteFavoriteEndpoint, DeleteReadLaterEndpoint, getRouteToken, getAllReport, getProfile, 
@@ -43,6 +43,7 @@ import DropdownAlert from 'react-native-dropdownalert';
       token : profile.access_token,
       showLoading:true,
     });
+
     await this.handleGetProfile();
   }
 
@@ -240,7 +241,7 @@ import DropdownAlert from 'react-native-dropdownalert';
       value: text,
     });
     const newData = filterData.filter(item => {
-      const itemData = `${item.title.toUpperCase()} ${item.citation.toUpperCase()}`;
+      const itemData = `${item.title.toUpperCase()} ${item.citation.toUpperCase()}${item.content.toUpperCase()}`;
       const textData = text.toUpperCase();
 
       return itemData.indexOf(textData) > -1;
@@ -347,6 +348,45 @@ import DropdownAlert from 'react-native-dropdownalert';
     }
   }
 
+  
+  renderFooter() {
+    return (
+    //Footer View with Load More button
+      <View style={styles.footerView}>
+        <View style={styles.footer}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            // onPress={this.loadMoreBtn}
+            //On Click of button calling loadMoreData function to load more data
+            style={styles.loadMoreBtn}>
+            <DisplayText
+              styles = {StyleSheet.flatten(styles.btnText)}
+            // onPress={this.loadMoreBtn}
+              text = {'Prev'}
+            />
+            {/* {this.state.fetching_from_server ? (
+              <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
+            ) : null} */}
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            // onPress={this.loadPrevData}
+            //On Click of button calling loadMoreData function to load more data
+            style={styles.loadPrevBtn}>
+            <DisplayText
+              styles = {StyleSheet.flatten(styles.btnText)}
+            // onPress={this.loadPrevData}
+            text = {'Next'}
+            />
+            {/* {this.state.fetching_from_server ? (
+              <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
+            ) : null} */}
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
   renderHeader = () => {
     return <View style={styles.headerMessageView}>
         <View style={styles.searchView}>
@@ -451,6 +491,7 @@ import DropdownAlert from 'react-native-dropdownalert';
             ListHeaderComponent={this.renderHeader}     
             keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
+            ListFooterComponent={this.renderFooter}
           />
 
         </View>  
