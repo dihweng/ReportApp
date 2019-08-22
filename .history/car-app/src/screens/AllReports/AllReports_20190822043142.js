@@ -99,30 +99,6 @@ import DropdownAlert from 'react-native-dropdownalert';
   
   }
 
-  loadData = async(url) => {
-    this.showLoadingDialogue();
-    const {token} = this.state;
-    await getRouteToken(url, token)
-      .then((res) => {
-        if (typeof res.message !== 'undefined') {  
-          return this.showNotification('error', 'Message', res.message);
-        }   
-        else {    
-          console.log({res})      
-          this.setState({
-            data: res.data,
-            filterData: res.data,
-            prevBtnStatus: res.data.links.prev ? true : false,
-            prevBtnStatus: res.data.links.next ? true : false,
-            isFetching: false, 
-          });
-          return this.hideLoadingDialogue();
-        }
-      }
-    ).catch(error=>this.showNotification('error', 'Message', error.toString()));
-  };
-
-
   handleGetAllReport = async() => {
     try {
       return await this.allReport()
@@ -373,32 +349,42 @@ import DropdownAlert from 'react-native-dropdownalert';
     }
   }
 
+  loadMoreData=async()=>{
+    await alert('hello');
+  }
   
   renderFooter() {
-    //const{prevBtnStatus, nextBtnStatus} = this.state;
     return (
+    //Footer View with Load More button
       <View style={styles.footerView}>
         <View style={styles.footer}>
           <TouchableOpacity
             activeOpacity={0.9}
-            //disabled={prevBtnStatus}
+            // onPress={this.loadPrevData}
+            //On Click of button calling loadMoreData function to load more data
             style={styles.loadMoreButon}>
             <DisplayText
               styles = {StyleSheet.flatten(styles.btnText)}
-              onPress={()=>this.loadData(previousDataLink)}
+              // onPress={this.loadPrevData}
               text = {'Prev'}
             />
-          
+            {/* {this.state.fetching_prev_server ? (
+              <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
+            ) : null} */}
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.9}
-           // disabled={nextBtnStatus}
+            // onPress={this.loadMoreData}
+            //On Click of button calling loadMoreData function to load more data
             style={styles.loadPrevButton}>
             <DisplayText
               styles = {StyleSheet.flatten(styles.btnText)}
-               onPress={()=>this.loadData(nextDataLink)}
+              // onPress={this.loadMoreData}
               text = {'Next'}
             />
+            {/* {this.state.fetching_from_server ? (
+              <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
+            ) : null} */}
           </TouchableOpacity>
         </View>
       </View>

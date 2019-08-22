@@ -1,0 +1,52 @@
+{
+  "expo": {
+    "name": "CAP APP",
+    "slug": "car-app",
+    "privacy": "public",
+    "sdkVersion": "33.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#2D002B"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "enabled":true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "com.courtofappealreportsnigeria.www",
+      "versionCode": 1,
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=",
+      "permissions": [
+        "com.htc.launcher.permission.UPDATE_SHORTCUT"
+      ],
+      "splash": {
+        "resizeMode": "contain",
+        "mdpi": "./assets/splash.png",
+        "hdpi": "./assets/splash.png",
+        "xhdpi": "./assets/splash.png",
+        "backgroundColor": "#2D002B"
+      },
+      "config": {
+        "fabric": {
+          "apiKey": "f4c6d386ecadd3ebe0d71c5769113ac0ecfa76ac",
+          "buildSecret": "3d37edf3c238007caee6d09968c4a3f7334267b9c0015bdc604f2169abf01831"
+        }
+      }
+    },
+    "ios": {
+      "supportsTablet": false
+    },
+    "description": ""
+  }
+}

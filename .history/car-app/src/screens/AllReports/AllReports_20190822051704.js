@@ -375,13 +375,13 @@ import DropdownAlert from 'react-native-dropdownalert';
 
   
   renderFooter() {
-    //const{prevBtnStatus, nextBtnStatus} = this.state;
+    const{prevBtnStatus, nextBtnStatus} = this.state;
     return (
       <View style={styles.footerView}>
         <View style={styles.footer}>
           <TouchableOpacity
             activeOpacity={0.9}
-            //disabled={prevBtnStatus}
+            disabled={prevBtnStatus}
             style={styles.loadMoreButon}>
             <DisplayText
               styles = {StyleSheet.flatten(styles.btnText)}
@@ -392,7 +392,7 @@ import DropdownAlert from 'react-native-dropdownalert';
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.9}
-           // disabled={nextBtnStatus}
+            disabled={nextBtnStatus}
             style={styles.loadPrevButton}>
             <DisplayText
               styles = {StyleSheet.flatten(styles.btnText)}

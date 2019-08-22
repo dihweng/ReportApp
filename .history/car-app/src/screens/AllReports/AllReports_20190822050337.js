@@ -101,7 +101,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 
   loadData = async(url) => {
     this.showLoadingDialogue();
-    const {token} = this.state;
+    const {token, url} = this.state;
     await getRouteToken(url, token)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
@@ -112,9 +112,7 @@ import DropdownAlert from 'react-native-dropdownalert';
           this.setState({
             data: res.data,
             filterData: res.data,
-            prevBtnStatus: res.data.links.prev ? true : false,
-            prevBtnStatus: res.data.links.next ? true : false,
-            isFetching: false, 
+            isFetching: false 
           });
           return this.hideLoadingDialogue();
         }
@@ -375,13 +373,13 @@ import DropdownAlert from 'react-native-dropdownalert';
 
   
   renderFooter() {
-    //const{prevBtnStatus, nextBtnStatus} = this.state;
+    const{prevBtnStatus, nextBtnStatus} = this.state;
     return (
       <View style={styles.footerView}>
         <View style={styles.footer}>
           <TouchableOpacity
             activeOpacity={0.9}
-            //disabled={prevBtnStatus}
+            disabled={prevBtnStatus}
             style={styles.loadMoreButon}>
             <DisplayText
               styles = {StyleSheet.flatten(styles.btnText)}
@@ -392,7 +390,7 @@ import DropdownAlert from 'react-native-dropdownalert';
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.9}
-           // disabled={nextBtnStatus}
+            disabled={nextBtnStatus}
             style={styles.loadPrevButton}>
             <DisplayText
               styles = {StyleSheet.flatten(styles.btnText)}

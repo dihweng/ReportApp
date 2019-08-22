@@ -19,7 +19,7 @@ export default class Profile extends Component {
   }
   async componentDidMount () {
     let profile = await getProfile(); 
-    //AsyncStorage.clear(); 
+    AsyncStorage.clear(); 
     await this.setState({
       showLoading:true,
     });

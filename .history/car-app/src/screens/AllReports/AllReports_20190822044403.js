@@ -99,9 +99,9 @@ import DropdownAlert from 'react-native-dropdownalert';
   
   }
 
-  loadData = async(url) => {
+  loadMoreData = async() => {
     this.showLoadingDialogue();
-    const {token} = this.state;
+    const {token, url} = this.state;
     await getRouteToken(url, token)
       .then((res) => {
         if (typeof res.message !== 'undefined') {  
@@ -112,9 +112,7 @@ import DropdownAlert from 'react-native-dropdownalert';
           this.setState({
             data: res.data,
             filterData: res.data,
-            prevBtnStatus: res.data.links.prev ? true : false,
-            prevBtnStatus: res.data.links.next ? true : false,
-            isFetching: false, 
+            isFetching: false 
           });
           return this.hideLoadingDialogue();
         }
@@ -373,30 +371,32 @@ import DropdownAlert from 'react-native-dropdownalert';
     }
   }
 
+  loadMoreData=async()=>{
+    await alert('hello');
+  }
   
   renderFooter() {
-    //const{prevBtnStatus, nextBtnStatus} = this.state;
     return (
       <View style={styles.footerView}>
         <View style={styles.footer}>
           <TouchableOpacity
             activeOpacity={0.9}
-            //disabled={prevBtnStatus}
+            disabled={true}
             style={styles.loadMoreButon}>
             <DisplayText
               styles = {StyleSheet.flatten(styles.btnText)}
-              onPress={()=>this.loadData(previousDataLink)}
+               onPress={this.loadPrevData}
               text = {'Prev'}
             />
           
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={true}
             activeOpacity={0.9}
-           // disabled={nextBtnStatus}
             style={styles.loadPrevButton}>
             <DisplayText
               styles = {StyleSheet.flatten(styles.btnText)}
-               onPress={()=>this.loadData(nextDataLink)}
+               onPress={this.loadMoreData}
               text = {'Next'}
             />
           </TouchableOpacity>
