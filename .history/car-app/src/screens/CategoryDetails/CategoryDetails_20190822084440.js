@@ -34,8 +34,6 @@ export default class CategoryDetails extends Component {
       current_page_no:0,
       nextDataLink:'',
       prevDataLink: '',
-      nextBtnStatus: true,
-      prevBtnStatus:true,
     }
   }
   async componentDidMount(){
@@ -366,7 +364,7 @@ export default class CategoryDetails extends Component {
           />
 
           <SubmitButton
-            title={'Next'}
+            title={'Prev'}
             onPress={()=>{this.loadData(nextDataLink)}}
             titleStyle={styles.btnText}
             btnStyle = {styles.loadMoreButon}

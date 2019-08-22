@@ -37,12 +37,6 @@ export default class Citation extends Component {
       numberCitatio: '',
       alphabetCitation: '',
       isActive : false,
-      last_page_no:0,
-      current_page_no:0,
-      nextDataLink:'',
-      prevDataLink: '',
-      nextBtnStatus: true,
-      prevBtnStatus:true,
     }
   }
   async componentDidMount(){
@@ -377,32 +371,38 @@ export default class Citation extends Component {
   }
 
   renderFooter() {
-    const{prevBtnStatus, nextBtnStatus, current_page_no, last_page_no, nextDataLink, prevDataLink} = this.state;
     return (
+    //Footer View with Load More button
       <View style={styles.footerView}>
         <View style={styles.footer}>
-          <SubmitButton
-            title={'Prev'}
-            onPress={()=>{this.loadData(prevDataLink)}}
-            titleStyle={styles.btnText}
-            btnStyle = {styles.loadMoreButon}
-            disabled={prevBtnStatus}
-
-          />
-    
-          <DisplayText
-            styles = {StyleSheet.flatten(styles.pageText)}
-            text = {`Page ${current_page_no} of ${last_page_no}`}
-          />
-
-          <SubmitButton
-            title={'Next'}
-            onPress={()=>{this.loadData(nextDataLink)}}
-            titleStyle={styles.btnText}
-            btnStyle = {styles.loadMoreButon}
-            disabled={nextBtnStatus}
-
-          />
+          <TouchableOpacity
+            activeOpacity={0.9}
+            // onPress={this.loadPrevData}
+            //On Click of button calling loadMoreData function to load more data
+            style={styles.loadMoreButon}>
+            <DisplayText
+              styles = {StyleSheet.flatten(styles.btnText)}
+              // onPress={this.loadPrevData}
+              text = {'Prev'}
+            />
+            {/* {this.state.fetching_prev_server ? (
+              <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
+            ) : null} */}
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            // onPress={this.loadMoreData}
+            //On Click of button calling loadMoreData function to load more data
+            style={styles.loadPrevButton}>
+            <DisplayText
+              styles = {StyleSheet.flatten(styles.btnText)}
+              // onPress={this.loadMoreData}
+              text = {'Next'}
+            />
+            {/* {this.state.fetching_from_server ? (
+              <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
+            ) : null} */}
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -459,7 +459,7 @@ export default class Citation extends Component {
 
 
   render () {
-    const { showLoading} = this.state;
+    const { showLoading, title, message, showAlert, } = this.state;
 
     var citationsAlph = ['A','B','C','D','E','F','G','H','I','J','K','L', 'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     var citations = ['0','1', '2', '3', '4','5','6','7', '8', '9'];
@@ -569,7 +569,7 @@ export default class Citation extends Component {
             extraData={this.state}        
             keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
-            ListFooterComponent={this.renderFooter.bind(this)}
+            ListFooterComponent={this.renderFooter}
           />
         </View>  
         </ScrollView>

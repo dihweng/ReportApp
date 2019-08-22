@@ -294,12 +294,4 @@ export default styles = StyleSheet.create({
     fontFamily: theme.secondaryFont,
     alignSelf: 'center',    
   },
-
-
-  pageText : {
-    fontSize: theme.SmallFont,
-    color: theme.primaryColor,
-    fontFamily: theme.secondaryFont,
-    alignSelf: 'center',    
-  },
 });

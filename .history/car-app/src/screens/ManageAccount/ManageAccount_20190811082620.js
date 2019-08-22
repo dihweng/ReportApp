@@ -106,7 +106,7 @@ export default class ManageAccount extends Component {
           </TouchableOpacity>
         </View>
           {/* Card Contact Details */}
-        {/* <View style = {styles.cards}>
+        <View style = {styles.cards}>
           <View style = {styles.cardImageView}>
             <Image
               onPress = {this.handleContactDetails}
@@ -130,7 +130,7 @@ export default class ManageAccount extends Component {
               style = {StyleSheet.flatten(styles.angleForward)}
             />
           </TouchableOpacity>
-        </View> */}
+        </View>
           {/* Security Card */}
         <View style = {styles.cards}>
           <View style = {styles.cardImageView}>

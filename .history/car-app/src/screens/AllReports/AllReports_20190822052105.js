@@ -1,11 +1,11 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, Image, RefreshControl,StyleSheet, AsyncStorage} from 'react-native';
+import { View, FlatList, ScrollView, SafeAreaView, StatusBar,   ActivityIndicator,TouchableOpacity, Image, RefreshControl, StyleSheet,} from 'react-native';
 import {DisplayText, SubmitButton, SingleButtonAlert, InputField} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
 import { DeleteFavoriteEndpoint, DeleteReadLaterEndpoint, getRouteToken, getAllReport, getProfile, 
-  ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint, subscription,  } from '../Utils/Utils';
+  ProfileEndpoint, saveUserDetail, AddReadLaterEndPoint, AddFavoriteEndPoint, subscription, } from '../Utils/Utils';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import colors from '../../assets/colors';
 import {connect} from 'react-redux';
@@ -31,16 +31,13 @@ import DropdownAlert from 'react-native-dropdownalert';
       restoring:true,
       isActive:false,
       refreshing: false,
-      last_page_no:0,
-      current_page_no:0,
-      nextDataLink:'',
-      prevDataLink: '',
-      nextBtnStatus: true,
-      prevBtnStatus:true,
+      fetching_from_server: false,
+      fetching_prev_server: false,
     }
   }
 
   async componentDidMount(){
+
     let profile = await getProfile();
     this.setState({
       token : profile.access_token,
@@ -89,16 +86,11 @@ import DropdownAlert from 'react-native-dropdownalert';
           return this.showNotification('error', 'Message', res.message);
         }   
         else {    
+          console.log({res})      
           this.setState({
             data: res.data,
             filterData: res.data,
-            prevBtnStatus: res.links.prev ? false : true,
-            nextBtnStatus: res.links.next ? false : true,
-            current_page_no: res.meta.current_page,
-            last_page_no: res.meta.last_page,
-            nextDataLink: res.links.next,
-            prevDataLink: res.links.prev,
-            isFetching: false, 
+            isFetching: false 
           });
           return this.hideLoadingDialogue();
         }
@@ -115,16 +107,13 @@ import DropdownAlert from 'react-native-dropdownalert';
         if (typeof res.message !== 'undefined') {  
           return this.showNotification('error', 'Message', res.message);
         }   
-        else {  
+        else {    
+          console.log({res})      
           this.setState({
             data: res.data,
             filterData: res.data,
-            prevBtnStatus: res.links.prev ? false : true,
-            nextBtnStatus: res.links.next ? false : true,
-            current_page_no: res.meta.current_page,
-            last_page_no: res.meta.last_page,
-            nextDataLink: res.links.next,
-            prevDataLink: res.links.prev,
+            prevBtnStatus: res.data.links.prev ? true : false,
+            prevBtnStatus: res.data.links.next ? true : false,
             isFetching: false, 
           });
           return this.hideLoadingDialogue();
@@ -152,8 +141,7 @@ import DropdownAlert from 'react-native-dropdownalert';
           if(res.message == 'Unauthenticated.'){
             this.showNotification('error', 'Message', 'Session Expired, Please Login Again');
             return setTimeout(()=>{
-              await AsyncStorage.clear();
-               await this.props.navigation.navigate('Login');
+               this.props.navigation.navigate('Logout');
             }, 3000);
 
           }
@@ -387,32 +375,31 @@ import DropdownAlert from 'react-native-dropdownalert';
 
   
   renderFooter() {
-    const{prevBtnStatus, nextBtnStatus, current_page_no, last_page_no, nextDataLink, prevDataLink} = this.state;
+    //const{prevBtnStatus, nextBtnStatus} = this.state;
     return (
       <View style={styles.footerView}>
         <View style={styles.footer}>
-          <SubmitButton
-            title={'Prev'}
-            onPress={()=>{this.loadData(prevDataLink)}}
-            titleStyle={styles.btnText}
-            btnStyle = {styles.loadMoreButon}
-            disabled={prevBtnStatus}
-
-          />
-    
-          <DisplayText
-            styles = {StyleSheet.flatten(styles.pageText)}
-            text = {`Page ${current_page_no} of ${last_page_no}`}
-          />
-
-          <SubmitButton
-            title={'Next'}
-            onPress={()=>{this.loadData(nextDataLink)}}
-            titleStyle={styles.btnText}
-            btnStyle = {styles.loadMoreButon}
-            disabled={nextBtnStatus}
-
-          />
+          <TouchableOpacity
+            activeOpacity={0.9}
+            //disabled={prevBtnStatus}
+            style={styles.loadMoreButon}>
+            <DisplayText
+              styles = {StyleSheet.flatten(styles.btnText)}
+              onPress={()=>this.loadData(previousDataLink)}
+              text = {'Prev'}
+            />
+          
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.9}
+           // disabled={nextBtnStatus}
+            style={styles.loadPrevButton}>
+            <DisplayText
+              styles = {StyleSheet.flatten(styles.btnText)}
+               onPress={()=>this.loadData(nextDataLink)}
+              text = {'Next'}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -522,7 +509,7 @@ import DropdownAlert from 'react-native-dropdownalert';
             ListHeaderComponent={this.renderHeader}     
             keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
-            ListFooterComponent={this.renderFooter.bind(this)}
+            ListFooterComponent={this.renderFooter}
           />
 
         </View>  

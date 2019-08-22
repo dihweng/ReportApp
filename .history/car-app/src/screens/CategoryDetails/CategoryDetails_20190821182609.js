@@ -30,12 +30,6 @@ export default class CategoryDetails extends Component {
       token: '',
       name: '',
       isActive: false,
-      last_page_no:0,
-      current_page_no:0,
-      nextDataLink:'',
-      prevDataLink: '',
-      nextBtnStatus: true,
-      prevBtnStatus:true,
     }
   }
   async componentDidMount(){
@@ -88,13 +82,6 @@ export default class CategoryDetails extends Component {
           if(res.data.length) {
             this.setState({
               data: res.data,
-            prevBtnStatus: res.links.prev ? false : true,
-            nextBtnStatus: res.links.next ? false : true,
-            current_page_no: res.meta.current_page,
-            last_page_no: res.meta.last_page,
-            nextDataLink: res.links.next,
-            prevDataLink: res.links.prev,
-            isFetching: false, 
             });
             return this.hideLoadingDialogue();
           }
@@ -109,36 +96,11 @@ export default class CategoryDetails extends Component {
          this.showNotification(res.message, 'Message'); 
          return setTimeout(()=>{
           this.handleCloseNotification();
-           this.props.navigation.goBack();
+          return this.props.navigation.goBack();
         }, 3000);
       }).catch(error =>this.showNotification('error', 'Message', error.toString()));
       
   }
-
-  loadData = async(url) => {
-    this.showLoadingDialogue();
-    const {token} = this.state;
-    await getRouteToken(url, token)
-      .then((res) => {
-        if (typeof res.message !== 'undefined') {  
-          return this.showNotification('error', 'Message', res.message);
-        }   
-        else {  
-          this.setState({
-            data: res.data,
-            prevBtnStatus: res.links.prev ? false : true,
-            nextBtnStatus: res.links.next ? false : true,
-            current_page_no: res.meta.current_page,
-            last_page_no: res.meta.last_page,
-            nextDataLink: res.links.next,
-            prevDataLink: res.links.prev,
-            isFetching: false, 
-          });
-          return this.hideLoadingDialogue();
-        }
-      }
-    ).catch(error=>this.showNotification('error', 'Message', error.toString()));
-  };
 
 
   handleGetAllReport = async() => {
@@ -347,32 +309,38 @@ export default class CategoryDetails extends Component {
   }
 
   renderFooter() {
-    const{prevBtnStatus, nextBtnStatus, current_page_no, last_page_no, nextDataLink, prevDataLink} = this.state;
     return (
+    //Footer View with Load More button
       <View style={styles.footerView}>
         <View style={styles.footer}>
-          <SubmitButton
-            title={'Prev'}
-            onPress={()=>{this.loadData(prevDataLink)}}
-            titleStyle={styles.btnText}
-            btnStyle = {styles.loadMoreButon}
-            disabled={prevBtnStatus}
-
-          />
-    
-          <DisplayText
-            styles = {StyleSheet.flatten(styles.pageText)}
-            text = {`Page ${current_page_no} of ${last_page_no}`}
-          />
-
-          <SubmitButton
-            title={'Next'}
-            onPress={()=>{this.loadData(nextDataLink)}}
-            titleStyle={styles.btnText}
-            btnStyle = {styles.loadMoreButon}
-            disabled={nextBtnStatus}
-
-          />
+          <TouchableOpacity
+            activeOpacity={0.9}
+            // onPress={this.loadPrevData}
+            //On Click of button calling loadMoreData function to load more data
+            style={styles.loadMoreButon}>
+            <DisplayText
+              styles = {StyleSheet.flatten(styles.btnText)}
+              // onPress={this.loadPrevData}
+              text = {'Prev'}
+            />
+            {/* {this.state.fetching_prev_server ? (
+              <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
+            ) : null} */}
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            // onPress={this.loadMoreData}
+            //On Click of button calling loadMoreData function to load more data
+            style={styles.loadPrevButton}>
+            <DisplayText
+              styles = {StyleSheet.flatten(styles.btnText)}
+              // onPress={this.loadMoreData}
+              text = {'Next'}
+            />
+            {/* {this.state.fetching_from_server ? (
+              <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
+            ) : null} */}
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -478,7 +446,7 @@ export default class CategoryDetails extends Component {
             extraData={this.state}            
             keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
-            ListFooterComponent={this.renderFooter.bind(this)}
+            ListFooterComponent={this.renderFooter}
 
           />
         {/* </View>   */}

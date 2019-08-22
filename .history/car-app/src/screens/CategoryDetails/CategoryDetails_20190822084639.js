@@ -366,7 +366,7 @@ export default class CategoryDetails extends Component {
           />
 
           <SubmitButton
-            title={'Next'}
+            title={'Prev'}
             onPress={()=>{this.loadData(nextDataLink)}}
             titleStyle={styles.btnText}
             btnStyle = {styles.loadMoreButon}

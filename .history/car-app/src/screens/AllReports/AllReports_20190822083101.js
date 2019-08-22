@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, Image, RefreshControl,StyleSheet, AsyncStorage} from 'react-native';
+import { View, FlatList, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, Image, RefreshControl,StyleSheet,} from 'react-native';
 import {DisplayText, SubmitButton, SingleButtonAlert, InputField} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
@@ -35,8 +35,6 @@ import DropdownAlert from 'react-native-dropdownalert';
       current_page_no:0,
       nextDataLink:'',
       prevDataLink: '',
-      nextBtnStatus: true,
-      prevBtnStatus:true,
     }
   }
 
@@ -92,8 +90,8 @@ import DropdownAlert from 'react-native-dropdownalert';
           this.setState({
             data: res.data,
             filterData: res.data,
-            prevBtnStatus: res.links.prev ? false : true,
-            nextBtnStatus: res.links.next ? false : true,
+            prevBtnStatus: res.links.prev ? true : false,
+            prevBtnStatus: res.links.next ? true : false,
             current_page_no: res.meta.current_page,
             last_page_no: res.meta.last_page,
             nextDataLink: res.links.next,
@@ -116,6 +114,7 @@ import DropdownAlert from 'react-native-dropdownalert';
           return this.showNotification('error', 'Message', res.message);
         }   
         else {  
+          console.log({'hellloooo':res.links})        
           this.setState({
             data: res.data,
             filterData: res.data,
@@ -152,8 +151,7 @@ import DropdownAlert from 'react-native-dropdownalert';
           if(res.message == 'Unauthenticated.'){
             this.showNotification('error', 'Message', 'Session Expired, Please Login Again');
             return setTimeout(()=>{
-              await AsyncStorage.clear();
-               await this.props.navigation.navigate('Login');
+               this.props.navigation.navigate('Logout');
             }, 3000);
 
           }
@@ -406,8 +404,8 @@ import DropdownAlert from 'react-native-dropdownalert';
           />
 
           <SubmitButton
-            title={'Next'}
-            onPress={()=>{this.loadData(nextDataLink)}}
+            title={'Prev'}
+            onPress={()=>{this.loadData(prevDataLink)}}
             titleStyle={styles.btnText}
             btnStyle = {styles.loadMoreButon}
             disabled={nextBtnStatus}

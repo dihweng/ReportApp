@@ -37,12 +37,6 @@ export default class Citation extends Component {
       numberCitatio: '',
       alphabetCitation: '',
       isActive : false,
-      last_page_no:0,
-      current_page_no:0,
-      nextDataLink:'',
-      prevDataLink: '',
-      nextBtnStatus: true,
-      prevBtnStatus:true,
     }
   }
   async componentDidMount(){
@@ -396,7 +390,7 @@ export default class Citation extends Component {
           />
 
           <SubmitButton
-            title={'Next'}
+            title={'Prev'}
             onPress={()=>{this.loadData(nextDataLink)}}
             titleStyle={styles.btnText}
             btnStyle = {styles.loadMoreButon}

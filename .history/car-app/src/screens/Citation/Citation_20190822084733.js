@@ -396,7 +396,7 @@ export default class Citation extends Component {
           />
 
           <SubmitButton
-            title={'Next'}
+            title={'Prev'}
             onPress={()=>{this.loadData(nextDataLink)}}
             titleStyle={styles.btnText}
             btnStyle = {styles.loadMoreButon}

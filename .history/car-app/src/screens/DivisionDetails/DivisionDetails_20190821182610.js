@@ -6,7 +6,6 @@ import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import DropdownAlert from 'react-native-dropdownalert';
 
-
 import { 
   DeleteFavoriteEndpoint, 
   DeleteReadLaterEndpoint, 
@@ -15,9 +14,10 @@ import {
   getProfile, 
   AddReadLaterEndPoint, 
   getSubscription,
-  AddFavoriteEndPoint } from '../Utils/Utils';
+  AddFavoriteEndPoint, 
+  } from '../Utils/Utils';
 
-export default class CategoryDetails extends Component {
+export default class DivisionDetails extends Component {
   constructor(props) {
     super(props);
     this.state ={
@@ -30,12 +30,6 @@ export default class CategoryDetails extends Component {
       token: '',
       name: '',
       isActive: false,
-      last_page_no:0,
-      current_page_no:0,
-      nextDataLink:'',
-      prevDataLink: '',
-      nextBtnStatus: true,
-      prevBtnStatus:true,
     }
   }
   async componentDidMount(){
@@ -44,10 +38,9 @@ export default class CategoryDetails extends Component {
     const {navigation} = this.props,
       id = navigation.getParam('id'),
       name = navigation.getParam('name');
-
+      
     await this.setState({
       token: profile.access_token,
-      showLoading: true,
       isActive:subscription,
       id,
       name,
@@ -75,12 +68,12 @@ export default class CategoryDetails extends Component {
 
   handleCloseNotification = () => {
     return this.setState({
-      showAlert : false,
-    })
+       showAlert : false,
+     })
   }
   allReport = async() =>{
     const {token, id} = this.state; 
-    let endPoint = `${getAllReport}${'?'}${'category_id='}${id}`;
+    let endPoint = `${getAllReport}${'?'}${'division_id='}${id}`;
     this.showLoadingDialogue();
     await getRouteToken(endPoint, token)
       .then((res) => {
@@ -88,13 +81,6 @@ export default class CategoryDetails extends Component {
           if(res.data.length) {
             this.setState({
               data: res.data,
-            prevBtnStatus: res.links.prev ? false : true,
-            nextBtnStatus: res.links.next ? false : true,
-            current_page_no: res.meta.current_page,
-            last_page_no: res.meta.last_page,
-            nextDataLink: res.links.next,
-            prevDataLink: res.links.prev,
-            isFetching: false, 
             });
             return this.hideLoadingDialogue();
           }
@@ -106,50 +92,21 @@ export default class CategoryDetails extends Component {
             }, 3000);
           }
         }
-         this.showNotification(res.message, 'Message'); 
-         return setTimeout(()=>{
+        this.showNotification('error', 'Message', res.message);
+        return setTimeout(()=>{
           this.handleCloseNotification();
-           this.props.navigation.goBack();
+          return this.props.navigation.goBack();
         }, 3000);
       }).catch(error =>this.showNotification('error', 'Message', error.toString()));
-      
   }
-
-  loadData = async(url) => {
-    this.showLoadingDialogue();
-    const {token} = this.state;
-    await getRouteToken(url, token)
-      .then((res) => {
-        if (typeof res.message !== 'undefined') {  
-          return this.showNotification('error', 'Message', res.message);
-        }   
-        else {  
-          this.setState({
-            data: res.data,
-            prevBtnStatus: res.links.prev ? false : true,
-            nextBtnStatus: res.links.next ? false : true,
-            current_page_no: res.meta.current_page,
-            last_page_no: res.meta.last_page,
-            nextDataLink: res.links.next,
-            prevDataLink: res.links.prev,
-            isFetching: false, 
-          });
-          return this.hideLoadingDialogue();
-        }
-      }
-    ).catch(error=>this.showNotification('error', 'Message', error.toString()));
-  };
-
-
   handleGetAllReport = async() => {
     this.showLoadingDialogue();
 
     try {
-      await this.allReport();
+      await this.allReport()
     }
     catch(error) {
-      return this.showNotification('error', 'Message', error.toString());
-
+     return this.showNotification('error', 'Message', error.toString());
     }
   }
 
@@ -161,7 +118,7 @@ export default class CategoryDetails extends Component {
       }, 3000);    
     }
     else {
-       return await this.props.navigation.navigate('FullReport', {
+       await this.props.navigation.navigate('FullReport', {
         id: id, 
       });
     }
@@ -174,10 +131,10 @@ export default class CategoryDetails extends Component {
   addDeleteReadlater = async(id, title, index) =>{
     if(this.state.isActive === false) {
       await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
-      return await  setTimeout(() => {
+      return await setTimeout(() => {
         this.props.navigation.navigate('ManageSubscription');
-      }, 3000);   
-     }
+      }, 3000);    
+    }
     else {
        await this.showLoadingDialogue();
       if(title.includes('Remove')){
@@ -194,8 +151,7 @@ export default class CategoryDetails extends Component {
       await this.readLater(id, index)
     }
     catch(error) {
-      return this.showNotification('error', 'Message', error.toString());
-      ;
+      this.showNotification('error', 'Message', error.toString());
     }
   }
 
@@ -218,15 +174,15 @@ export default class CategoryDetails extends Component {
         let targetPost = await data[index];
         targetPost.is_future_saved =  await !targetPost.is_future_saved;
         await this.setState({ data });
-        return await this.showNotification('success', 'Success', 'Report Added Successflly');
+        return await this.showNotification('success', 'Success', 'Report Added Successfully');
+
       }
       else {
-        return await this.showNotification('error', 'Message', 'Failed to Add Report ');
+        return await this.showNotification('error', 'Message', 'Failed to Add Report');
       }
     }
     catch(error) {
-      return this.showNotification('error', 'Message', error.toString());
-
+      this.showNotification('error', 'Message', error.toString());
     }
   } 
 
@@ -251,29 +207,30 @@ export default class CategoryDetails extends Component {
         let targetPost = await data[index];
         targetPost.is_future_saved = await !targetPost.is_future_saved;
         await this.setState({ data });
-        return await this.showNotification('success', 'Success', 'Report Removal Successful');
+         return await this.showNotification('success', 'Success', 'Report Removal Successful');
+
       }
       return await this.showNotification('error', 'Message', 'Failed to Remove Report');
     } 
     catch(error){
-      return this.showNotification('error', 'Message', error.toString());
+      this.showNotification('error', 'Message', error.toString());
     }
   }
 
-  addDeleteFavorite = (id, title, index) =>{
+  addDeleteFavorite = async(id, title, index) =>{
     if(this.state.isActive === false) {
-      this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
-      return setTimeout(() => {
+      await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+      return await setTimeout(() => {
         this.props.navigation.navigate('ManageSubscription');
       }, 3000);    
     }
     else {
-      this.showLoadingDialogue();
+       await this.showLoadingDialogue();
       if(title.includes('Remove')) {
-        return this.deleteFavorite(id, index);
+        return await this.deleteFavorite(id, index);
       }
       else {
-        return this.handleAddFavorite(id, index);
+        return await this.handleAddFavorite(id, index);
       }
     }
   }
@@ -283,7 +240,7 @@ export default class CategoryDetails extends Component {
     return await this.addFavorite(id, index)
     }
     catch(error) {
-      return this.showNotification('error', 'Message', error.toString());
+     return this.showNotification('error', 'Message', error.toString());
     }
   }
 
@@ -306,14 +263,15 @@ export default class CategoryDetails extends Component {
         let targetPost = await data[index];
         targetPost.is_favorite =  await !targetPost.is_favorite;
         await this.setState({ data });
-        return await this.showNotification('success', 'Success', 'Report Added Successfully');   
+        return await this.showNotification('success', 'Success', 'Report Added Successfully');
       }
       else {
-        return await this.showNotification('error', 'Message', 'Failed to Remove Report');
+        return await  this.showNotification('error', 'Message', 'Failed to Add Favorite');
       }
+
     }
     catch(error) {
-      return this.showNotification('error', 'Message', error.toString());
+     return this.showNotification('error', 'Message', error.toString());
     }
   } 
 
@@ -339,7 +297,7 @@ export default class CategoryDetails extends Component {
         await this.setState({ data });
         return await this.showNotification('success', 'Success', 'Report Removal Successful');
       }
-      return await this.showNotification('error', 'Message', 'Failed to Remove Report');
+       return await this.showNotification('error', 'Message', 'Failed to Remove Report');
     } 
     catch(error){
       return this.showNotification('error', 'Message', error.toString());
@@ -347,37 +305,42 @@ export default class CategoryDetails extends Component {
   }
 
   renderFooter() {
-    const{prevBtnStatus, nextBtnStatus, current_page_no, last_page_no, nextDataLink, prevDataLink} = this.state;
     return (
+    //Footer View with Load More button
       <View style={styles.footerView}>
         <View style={styles.footer}>
-          <SubmitButton
-            title={'Prev'}
-            onPress={()=>{this.loadData(prevDataLink)}}
-            titleStyle={styles.btnText}
-            btnStyle = {styles.loadMoreButon}
-            disabled={prevBtnStatus}
-
-          />
-    
-          <DisplayText
-            styles = {StyleSheet.flatten(styles.pageText)}
-            text = {`Page ${current_page_no} of ${last_page_no}`}
-          />
-
-          <SubmitButton
-            title={'Next'}
-            onPress={()=>{this.loadData(nextDataLink)}}
-            titleStyle={styles.btnText}
-            btnStyle = {styles.loadMoreButon}
-            disabled={nextBtnStatus}
-
-          />
+          <TouchableOpacity
+            activeOpacity={0.9}
+            // onPress={this.loadPrevData}
+            //On Click of button calling loadMoreData function to load more data
+            style={styles.loadMoreButon}>
+            <DisplayText
+              styles = {StyleSheet.flatten(styles.btnText)}
+              // onPress={this.loadPrevData}
+              text = {'Prev'}
+            />
+            {/* {this.state.fetching_prev_server ? (
+              <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
+            ) : null} */}
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            // onPress={this.loadMoreData}
+            //On Click of button calling loadMoreData function to load more data
+            style={styles.loadPrevButton}>
+            <DisplayText
+              styles = {StyleSheet.flatten(styles.btnText)}
+              // onPress={this.loadMoreData}
+              text = {'Next'}
+            />
+            {/* {this.state.fetching_from_server ? (
+              <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
+            ) : null} */}
+          </TouchableOpacity>
         </View>
       </View>
     );
   }
-
 
   renderRow = ({item, index}) => {
     let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
@@ -387,43 +350,45 @@ export default class CategoryDetails extends Component {
         <TouchableOpacity 
           onPress = {()=>this.handleFullReport(item.id)}
           style = {styles.cardView}>
-          <DisplayText
-            numberOfLines = { 2 } 
-            ellipsizeMode = 'middle'
-            text = {item.title}
-            onPress = {()=>this.handleFullReport(item.id)}
-            styles = {StyleSheet.flatten(styles.reportName)}
-          />
+            <DisplayText
+              numberOfLines = { 2 } 
+              ellipsizeMode = 'middle'
+              text = {item.title}
+              onPress = {()=>this.handleFullReport(item.id)}
+              styles = {StyleSheet.flatten(styles.reportName)}
+            />
 
-          <DisplayText
-            numberOfLines = { 2 } 
-            ellipsizeMode = 'middle'
-            text = {item.citation}
-            onPress = {()=>this.handleFullReport(item.id)}
-            styles = {StyleSheet.flatten(styles.headerText)}
-          />
-          <DisplayText
-            numberOfLines = {4} 
-            ellipsizeMode = 'middle'
-            text = {item.excerpt.toLowerCase()}
-            onPress = {()=>this.handleFullReport(item.id)}
-            styles = {StyleSheet.flatten(styles.reportInfo)}
-          />
-           
-          <View style={styles.buttonView}>
-            <SubmitButton
-              title={favorite_button_text}
-              onPress={()=>this.addDeleteFavorite(item.id, favorite_button_text, index)}
-              titleStyle={styles.btnText}
-              btnStyle = {styles.btnStyle}
+            <DisplayText
+              numberOfLines = { 2 } 
+              ellipsizeMode = 'middle'
+              text = {item.citation}
+              onPress = {()=>this.handleFullReport(item.id)}
+              styles = {StyleSheet.flatten(styles.headerText)}
             />
-            <SubmitButton
-              title={read_later_button_text}
-              onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
-              titleStyle={styles.btnText}
-              btnStyle = {styles.btnReadLate}
+
+            <DisplayText
+              numberOfLines = {4} 
+              ellipsizeMode = 'middle'
+              text = {item.excerpt.toLowerCase()}
+              onPress = {()=>this.handleFullReport(item.id)}
+              styles = {StyleSheet.flatten(styles.reportInfo)}
             />
-          </View> 
+          
+            <View style={styles.buttonView}>
+              <SubmitButton
+                title={favorite_button_text}
+                onPress={()=>this.addDeleteFavorite(item.id, favorite_button_text, index)}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnStyle}
+              />
+              <SubmitButton
+                title={read_later_button_text}
+                onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnReadLate}
+              />
+            </View> 
+          {/* </View> */}
         </TouchableOpacity>
       </View>
     );
@@ -447,7 +412,7 @@ export default class CategoryDetails extends Component {
           </TouchableOpacity>
           <View style = {styles.nameView}>
             <DisplayText
-              text={'Category'}
+              text={'Division'}
               styles = {StyleSheet.flatten(styles.txtHeader)}/>
           </View>
         </View> 
@@ -474,12 +439,11 @@ export default class CategoryDetails extends Component {
         {/* <View style = {styles.viewBody}> */}
           <FlatList          
             data={this.state.data}      
-            renderItem={this.renderRow}  
-            extraData={this.state}            
+            renderItem={this.renderRow}   
+            extraData={this.state}       
             keyExtractor={ data=> data.id.toString()}   
             showsVerticalScrollIndicator={false}
-            ListFooterComponent={this.renderFooter.bind(this)}
-
+            ListFooterComponent={this.renderFooter}
           />
         {/* </View>   */}
       </View>  

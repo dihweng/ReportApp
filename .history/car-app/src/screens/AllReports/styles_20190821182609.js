@@ -286,20 +286,9 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
- 
-
-  btnText : {
-    fontSize: theme.SmallFont,
-    color: theme.colorAccent,
-    fontFamily: theme.secondaryFont,
-    alignSelf: 'center',    
-  },
-
-
-  pageText : {
-    fontSize: theme.SmallFont,
-    color: theme.primaryColor,
-    fontFamily: theme.secondaryFont,
-    alignSelf: 'center',    
+  btnText: {
+    color: 'white',
+    fontSize: 15,
+    textAlign: 'center',
   },
 });
