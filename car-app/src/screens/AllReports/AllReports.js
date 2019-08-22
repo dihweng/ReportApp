@@ -221,7 +221,6 @@ import DropdownAlert from 'react-native-dropdownalert';
       return this.showNotification('error', 'Message', error.toString());
     }
   } 
-  // Called onPress to add favorite to list of favorite 
   handleAddFavorite = async(id, index) =>{
     try {
     return await this.addFavorite(id, index)
