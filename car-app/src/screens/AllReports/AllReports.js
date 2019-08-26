@@ -152,8 +152,8 @@ import DropdownAlert from 'react-native-dropdownalert';
           if(res.message == 'Unauthenticated.'){
             this.showNotification('error', 'Message', 'Session Expired, Please Login Again');
             return setTimeout(()=>{
-              await AsyncStorage.clear();
-               await this.props.navigation.navigate('Login');
+              AsyncStorage.clear();
+              this.props.navigation.navigate('Login');
             }, 3000);
 
           }

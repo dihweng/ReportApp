@@ -87,9 +87,8 @@ export default styles = StyleSheet.create({
   //   paddingLeft : 8
   // },
   drawerImageView : {
-    flexDirection : 'row',
+    flexDirection : 'column',
     backgroundColor : theme.colorAccent,
-    alignItems : 'center',
     height : '25%',
     elevation : 1,
     shadowColor : theme.primaryTextColor,
@@ -97,6 +96,8 @@ export default styles = StyleSheet.create({
     shadowOpacity : 0.25,
     shadowRadius : 2.56,
     marginBottom: 8,
+    justifyContent: 'center',
+    alignItems : 'flex-start',
   },
   userDetailView : {
     flexDirection : 'column',
@@ -133,8 +134,7 @@ export default styles = StyleSheet.create({
     width: 60,
     height: 70,
     marginLeft : 20,
-    // marginTop: 20,
-    // borderRadius: 180,
+    marginVertical: 8
   },
   navToolbar : {
     paddingLeft : 10,

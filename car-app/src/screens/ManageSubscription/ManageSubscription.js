@@ -219,9 +219,8 @@ export default class ManageSubscription extends Component {
     };
 
    return(
-    <SafeAreaView style={styles.container}> 
+     <SafeAreaView style={styles.container}> 
       <StatusBar barStyle="default" /> 
-      <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
 
       <View style = {styles.navBar}>
         <TouchableOpacity
@@ -240,6 +239,8 @@ export default class ManageSubscription extends Component {
           />
         </View>
       </View> 
+     <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
       <View style = {styles.cards}>
         <TouchableOpacity
           onPress = {this.handleSubscription}  

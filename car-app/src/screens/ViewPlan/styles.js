@@ -84,14 +84,6 @@ export default styles = StyleSheet.create({
     top : 470,
     right :30
   },
-  // cardBody: {
-  //   width: '100%',
-  //   height: '70%',
-  //   paddingLeft : 24,
-  //   paddingRight : 24,
-  //   marginTop : 16
-    
-  //   },
   cards : {
     width : '100%',
     shadowColor: theme.primaryTextColor,
@@ -230,8 +222,6 @@ export default styles = StyleSheet.create({
     alignItems : 'center',
     width : '100%',
     justifyContent: 'center',
-    // paddingLeft : 20,
-    // paddingRight : 20,
   },
   plandCard: {
     width : '99%',
@@ -240,7 +230,6 @@ export default styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2.56,
     elevation: 1,    
-    height: (Platform.OS === 'ios') ? 300 : 320,
     backgroundColor : theme.colorAccent,
     borderRadius : 2,
     alignItems: 'center',

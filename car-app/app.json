@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "CAR APP",
+    "name": "E-CAR",
     "slug": "car-app",
     "privacy": "public",
     "sdkVersion": "33.0.0",
@@ -19,13 +19,13 @@
     "updates": {
       "fallbackToCacheTimeout": 0,
       "checkAutomatically": "ON_LOAD",
-      "enabled":true
+      "enabled": true
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "android": {
-      "package": "com.courtofappealreportsnigeria.www",
+      "package": "ng.courtofappealreportsnigeria.www",
       "versionCode": 1,
       "playStoreUrl": "https://play.google.com/store/apps/details?id=",
       "permissions": [

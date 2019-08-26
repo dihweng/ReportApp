@@ -9,9 +9,6 @@ import RadioGroup from 'react-native-radio-buttons-group';
 import theme from '../../assets/theme';
 import filter from 'lodash.filter';
 import numeral from 'numeral';
-
-
-
 export default class ViewPlan extends Component {
   constructor(props) {
     super(props);
@@ -85,6 +82,8 @@ export default class ViewPlan extends Component {
     this.showLoadingDialogue();
     await getRoute(PlanEndpoint)
       .then((res) => {
+
+        console.log({plannnnn: res});
         if (typeof res.message !== 'undefined') {  
           return this.showNotification(res.message);
         }
@@ -115,11 +114,6 @@ export default class ViewPlan extends Component {
   handleViewPlan = () => {
     return this.props.navigation.navigate('ViewPlan');
   }
-  // handleSubscribe = () => {
-  //   return this.props.navigation.navigate('Subscribe');
-  // }
-
-//Radio Button selection on press
   onCheckPlan = (plan) => {
     this.setState({ 
       plan,
@@ -184,8 +178,9 @@ export default class ViewPlan extends Component {
             text={`₦${numeral(item.amount).format('0,0.00').toString()}`}
             styles = {StyleSheet.flatten(styles.amount)}
           />
+          
           <DisplayText
-            text={`Enjoy Unlimited access to the entire\n Volumes of the Court of Appeal\n Reports(from(2015) till date) for one\n month for just ₦${numeral(item.amount).format('0,0').toString()}`}
+            text={item.description}
             styles = {StyleSheet.flatten(styles.planDetails)}
           />
           <SubmitButton

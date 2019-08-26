@@ -1,4 +1,4 @@
-const Baseurl = 'http://45.76.189.218/';
+const Baseurl = 'https://courtofappealreportsnigeria.com/';
 import { AsyncStorage } from 'react-native';
 const LoginEndpoint = `${Baseurl}api/login`,
   RegisterEndpoint = `${Baseurl}api/users`,
@@ -29,8 +29,6 @@ const LoginEndpoint = `${Baseurl}api/login`,
   GetReportEndpoint = `${Baseurl}api/reports/`,
   UserLogoutEndpoint = `${Baseurl}api/logout`;
   
-
-
 export {
   LoginEndpoint,
   RegisterEndpoint,
@@ -263,5 +261,4 @@ export const updateUserDetails = async(data, token)=> {
 
   await AsyncStorage.removeItem('details');
   return await AsyncStorage.setItem('details', JSON.stringify(details))
-
 }

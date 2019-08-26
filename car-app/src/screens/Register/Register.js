@@ -286,7 +286,6 @@ class Register extends Component {
     }
   }
 
-
   handleEmailChange = (email) => {
     if(email.length > 0) {
       this.setState({
