@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, Image, RefreshControl,StyleSheet, AsyncStorage} from 'react-native';
+import { View, FlatList, ScrollView, SafeAreaView, Alert,StatusBar, TouchableOpacity, Image, RefreshControl,StyleSheet, AsyncStorage} from 'react-native';
 import {DisplayText, SubmitButton, SingleButtonAlert, InputField} from '../../components';
 import styles from './styles';
 import theme from '../../assets/theme';
@@ -11,18 +11,26 @@ import colors from '../../assets/colors';
 import {connect} from 'react-redux';
 import { setProfile } from '../../redux/actions/ProfileActions';
 import DropdownAlert from 'react-native-dropdownalert';
+import { SQLite } from 'expo-sqlite';
 
+const db = SQLite.openDatabase("reportdb.db");
  class AllReports extends Component {
   constructor(props) {
     super(props);
     this.state ={
       data: [],
       filterData: [],
+      reportdata: [],
+      reportData: [],
+      search: '',
       token: '',
       showAlert: false,
       message: '',
       showLoading: false,
       title: '',
+      report_title: '',
+      citation: '',
+      excerpt: '',
       favorite_status:false,
       read_later_status:false,
       favorite_button_text:'',
@@ -41,6 +49,7 @@ import DropdownAlert from 'react-native-dropdownalert';
   }
 
   async componentDidMount(){
+    await this.createTable();
     let profile = await getProfile();
     this.setState({
       token : profile.access_token,
@@ -48,6 +57,41 @@ import DropdownAlert from 'react-native-dropdownalert';
     });
 
     await this.handleGetProfile();
+  }
+
+  createTable = async() => {
+    db.transaction(tx => {
+      tx.executeSql(
+        "create table if not exists offline_report (id integer primary key not null, report_title text NOT NULL UNIQUE, citation text, excerpt text);"
+      );
+    });
+  }
+
+  insertReport = (title, citation, excerpt) => {
+    // var query = "insert into offline_report (id, title, citation, excerpt) values (null, ?,?,?)";
+    var params = [title, citation, excerpt];
+    db.transaction((tx) => {
+      tx.executeSql("insert into offline_report (id, report_title, citation, excerpt) values (null, ?,?,?)", params,(tx, results) => {
+        console.log(results);
+        Alert.alert("Success", "Report has been saved");
+      }, function(tx, err){
+        console.log(err);
+
+        Alert.alert("Warning", "Report has not been saved");
+        return;
+      });
+    });
+  }
+
+  handleSave = (title, citation, excerpt,) => {
+    // const { report_title, excerpt, citation } = this.state;
+
+    if(title != "" && excerpt != "" && citation != ""){
+      return this.insertReport(title, citation, excerpt);
+    }
+    else {
+      Alert.alert("Warning", "Report has not been saved");
+    }
   }
 
   showLoadingDialogue =()=> {
@@ -396,21 +440,17 @@ import DropdownAlert from 'react-native-dropdownalert';
             titleStyle={styles.btnText}
             btnStyle = {styles.loadMoreButon}
             disabled={prevBtnStatus}
-
           />
-    
           <DisplayText
             styles = {StyleSheet.flatten(styles.pageText)}
             text = {`Page ${current_page_no} of ${last_page_no}`}
           />
-
           <SubmitButton
             title={'Next'}
             onPress={()=>{this.loadData(nextDataLink)}}
             titleStyle={styles.btnText}
             btnStyle = {styles.loadMoreButon}
             disabled={nextBtnStatus}
-
           />
         </View>
       </View>
@@ -444,7 +484,9 @@ import DropdownAlert from 'react-native-dropdownalert';
   }
 
   renderRow = ({item, index}) => {
-    let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
+    // console.log('futuresaved', item)
+    // let read_later_button_text = item.is_future_saved == true ? 'Remove Read' : 'Read Later';
+    let read_later_button_text = item.is_future_saved == true ? 'Remove Offline' : 'Read Offline';
     let favorite_button_text = item.is_favorite == true ? 'Remove Favorite' : 'Add Favorite';
     return (
        <View style = {styles.listViewItem}>    
@@ -482,9 +524,15 @@ import DropdownAlert from 'react-native-dropdownalert';
                 titleStyle={styles.btnText}
                 btnStyle = {styles.btnStyle}
               />
-              <SubmitButton
+              {/* <SubmitButton
                 title={read_later_button_text}
                 onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnReadLate}
+              /> */}
+              <SubmitButton
+                title={'Save Offline'}
+                onPress={()=>this.handleSave( item.title, item.citation, item.excerpt, index)}
                 titleStyle={styles.btnText}
                 btnStyle = {styles.btnReadLate}
               />

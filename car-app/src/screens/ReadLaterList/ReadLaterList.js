@@ -8,7 +8,9 @@ import colors from '../../assets/colors';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import {GetReadLaterEndpoint, getProfile, getRouteToken, getSubscription, DeleteReadLaterEndpoint} from '../Utils/Utils';
 import DropdownAlert from 'react-native-dropdownalert';
+import { SQLite } from 'expo-sqlite';
 
+const db = SQLite.openDatabase("reportdb.db");
 export default class ReadLaterList extends Component {
   constructor(props) {
     super(props);
@@ -27,18 +29,40 @@ export default class ReadLaterList extends Component {
   }
 
   async componentDidMount(){
+    await this.createTable();
+
     let profile = await getProfile();
     let subscription = await getSubscription();
     this.setState({
       token : profile.access_token,
-      showLoading:true,
+      // showLoading:true,
       isActive:subscription,
     });
-    await this.handleGetReadLater();
+    // await this.handleGetReadLater();
+    await this.getAllReport();
+
 
   this.focusListener =  await this.props.navigation.addListener('didFocus', () => {
-      this.handleGetReadLater();
+      this.getAllReport();
     }); 
+  }
+  // create table if it does not exit
+  createTable = async() => {
+    db.transaction(tx => {
+      tx.executeSql(
+        "create table if not exists offline_report (id integer primary key not null, report_title text NOT NULL UNIQUE, citation text, excerpt text);"
+      );
+    });
+  }
+
+  getAllReport = async() => {
+    db.transaction(tx => {
+        tx.executeSql("select * from offline_report", [], (_, { rows }) =>
+          console.log('hello', JSON.stringify(rows))
+        );
+      },
+      null,
+    );
   }
 
   componentWillUnmount(){

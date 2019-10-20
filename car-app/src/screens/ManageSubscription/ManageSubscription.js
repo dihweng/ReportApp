@@ -31,6 +31,7 @@ export default class ManageSubscription extends Component {
 
   async componentDidMount(){
     let userDetails = await getUserDetails();
+    console.log('userDetailsss', userDetails)
     const id = userDetails.data.id,
       name = userDetails.data.name,
       total_active_devices = userDetails.data.total_active_sessions,

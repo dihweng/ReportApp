@@ -33,7 +33,8 @@
     "react-navigation": "^3.11.1",
     "react-redux": "^7.1.0",
     "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "expo-sqlite": "~5.0.1"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.1.1"
