@@ -35,7 +35,7 @@ export default class ManageSubscription extends Component {
     const id = userDetails.data.id,
       name = userDetails.data.name,
       total_active_devices = userDetails.data.total_active_sessions,
-      total_devices_allowed = userDetails.data.subscription.plan.allowed_devices_count,
+      // total_devices_allowed = userDetails.data.subscription.plan.allowed_devices_count,
       token = userDetails.token;
 
       let payment = this.props.navigation.getParam('paid');
@@ -45,8 +45,18 @@ export default class ManageSubscription extends Component {
         token,
         name,
         loggedInDevices: total_active_devices,
-        total_devices_allowed
+        // total_devices_allowed
       });
+      if(userDetails.data.subscription === null){
+        this.setState({
+          total_devices_allowed:  3,
+        })
+      }
+      else{
+        this.setState({
+          total_devices_allowed: userDetails.data.subscription.plan.allowed_devices_count
+        })
+      }
 
     await this.handleGetSubscription();
 

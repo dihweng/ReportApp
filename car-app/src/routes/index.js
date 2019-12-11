@@ -35,6 +35,7 @@ import Payment from '../screens/Payment/Payment';
 import DivisionDetails from '../screens/DivisionDetails/DivisionDetails';
 import CreateIssue from '../screens/CreateIssue/CreateIssue';
 import Message from '../screens/Message/Message';
+import ReadSavedReport from '../screens/ReadSavedReport/ReadSavedReport';
 
  const AuthStack = createStackNavigator({ 
   Login: {
@@ -249,7 +250,12 @@ const MenuStack = createStackNavigator({
       header: null,
     }
   },
-  
+  ReadSavedReport: {
+    screen: ReadSavedReport,
+    navigationOptions: {
+      header: null,
+    }
+  }
 },
   {
     mode: 'modal',

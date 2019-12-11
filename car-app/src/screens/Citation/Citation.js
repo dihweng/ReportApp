@@ -1,11 +1,14 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList,ScrollView, LayoutAnimation, Platform, UIManager, SafeAreaView, 
+import { View, FlatList,ScrollView, LayoutAnimation, Platform, Alert, UIManager, SafeAreaView, 
   TouchableOpacity,StatusBar, Image, Text, StyleSheet,} from 'react-native';
 import {DisplayText, SubmitButton} from '../../components';
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import DropdownAlert from 'react-native-dropdownalert';
+import { SQLite } from 'expo-sqlite';
+
+const db = SQLite.openDatabase("offlinedb.db");
 
 import { 
   DeleteFavoriteEndpoint, 
@@ -24,6 +27,8 @@ export default class Citation extends Component {
     super(props);
     this.state ={
       data : [],
+      filterData: [],
+      secondFilter: [],
       showAlert : false,
       showLoading: false,
       message : '',
@@ -32,8 +37,6 @@ export default class Citation extends Component {
       expanded: false,
       expandalph : false,
       token: '',
-      filterData: [],
-      secondFilter: [],
       numberCitatio: '',
       alphabetCitation: '',
       isActive : false,
@@ -47,7 +50,7 @@ export default class Citation extends Component {
   }
   async componentDidMount(){
     (Platform.OS === 'android') ? UIManager.setLayoutAnimationEnabledExperimental(true) : null
-    
+    await this.createTable();
     let profile = await getProfile();
     let subscription = await getSubscription();
      await this.setState({
@@ -60,6 +63,40 @@ export default class Citation extends Component {
     this.setState({
       showLoading: true,
     });
+  }
+
+  createTable = async() => {
+    db.transaction(tx => {
+      tx.executeSql(
+        "create table if not exists offline_report (id integer primary key not null, report_title text not null unique, citation text, excerpt text, content text);"
+      );
+    });
+  }
+
+  insertReport = (title, citation, excerpt, content) => {
+    // var query = "insert into offline_report (id, title, citation, excerpt) values (null, ?,?,?)";
+    var params = [title, citation, excerpt, content];
+    db.transaction((tx) => {
+      tx.executeSql("insert into offline_report (id, report_title, citation, excerpt, content) values (null, ?,?,?,?)", params,(tx, results) => {
+        console.log("helllllooo:", results);
+        Alert.alert("Success", "Report has been saved");
+      }, function(tx, err){
+        console.log(err);
+
+        Alert.alert("Warning", "Report has not been saved");
+        return;
+      });
+    });
+  }
+
+  handleSave = (title, citation, excerpt, content) => {
+    // console.log('contenttt', content);
+    if(title != "" && excerpt != "" && citation != "" && content != ""){
+      return this.insertReport(title, citation, excerpt, content);
+    }
+    else {
+      Alert.alert("Warning", "Report has not been saved");
+    }
   }
 
   hideLoadingDialogue =()=> {
@@ -127,7 +164,15 @@ export default class Citation extends Component {
       });
     }
   }
-
+  //call get all report function
+  handleGetAllReport = async() => {
+    try {
+      await this.allReport()
+    }
+    catch(error) {
+     return this.showNotification('error', 'Message', error.toString());    
+    }
+  }
   allReport = async() => {
     const {token} = this.state;
     await getRouteToken(getAllReport, token)
@@ -153,9 +198,7 @@ export default class Citation extends Component {
     ).catch(error=>this.showNotification('error', 'Message', error.toString()));
   }
 
-
-
-  loadData = async(url) => {
+  loadPaginatedData = async(url) => {
     this.showLoadingDialogue();
     const {token} = this.state;
     await getRouteToken(url, token)
@@ -180,15 +223,6 @@ export default class Citation extends Component {
       }
     ).catch(error=>this.showNotification('error', 'Message', error.toString()));
   };
-
-  handleGetAllReport = async() => {
-    try {
-      await this.allReport()
-    }
-    catch(error) {
-     return this.showNotification('error', 'Message', error.toString());    
-    }
-  }
   
   changeLayout = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -383,7 +417,7 @@ export default class Citation extends Component {
         <View style={styles.footer}>
           <SubmitButton
             title={'Prev'}
-            onPress={()=>{this.loadData(prevDataLink)}}
+            onPress={()=>{this.loadPaginatedData(prevDataLink)}}
             titleStyle={styles.btnText}
             btnStyle = {styles.loadMoreButon}
             disabled={prevBtnStatus}
@@ -397,7 +431,7 @@ export default class Citation extends Component {
 
           <SubmitButton
             title={'Next'}
-            onPress={()=>{this.loadData(nextDataLink)}}
+            onPress={()=>{this.loadPaginatedData(nextDataLink)}}
             titleStyle={styles.btnText}
             btnStyle = {styles.loadMoreButon}
             disabled={nextBtnStatus}
@@ -445,9 +479,15 @@ export default class Citation extends Component {
               titleStyle={styles.btnText}
               btnStyle = {styles.btnStyle}
             />
-            <SubmitButton
+            {/* <SubmitButton
               title={read_later_button_text}
               onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
+              titleStyle={styles.btnText}
+              btnStyle = {styles.btnReadLate}
+            /> */}
+            <SubmitButton
+              title={'Save Offline'}
+              onPress={()=>this.handleSave( item.title, item.citation, item.excerpt, item.content, index)}
               titleStyle={styles.btnText}
               btnStyle = {styles.btnReadLate}
             />

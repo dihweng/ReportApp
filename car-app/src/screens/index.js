@@ -28,6 +28,7 @@ import CitedAuthorities from './CitedAuthorities/CitedAuthorities';
 import PlainReport from './PlainReport/PlainReport';
 import FavoriteList from './FavoriteList/FavoriteList';
 import DivisionDetails from './DivisionDetails/DivisionDetails';
+import ReadSavedReport from './ReadSavedReport/ReadSavedReport';
 export default {
   Register, 
   Login, 
@@ -58,4 +59,5 @@ export default {
   PlainReport,
   FavoriteList,
   DivisionDetails,
+  ReadSavedReport,
 };

@@ -292,7 +292,7 @@ renderHeader = () => {
             onPress = {this.handleReadLaterList}  
             style = {styles.customTabTp2}>
               <DisplayText
-              text={'Read Later'}
+              text={'Offline Reports'}
               onPress = {this.handleReadLaterList}  
               styles = {StyleSheet.flatten(styles.txtTabHeader)}
             />

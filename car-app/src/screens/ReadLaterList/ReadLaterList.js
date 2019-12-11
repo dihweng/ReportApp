@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, FlatList,SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet,} from 'react-native';
+import { View, FlatList,SafeAreaView, StatusBar, Image,TouchableOpacity, StyleSheet, Alert} from 'react-native';
 import styles from './styles';
 import theme from '../../assets/theme';
 import {DisplayText, InputField,  } from '../../components';
@@ -10,7 +10,7 @@ import {GetReadLaterEndpoint, getProfile, getRouteToken, getSubscription, Delete
 import DropdownAlert from 'react-native-dropdownalert';
 import { SQLite } from 'expo-sqlite';
 
-const db = SQLite.openDatabase("reportdb.db");
+const db = SQLite.openDatabase("offlinedb.db");
 export default class ReadLaterList extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +24,7 @@ export default class ReadLaterList extends Component {
       filterData: [],
       token: '',
       isActive: false,
-
+      
     }
   }
 
@@ -46,29 +46,73 @@ export default class ReadLaterList extends Component {
       this.getAllReport();
     }); 
   }
+  componentWillUnmount(){
+    this.focusListener.remove();
+
+  }
   // create table if it does not exit
   createTable = async() => {
     db.transaction(tx => {
       tx.executeSql(
-        "create table if not exists offline_report (id integer primary key not null, report_title text NOT NULL UNIQUE, citation text, excerpt text);"
+        "create table if not exists offline_report (id integer primary key not null, report_title text NOT NULL UNIQUE, citation text, excerpt text, content text);"
       );
     });
   }
 
   getAllReport = async() => {
     db.transaction(tx => {
-        tx.executeSql("select * from offline_report", [], (_, { rows }) =>
-          console.log('hello', JSON.stringify(rows))
+        tx.executeSql('SELECT * FROM offline_report', [], (tx, results) => {
+          console.log('temp', results.rows.length);
+          var reportData = [];
+          for (let i = 0; i < results.rows.length; ++i) {
+            reportData.push(results.rows.item(i));
+          }
+          this.setState({
+            data: reportData,
+            filterData: reportData,
+          })
+        }
         );
-      },
-      null,
+      },  
     );
   }
 
-  componentWillUnmount(){
-    this.focusListener.remove();
-
+  removeOfflineReport = async(id) => {
+    if(this.state.isActive === false) {
+      await this.showNotification('error', 'Message', 'Please Subscribe to have Full Access');
+      return await setTimeout(() => {
+        this.props.navigation.navigate('ManageSubscription');
+        console.log('okay  i will pay')
+      }, 3000);    
+    }
+    else {
+      db.transaction(tx => {
+        tx.executeSql('DELETE FROM  offline_report where id=?', [id],
+          (tx, results) => {
+            console.log('Result', results.rowsAffected);
+            if(results.rowsAffected > 0){
+              Alert.alert(
+                'Success', 'Report Deleted Successfully',
+                [
+                  {
+                    text: 'OK',
+                    onPress: () => {this.props.navigation.navigate('AllReports')},
+                  },
+                ],
+                {cancelable: false}
+              );
+            }
+            else{
+              alert('Error', 'Try Again');
+            }
+          }
+        )
+      })
+    }
   }
+
+ 
+  
   handleFavoriteList = () => {
     return this.props.navigation.navigate('FavoriteList');
   }
@@ -103,7 +147,7 @@ export default class ReadLaterList extends Component {
      })
   }
 
-  AllReadLater = async() =>{
+  allReadLater = async() =>{
     const {token} = this.state;
     this.showLoadingDialogue();
     await getRouteToken(GetReadLaterEndpoint, token)
@@ -130,7 +174,7 @@ export default class ReadLaterList extends Component {
   handleGetReadLater = async() => {
     this.showLoadingDialogue();
     try {
-      await this.AllReadLater()
+      await this.allReadLater()
     }
     catch(error) {
       return this.showNotification('error', 'Message', error.toString());
@@ -143,9 +187,8 @@ export default class ReadLaterList extends Component {
       value: text,
     });
     const newData = filterData.filter(item => {
-      const itemData = `${item.title.toUpperCase()} ${item.citation.toUpperCase()}${item.content.toUpperCase()}`;
+      const itemData = `${item.title} ${item.citation}${item.content}`;
       const textData = text.toUpperCase();
-
       return itemData.indexOf(textData) > -1;
     });
     return this.setState({
@@ -224,13 +267,14 @@ handleFullReport=async(item)=>{
     }, 3000);    
   }
   else {
-    this.props.navigation.navigate('FullReport', {
+    this.props.navigation.navigate('ReadSavedReport', {
       id: item.id, 
     });
   }
 }
 
   renderRow = ({item}) => {
+  
     return (
       <View style={styles.flatlistContainer}>
       <View style = {styles.listViewItem}>    
@@ -241,7 +285,7 @@ handleFullReport=async(item)=>{
             <DisplayText
               numberOfLines = { 2 } 
               ellipsizeMode = 'middle'
-              text = {item.title}
+              text = {item.report_title}
               onPress = {()=>this.handleFullReport(item)}
               styles = {StyleSheet.flatten(styles.reportName)}
             />
@@ -256,16 +300,22 @@ handleFullReport=async(item)=>{
             <DisplayText
               numberOfLines = { 4 } 
               ellipsizeMode = 'middle'
-              text = {item.excerpt.toLowerCase()}
+              text = {item.excerpt}
               onPress = {()=>this.handleFullReport(item)}
               styles = {StyleSheet.flatten(styles.reportInfo)}
               />
         </TouchableOpacity>
-        <TouchableOpacity                  
+        <TouchableOpacity 
+          onPress = {()=>this.removeOfflineReport(item.id)}
           style = {styles.deleteBtn}>
-          <DisplayText
+          {/* <DisplayText
             text = {'Remove'}
             onPress = {()=>this.deleteReadLater(item.id)}
+            styles = {StyleSheet.flatten(styles.deleteTxt)}
+          /> */}
+          <DisplayText
+            text = {'Remove'}
+            onPress = {()=>this.removeOfflineReport(item.id)}
             styles = {StyleSheet.flatten(styles.deleteTxt)}
           />
         </TouchableOpacity>
@@ -297,6 +347,7 @@ handleFullReport=async(item)=>{
             />
           </View>
         </View> 
+       {/* Tab button navbar for favorite and Offline Reports */}
         <View style = {styles.cards}>
           <TouchableOpacity
             onPress = {this.handleFavoriteList}  
@@ -311,7 +362,7 @@ handleFullReport=async(item)=>{
             onPress = {this.handleReadLaterList}  
             style = {styles.customTabTp}>
               <DisplayText
-              text={'Read Later'}
+              text={'Offline Reports'}
               onPress = {this.handleReadLaterList}  
               styles = {StyleSheet.flatten(styles.txtTabHeaderWhite)}
             />

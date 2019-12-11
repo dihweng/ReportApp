@@ -1,11 +1,10 @@
 'use strict';
 import React, {Component} from 'react';
-import { View, SafeAreaView, StatusBar, FlatList, Image,TouchableOpacity, StyleSheet,} from 'react-native';
+import { View, SafeAreaView, StatusBar, FlatList, Alert, Image,TouchableOpacity, StyleSheet,} from 'react-native';
 import {DisplayText, SubmitButton } from '../../components';
 import styles from './styles';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import DropdownAlert from 'react-native-dropdownalert';
-
 import { 
   DeleteFavoriteEndpoint, 
   DeleteReadLaterEndpoint, 
@@ -16,7 +15,10 @@ import {
   getSubscription,
   AddFavoriteEndPoint, 
   } from '../Utils/Utils';
+  import { SQLite } from 'expo-sqlite';
 
+  const db = SQLite.openDatabase("offlinedb.db");
+  
 export default class DivisionDetails extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +41,7 @@ export default class DivisionDetails extends Component {
     }
   }
   async componentDidMount(){
+    await this.createTable();
     let profile = await getProfile();
     let subscription = await getSubscription();
     const {navigation} = this.props,
@@ -54,6 +57,40 @@ export default class DivisionDetails extends Component {
     
     await this.handleGetAllReport();
   
+  }
+
+  createTable = async() => {
+    db.transaction(tx => {
+      tx.executeSql(
+        "create table if not exists offline_report (id integer primary key not null, report_title text not null unique, citation text, excerpt text, content text);"
+      );
+    });
+  }
+
+  insertReport = (title, citation, excerpt, content) => {
+    // var query = "insert into offline_report (id, title, citation, excerpt) values (null, ?,?,?)";
+    var params = [title, citation, excerpt, content];
+    db.transaction((tx) => {
+      tx.executeSql("insert into offline_report (id, report_title, citation, excerpt, content) values (null, ?,?,?,?)", params,(tx, results) => {
+        console.log("helllllooo:", results);
+        Alert.alert("Success", "Report has been saved");
+      }, function(tx, err){
+        console.log(err);
+
+        Alert.alert("Warning", "Report has not been saved");
+        return;
+      });
+    });
+  }
+
+  handleSave = (title, citation, excerpt, content) => {
+    // console.log('contenttt', content);
+    if(title != "" && excerpt != "" && citation != "" && content != ""){
+      return this.insertReport(title, citation, excerpt, content);
+    }
+    else {
+      Alert.alert("Warning", "Report has not been saved");
+    }
   }
   showLoadingDialogue =()=> {
     this.setState({
@@ -363,7 +400,7 @@ export default class DivisionDetails extends Component {
           />
 
           <SubmitButton
-            title={'Prev'}
+            title={'Next'}
             onPress={()=>{this.loadData(nextDataLink)}}
             titleStyle={styles.btnText}
             btnStyle = {styles.loadMoreButon}
@@ -414,9 +451,15 @@ export default class DivisionDetails extends Component {
                 titleStyle={styles.btnText}
                 btnStyle = {styles.btnStyle}
               />
-              <SubmitButton
+              {/* <SubmitButton
                 title={read_later_button_text}
                 onPress={()=>this.addDeleteReadlater(item.id, read_later_button_text, index)}
+                titleStyle={styles.btnText}
+                btnStyle = {styles.btnReadLate}
+              /> */}
+              <SubmitButton
+                title={'Save Offline'}
+                onPress={()=>this.handleSave( item.title, item.citation, item.excerpt, item.content, index)}
                 titleStyle={styles.btnText}
                 btnStyle = {styles.btnReadLate}
               />

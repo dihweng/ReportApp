@@ -42,7 +42,7 @@ export default class CustomSidebarMenu extends Component {
       {
         // navOptionThumb: 'podium',
         navOptionThumb :favorite,
-        navOptionName: 'Favorite/Read Later',
+        navOptionName: 'Favorite/Offline Reports',
         screenToNavigate: 'FavoriteList',
       },
       {

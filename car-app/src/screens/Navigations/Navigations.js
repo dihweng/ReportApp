@@ -194,7 +194,7 @@ const AppTabNavigation =  createMaterialTopTabNavigator({
       const {routeName} = navigation.state.routes
       [navigation.state.index];
       return {
-        headerTitle :routeName,
+        headerTitle :'All Reports',
         headerForceInset: (Platform.OS === 'android') ? { top: 'never', bottom: 'never' } : null,
         headerStyle: {
           height: (Platform.OS === 'ios') ? 40 : 50,

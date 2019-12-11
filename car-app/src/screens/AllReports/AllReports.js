@@ -13,7 +13,11 @@ import { setProfile } from '../../redux/actions/ProfileActions';
 import DropdownAlert from 'react-native-dropdownalert';
 import { SQLite } from 'expo-sqlite';
 
-const db = SQLite.openDatabase("reportdb.db");
+const db = SQLite.openDatabase("offlinedb.db");
+
+// db._db.close();
+
+
  class AllReports extends Component {
   constructor(props) {
     super(props);
@@ -28,9 +32,6 @@ const db = SQLite.openDatabase("reportdb.db");
       message: '',
       showLoading: false,
       title: '',
-      report_title: '',
-      citation: '',
-      excerpt: '',
       favorite_status:false,
       read_later_status:false,
       favorite_button_text:'',
@@ -62,32 +63,29 @@ const db = SQLite.openDatabase("reportdb.db");
   createTable = async() => {
     db.transaction(tx => {
       tx.executeSql(
-        "create table if not exists offline_report (id integer primary key not null, report_title text NOT NULL UNIQUE, citation text, excerpt text);"
+        "create table if not exists offline_report (id integer primary key not null, report_title text not null unique, citation text, excerpt text, content text);"
       );
     });
   }
 
-  insertReport = (title, citation, excerpt) => {
-    // var query = "insert into offline_report (id, title, citation, excerpt) values (null, ?,?,?)";
-    var params = [title, citation, excerpt];
+  insertReport = (title, citation, excerpt, content) => {
+    var params = [title, citation, excerpt, content];
     db.transaction((tx) => {
-      tx.executeSql("insert into offline_report (id, report_title, citation, excerpt) values (null, ?,?,?)", params,(tx, results) => {
-        console.log(results);
+      tx.executeSql("insert into offline_report (id, report_title, citation, excerpt, content) values (null, ?,?,?,?)", params,(tx, results) => {
         Alert.alert("Success", "Report has been saved");
       }, function(tx, err){
         console.log(err);
-
         Alert.alert("Warning", "Report has not been saved");
         return;
       });
     });
   }
 
-  handleSave = (title, citation, excerpt,) => {
+  handleSave = (title, citation, excerpt, content) => {
+    console.log('contenttt', content);
     // const { report_title, excerpt, citation } = this.state;
-
-    if(title != "" && excerpt != "" && citation != ""){
-      return this.insertReport(title, citation, excerpt);
+    if(title != "" && excerpt != "" && citation != "" && content != ""){
+      return this.insertReport(title, citation, excerpt, content);
     }
     else {
       Alert.alert("Warning", "Report has not been saved");
@@ -133,6 +131,7 @@ const db = SQLite.openDatabase("reportdb.db");
           return this.showNotification('error', 'Message', res.message);
         }   
         else {    
+          console.log('data: ', res)
           this.setState({
             data: res.data,
             filterData: res.data,
@@ -532,7 +531,7 @@ const db = SQLite.openDatabase("reportdb.db");
               /> */}
               <SubmitButton
                 title={'Save Offline'}
-                onPress={()=>this.handleSave( item.title, item.citation, item.excerpt, index)}
+                onPress={()=>this.handleSave( item.title, item.citation, item.excerpt, item.content, index)}
                 titleStyle={styles.btnText}
                 btnStyle = {styles.btnReadLate}
               />
@@ -605,4 +604,3 @@ const mapDispatchToProps = (dispatch) =>{
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllReports);
-
