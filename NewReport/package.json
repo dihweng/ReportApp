@@ -12,7 +12,7 @@
     "expo": "^33.0.0",
     "expo-sqlite": "~5.0.1",
     "lodash.filter": "^4.6.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "native-base": "^2.13.8",
     "numeral": "^2.0.6",
     "react": "16.8.3",
